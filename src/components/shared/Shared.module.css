@@ -24,11 +24,11 @@
 /*  2. BUTTON                                                      */
 /* =============================================================== */
 .btnBase {
-  background-color: #fbeee0;
-  border: 2px solid #422800;
+  background-color: var(--main-accent);
+  border: 2px solid var(--foreground);
   border-radius: 30px;
-  box-shadow: #422800 4px 4px 0 0;
-  color: #422800;
+  box-shadow: var(--drop-shadow);
+  color: var(--foreground);
   cursor: pointer;
   display: inline-block;
   font-weight: 600;
@@ -47,7 +47,7 @@
 }
 
 .btnBase:active {
-  box-shadow: #422800 2px 2px 0 0;
+  box-shadow: var(--foreground) 2px 2px 0 0;
   transform: translate(2px, 2px);
 }
 
@@ -94,9 +94,9 @@
   width: 90%;
   height: auto;
   padding: 1rem;
-  background-color: var(--foreground);
+  background-color: var(--background);
   margin: 1rem 0;
-  border: 2px solid var(--background);
+  border: 2px solid var(--foreground);
   border-radius: 6px;
 }
 
@@ -150,14 +150,11 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: var(--foreground);
+  background-color: var(--background);
   border-radius: 25px;
   border: 2px solid black;
 }
 
 .topBar svg path {
-  background-color: var(--secondary-accent);
-  fill: var(--secondary-accent);
-  stroke: var(--secondary-accent);
-  clip-path: var(--secondary-accent);
+  stroke: var(--primary-text);
 }

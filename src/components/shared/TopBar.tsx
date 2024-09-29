@@ -27,7 +27,7 @@ export const TopBar = () => {
             </div>
             <div className={styles.notification}>1</div>
           </div>
-          <Button />
+          <Button text="CREATE JOB" />
         </div>
       </div>
     </header>

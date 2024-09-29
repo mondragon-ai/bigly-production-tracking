@@ -20,11 +20,7 @@
   min-height: 100dvh;
   min-height: 100svh;
   min-height: -webkit-fill-available;
-  background: radial-gradient(
-    100% 100% at 100% 0%,
-    rgb(234, 67, 67),
-    rgb(218, 48, 48)
-  );
+  background: var(--secondary-background);
   z-index: 2;
   clip-path: polygon(
     0 0,
@@ -147,7 +143,7 @@
   }
   .sidebar span {
     font-size: 8px;
-    color: var(--secondary-accent);
+    color: var(--secondary-text);
     margin: 2rem 0 0 0;
     padding: 1rem 1.2rem;
   }
@@ -189,7 +185,7 @@
     height: auto;
     margin: 5px 0;
     padding: 5px 10px;
-    background-color: var(--secondary-accent);
+    background-color: transparent;
     border-radius: 6px;
   }
 
@@ -203,30 +199,22 @@
     height: auto;
     margin: 0;
     padding: 0px;
-    background-color: var(--secondary-accent);
     border-radius: 6px;
   }
 
   .sidebar .left svg {
     margin-right: 10px;
-    background-color: var(--secondary-accent);
-    fill: var(--secondary-accent);
-    stroke: var(--secondary-accent);
-    clip-path: var(--secondary-accent);
   }
 
   .sidebar .left svg path {
-    background-color: var(--secondary-accent);
-    fill: var(--secondary-accent);
-    stroke: var(--secondary-accent);
-    clip-path: var(--secondary-accent);
+    stroke: var(--primary-text);
   }
 
   .sidebar nav .topNav ul li a h5,
   .sidebar nav .bottomNav ul li a h5 {
     font-size: 13px;
     font-weight: 100;
-    color: var(--background);
+    color: var(--primary-text);
     margin: 0;
     padding: 0;
   }

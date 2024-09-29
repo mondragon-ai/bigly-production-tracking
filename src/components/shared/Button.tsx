@@ -1,9 +1,12 @@
 import styles from "./Shared.module.css";
 
-export const Button = () => {
+type ButtonProps = {
+  text: string;
+};
+export const Button = ({text}: ButtonProps) => {
   return (
     <button className={styles.btnBase} role="button">
-      Button 74
+      {text}
     </button>
   );
 };

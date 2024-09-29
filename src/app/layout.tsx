@@ -4,6 +4,7 @@ import "./globals.css";
 import {NavMenu} from "@/components/layout.tsx/NavMenu";
 import styles from "./page.module.css";
 import {TopBar} from "@/components/shared/TopBar";
+import {Footer} from "@/components/layout.tsx/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,7 +36,7 @@ export default function RootLayout({
         <main className={styles.mainSection}>
           <TopBar />
           {children}
-          <footer>Footer</footer>
+          <Footer />
         </main>
       </body>
     </html>
