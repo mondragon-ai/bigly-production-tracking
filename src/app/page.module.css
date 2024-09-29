@@ -10,3 +10,71 @@
 
 @media (prefers-color-scheme: dark) {
 }
+
+/* =============================================================== */
+/*  2. MAIN PAGE                                                   */
+/* =============================================================== */
+
+.mainPage {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: 100svh;
+  overflow-y: scroll;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  bottom: 0;
+  top: 0;
+}
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: 100svh;
+  overflow-y: scroll;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  bottom: 0;
+  top: 0;
+}
+
+/* Computer (Mac 13-inch to Mac 16-inch) */
+@media only screen and (min-width: 1280px) and (max-width: 3072px) {
+  .mainPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+    align-items: flex-start;
+    background-color: var(--main-accent);
+  }
+  .mainSection {
+    width: 80%;
+    max-width: 80%;
+    background-color: var(--main-accent);
+  }
+}
