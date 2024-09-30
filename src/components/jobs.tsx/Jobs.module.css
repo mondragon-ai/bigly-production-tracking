@@ -447,9 +447,9 @@
   margin-bottom: 1rem;
 }
 
-.kanbanBoard > header,
-.kanbanBoard > div,
-.kanbanBoard > footer {
+.kanbanBoard .box > header,
+.kanbanBoard .box > div,
+.kanbanBoard .box > footer {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -461,24 +461,24 @@
   padding: 10px;
 }
 
-.kanbanBoard > div {
+.kanbanBoard .box > div {
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.kanbanBoard > div {
+.kanbanBoard .box > div {
   border-top: 1px solid var(--secondary-background);
   border-bottom: 1px solid var(--secondary-background);
   height: 70px;
 }
 
-.kanbanBoard > div > div {
+.kanbanBoard .box > div > div {
   position: absolute;
   left: 10px;
   top: 10px;
 }
 
-.kanbanBoard > div > p {
+.kanbanBoard .box > div > p {
   position: absolute;
   left: 100px;
   top: 50%;
@@ -489,16 +489,16 @@
   color: var(--secondary-text);
 }
 
-.kanbanBoard > div > div:nth-child(4) {
+.kanbanBoard .box > div > div:nth-child(4) {
   left: 40px;
 }
-.kanbanBoard > div > div:nth-child(3) {
+.kanbanBoard .box > div > div:nth-child(3) {
   left: 30px;
 }
-.kanbanBoard > div > div:nth-child(2) {
+.kanbanBoard .box > div > div:nth-child(2) {
   left: 20px;
 }
-.kanbanBoard > div > div:first-child {
+.kanbanBoard .box > div > div:first-child {
   left: 10px;
   top: 10px;
 }
