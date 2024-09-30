@@ -1,7 +1,7 @@
 :root {
   --background: #f1f1f1;
   --secondary-background: #ebebeb;
-  --tertary-background: #d0d0d0;
+  --tertary-background: #ffffff;
   --foreground: #171717;
   --secondary-foreground: #39393a;
 
@@ -13,6 +13,18 @@
   --secondary-text: #39393a;
 
   --drop-shadow: #39393a 0px 5px 0 0;
+
+  --success-bkg: #b4fed2;
+  --success-color: #298459;
+
+  --magic-bkg: #e8e5ff;
+  --magic-color: #5700d1;
+
+  --error-bkg: #fed3d1;
+  --error-color: #8d1f0b;
+
+  --info-bkg: #e5e5e5;
+  --info-color: #cccccc;
 }
 /* 
 @media (prefers-color-scheme: dark) {

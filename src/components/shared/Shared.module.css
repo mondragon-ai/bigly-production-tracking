@@ -186,10 +186,32 @@
   border-collapse: collapse;
 }
 
+.tableWrapper th {
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 15px;
+  color: var(--secondary-text);
+}
+
+.tableWrapper td {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--primary-text);
+}
+
 .tableWrapper thead {
   background-color: var(--tertary-background);
   border: none;
   border-collapse: collapse;
+}
+
+.tableWrapper thead tr {
+  background-color: var(--secondary-background);
+}
+
+.tableWrapper tbody tr {
+  background-color: var(--tertary-background);
 }
 
 .tableWrapper tr,
@@ -204,4 +226,29 @@
 .tableWrapper th,
 .tableWrapper td {
   padding: 7px 0;
+}
+
+/* =============================================================== */
+/*  6. BADGE                                                       */
+/* =============================================================== */
+.badge {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: fit-content;
+  height: auto;
+  margin: 0;
+  padding: 1px 5px !important;
+  margin: 0 5px;
+  background-color: var(--magic-bkg);
+  color: var(--magic-color);
+  padding: 5px 7px;
+  border-radius: 5px;
+}
+
+.badge span {
+  font-size: 8px;
+  margin-left: 5px;
 }

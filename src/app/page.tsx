@@ -27,8 +27,8 @@ export const Header = () => {
         <span>Jan 6 2024 4:20 PM</span>
       </div>
       <div className={styles.right}>
-        <Button text="ADD STAFF" />
-        <Button text="APPROVE" />
+        <Button thin={false} text="ADD STAFF" />
+        <Button thin={false} text="APPROVE" />
       </div>
     </header>
   );

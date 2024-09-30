@@ -49,6 +49,20 @@
   padding: 0;
 }
 
+.pageHeaderWrapper .left h1 {
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 55px;
+  color: var(--secondary-text);
+}
+
+.pageHeaderWrapper .left span {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--secondary-text);
+}
+
 .pageHeaderWrapper .right button {
   margin-right: 1rem;
 }

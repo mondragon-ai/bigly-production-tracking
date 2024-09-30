@@ -1,6 +1,7 @@
 "use client";
 import {useState} from "react";
 import styles from "./Shared.module.css";
+import {Badge} from "./Badge";
 export const CustomTable = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -56,7 +57,9 @@ export const CustomTable = () => {
               <td>{item.sku}</td>
               <td>{item.size}</td>
               <td>{item.color}</td>
-              <td>{item.quantity}</td>
+              <td>
+                <Badge />
+              </td>
               <td>{item.type}</td>
               <td>{item.store}</td>
             </tr>
@@ -67,7 +70,7 @@ export const CustomTable = () => {
   );
 };
 
-const headers = ["SKU", "Size", "Color", "Quantity", "Type", "Store"];
+const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
 
 const items = [
   {
@@ -75,7 +78,7 @@ const items = [
     sku: "SKU-DESIGN-CLR-SIZE",
     size: "M",
     color: "Black",
-    quantity: 5,
+    status: 5,
     type: "shirt",
     store: "AJ",
   },
@@ -84,7 +87,7 @@ const items = [
     sku: "SKU-DESIGN-CLR-SIZE",
     size: "M",
     color: "Black",
-    quantity: 5,
+    status: 5,
     type: "shirt",
     store: "AJ",
   },
@@ -93,7 +96,7 @@ const items = [
     sku: "SKU-DESIGN-CLR-SIZE",
     size: "M",
     color: "Black",
-    quantity: 5,
+    status: 5,
     type: "shirt",
     store: "AJ",
   },
@@ -102,7 +105,7 @@ const items = [
     sku: "SKU-DESIGN-CLR-SIZE",
     size: "M",
     color: "Black",
-    quantity: 5,
+    status: 5,
     type: "shirt",
     store: "AJ",
   },
