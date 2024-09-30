@@ -5,4 +5,5 @@ export type IconTypes =
   | "delivery"
   | "store"
   | "link"
-  | "fire";
+  | "fire"
+  | "hour_glass";

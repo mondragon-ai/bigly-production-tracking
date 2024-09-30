@@ -377,3 +377,126 @@
   opacity: 0;
   cursor: pointer;
 }
+
+/* =============================================================== */
+/*  3. KAN BAN BAORDS                                              */
+/* =============================================================== */
+.kanbanBoard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 350px;
+  min-width: 350px;
+  max-width: 350px;
+  height: 750px;
+  min-height: 750px;
+  max-height: 750px;
+  margin: 0;
+  padding: 0;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  margin-bottom: 2rem;
+  margin-right: 1.5rem;
+}
+.kanbanBoard:last-of-type {
+  margin-right: 0rem;
+}
+
+.kanbanBoard > header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+}
+
+.kanbanBoard > main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+}
+
+.box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0px;
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.box > header,
+.box > div,
+.box > footer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 10px;
+}
+
+.box > div {
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.box > div {
+  border-top: 1px solid var(--secondary-background);
+  border-bottom: 1px solid var(--secondary-background);
+  height: 70px;
+}
+
+.box > div > div {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.box > div > p {
+  position: absolute;
+  left: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  font-weight: 450;
+  line-height: 16px;
+  color: var(--secondary-text);
+}
+
+.box > div > div:nth-child(4) {
+  left: 40px;
+}
+.box > div > div:nth-child(3) {
+  left: 30px;
+}
+.box > div > div:nth-child(2) {
+  left: 20px;
+}
+.box > div > div:first-child {
+  left: 10px;
+  top: 10px;
+}

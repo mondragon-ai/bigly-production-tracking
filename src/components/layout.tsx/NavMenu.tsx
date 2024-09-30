@@ -39,7 +39,7 @@ export const NavMenu = () => {
               </Link>
             </li>
             <li>
-              <Link href={"/jobs/123"}>
+              <Link href={"/jobs"}>
                 <div className={styles.left}>
                   <svg
                     aria-hidden="true"
