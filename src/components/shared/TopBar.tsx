@@ -27,7 +27,12 @@ export const TopBar = () => {
             </div>
             <div className={styles.notification}>1</div>
           </div>
-          <Button text="CREATE JOB" />
+          <Button
+            text="CREATE JOB"
+            thin={false}
+            tone={"success"}
+            align={"center"}
+          />
         </div>
       </div>
     </header>
