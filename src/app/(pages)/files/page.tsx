@@ -7,7 +7,7 @@ import {FileDetail} from "@/components/files/FileDetail";
 export default function Home() {
   return (
     <div className={styles.page}>
-      <Header />
+      <CustomHeader />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <FileList headers={headers} items={items} />
@@ -48,7 +48,7 @@ const items = [
   },
 ];
 
-export const Header = () => {
+export const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

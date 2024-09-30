@@ -64,7 +64,7 @@
   color: var(--secondary-text);
 }
 
-.box {
+.itemDisplayWrapper .box {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -124,7 +124,7 @@
   transform: translate(2px, 2px);
 }
 
-.box img {
+.itemDisplayWrapper .box img {
   object-fit: contain;
   width: 100%;
   height: auto;
@@ -141,14 +141,14 @@
   width: 100%;
 }
 
-.column .box {
+.itemDisplayWrapper .column .box {
   width: auto;
   height: 150px;
   min-height: 150px;
   max-height: 150px;
 }
 
-.column .box img {
+.itemDisplayWrapper .column .box img {
   object-fit: contain;
   width: auto;
   height: 90%;
@@ -352,20 +352,22 @@
   width: 100%;
 }
 
-.box .fileUpload {
+.itemDisplayWrapper .box .fileUpload {
   text-align: center;
   width: 100%;
-  border: 1px dashed var(--magic-color);
+  /* border: 1px dashed var(--magic-color); */
   padding: 1.5rem;
   position: relative;
   cursor: pointer;
 }
-.box .fileUpload p {
+
+.itemDisplayWrapper .box .fileUpload p {
   font-size: 0.87rem;
   margin-top: 10px;
   color: #bbcada;
 }
-.box .fileUpload input {
+
+.itemDisplayWrapper .box .fileUpload input {
   display: block;
   height: 100%;
   width: 100%;
@@ -430,7 +432,7 @@
   padding: 1rem;
 }
 
-.box {
+.kanbanBoard .box {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -445,9 +447,9 @@
   margin-bottom: 1rem;
 }
 
-.box > header,
-.box > div,
-.box > footer {
+.kanbanBoard > header,
+.kanbanBoard > div,
+.kanbanBoard > footer {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -459,24 +461,24 @@
   padding: 10px;
 }
 
-.box > div {
+.kanbanBoard > div {
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.box > div {
+.kanbanBoard > div {
   border-top: 1px solid var(--secondary-background);
   border-bottom: 1px solid var(--secondary-background);
   height: 70px;
 }
 
-.box > div > div {
+.kanbanBoard > div > div {
   position: absolute;
   left: 10px;
   top: 10px;
 }
 
-.box > div > p {
+.kanbanBoard > div > p {
   position: absolute;
   left: 100px;
   top: 50%;
@@ -487,16 +489,16 @@
   color: var(--secondary-text);
 }
 
-.box > div > div:nth-child(4) {
+.kanbanBoard > div > div:nth-child(4) {
   left: 40px;
 }
-.box > div > div:nth-child(3) {
+.kanbanBoard > div > div:nth-child(3) {
   left: 30px;
 }
-.box > div > div:nth-child(2) {
+.kanbanBoard > div > div:nth-child(2) {
   left: 20px;
 }
-.box > div > div:first-child {
+.kanbanBoard > div > div:first-child {
   left: 10px;
   top: 10px;
 }

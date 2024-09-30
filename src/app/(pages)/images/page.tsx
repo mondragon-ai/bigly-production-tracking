@@ -6,7 +6,7 @@ import {ImageDetail} from "@/components/images/ImageDetail";
 export default function Images() {
   return (
     <div className={styles.page}>
-      <Header />
+      <CustomHeader />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <ImageList headers={headers} items={items} />
@@ -51,7 +51,7 @@ const items = [
   },
 ];
 
-export const Header = () => {
+export const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

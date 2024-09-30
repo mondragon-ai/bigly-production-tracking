@@ -4,7 +4,7 @@ import styles from "../../../components/Shared.module.css";
 export default function Jobs() {
   return (
     <div className={styles.page}>
-      <Header />
+      <CustomHeader />
       <main>
         <section
           style={{
@@ -15,8 +15,15 @@ export default function Jobs() {
           }}
         >
           {stages &&
-            stages.map((s) => {
-              return <StageBoard title={s.title} jobs={jobs} stage={s.stage} />;
+            stages.map((s, i) => {
+              return (
+                <StageBoard
+                  key={i}
+                  title={s.title}
+                  jobs={jobs}
+                  stage={s.stage}
+                />
+              );
             })}
         </section>
       </main>
@@ -56,7 +63,7 @@ const stages = [
   },
 ];
 
-export const Header = () => {
+export const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

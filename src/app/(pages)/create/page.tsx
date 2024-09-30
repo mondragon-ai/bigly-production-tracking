@@ -3,13 +3,12 @@ import styles from "../../../components/Shared.module.css";
 import {Avatar} from "@/components/shared/Avatar";
 import {AddItems} from "@/components/jobs.tsx/AddItems";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
-import {Badge} from "@/components/shared/Badge";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 
 export default function Home() {
   return (
     <div className={styles.page}>
-      <Header />
+      <CustomHeader />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <AddItems />
@@ -65,7 +64,7 @@ const items = [
   },
 ];
 
-export const Header = () => {
+export const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

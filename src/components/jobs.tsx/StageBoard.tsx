@@ -18,7 +18,7 @@ export const StageBoard = ({title, jobs, stage}: StageBoardProps) => {
         {jobs &&
           jobs.map((job, i) => {
             if (job.stage == stage) {
-              return <Job job={job} />;
+              return <Job key={i} job={job} />;
             }
           })}
       </main>
