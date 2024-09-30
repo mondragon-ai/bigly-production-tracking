@@ -1,5 +1,5 @@
 import {Button} from "@/components/shared/Button";
-import styles from "../components/Shared.module.css";
+import styles from "../../components/Shared.module.css";
 import {CustomTable} from "@/components/shared/CustomTable";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {Badge} from "@/components/shared/Badge";
