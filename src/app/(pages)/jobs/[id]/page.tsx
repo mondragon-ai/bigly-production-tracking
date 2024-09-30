@@ -1,9 +1,9 @@
 import {Button} from "@/components/shared/Button";
 import styles from "../../../../components/Shared.module.css";
-import {CustomTable} from "@/components/shared/CustomTable";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {Badge} from "@/components/shared/Badge";
 import {Avatar} from "@/components/shared/Avatar";
+import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       <Header />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <CustomTable />
+          <ItemsList headers={headers} items={items} />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           <ItemDisplay is_create={true} />
@@ -20,6 +20,66 @@ export default function Home() {
     </div>
   );
 }
+
+const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
+
+const items = [
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+];
+
+const renderBody = (items: any[]) => {
+  return (
+    <tbody>
+      {items.map((item, index) => (
+        <tr key={item.id}>
+          <td>{item.sku}</td>
+          <td>{item.size}</td>
+          <td>{item.color}</td>
+          <td>
+            <Badge icon={"store"} text={"success"} tone={"success"} />
+          </td>
+          <td>{item.type}</td>
+          <td>{item.store}</td>
+        </tr>
+      ))}
+    </tbody>
+  );
+};
 
 export const Header = () => {
   return (

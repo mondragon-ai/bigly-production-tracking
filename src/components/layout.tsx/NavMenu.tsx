@@ -86,7 +86,7 @@ export const NavMenu = () => {
               </Link>
             </li>
             <li>
-              <Link href={"/"}>
+              <Link href={"/files"}>
                 <div className={styles.left}>
                   <svg
                     aria-hidden="true"
@@ -109,7 +109,7 @@ export const NavMenu = () => {
               </Link>
             </li>
             <li>
-              <Link href={"/"}>
+              <Link href={"/images"}>
                 <div className={styles.left}>
                   <svg
                     aria-hidden="true"

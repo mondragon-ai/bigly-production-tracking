@@ -1,0 +1,105 @@
+/* =============================================================== */
+/*  2. ADD ITEM DISPLAY                                            */
+/* =============================================================== */
+.fileDetailWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  margin-bottom: 2rem;
+}
+
+.fileDetailWrapper header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+}
+
+.fileDetailWrapper header h5 {
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 20px;
+  color: var(--primary-text);
+}
+
+.fileTableWrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  overflow: hidden; /* Prevent overflow */
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.fileTableWrapper table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+
+.fileTableWrapper table,
+.fileTableWrapper td,
+.fileTableWrapper th {
+  border: 1px solid black;
+  border: none !important;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.fileTableWrapper th {
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 15px;
+  color: var(--secondary-text);
+}
+
+.fileTableWrapper td {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--primary-text);
+}
+
+.fileTableWrapper thead {
+  background-color: var(--tertary-background);
+  border: none;
+  border-collapse: collapse;
+}
+
+.fileTableWrapper thead tr {
+  background-color: var(--secondary-background);
+}
+
+.fileTableWrapper tbody tr {
+  background-color: var(--tertary-background);
+}
+
+.fileTableWrapper tr,
+.fileTableWrapper td {
+  height: auto;
+  vertical-align: bottom;
+  border: none;
+  text-align: left;
+  border-bottom: 1px solid rgb(222, 222, 222);
+}
+
+.fileTableWrapper th,
+.fileTableWrapper td {
+  padding: 7px 0;
+}

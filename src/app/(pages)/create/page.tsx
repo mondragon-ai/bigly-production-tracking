@@ -1,10 +1,10 @@
 import {Button} from "@/components/shared/Button";
 import styles from "../../../components/Shared.module.css";
-import {CustomTable} from "@/components/shared/CustomTable";
-import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {Avatar} from "@/components/shared/Avatar";
 import {AddItems} from "@/components/jobs.tsx/AddItems";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
+import {Badge} from "@/components/shared/Badge";
+import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <AddItems />
-          <CustomTable />
+          <ItemsList headers={headers} items={items} />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {/* <ItemDisplay is_create={true} /> */}
@@ -23,6 +23,47 @@ export default function Home() {
     </div>
   );
 }
+
+const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
+
+const items = [
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+  {
+    id: "1",
+    sku: "SKU-DESIGN-CLR-SIZE",
+    size: "M",
+    color: "Black",
+    status: 5,
+    type: "shirt",
+    store: "AJ",
+  },
+];
 
 export const Header = () => {
   return (

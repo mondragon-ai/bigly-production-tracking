@@ -1,9 +1,14 @@
 "use client";
-import {Badge} from "./Badge";
 import {useState} from "react";
-import styles from "./Shared.module.css";
+import styles from "../shared/Shared.module.css";
+import {Badge} from "../shared/Badge";
 
-export const CustomTable = () => {
+type CustomTableProps = {
+  headers: string[];
+  items: any[];
+};
+
+export const ItemsList = ({headers, items}: CustomTableProps) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const toggleSelection = (id: string) => {
@@ -70,44 +75,3 @@ export const CustomTable = () => {
     </div>
   );
 };
-
-const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
-
-const items = [
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-];

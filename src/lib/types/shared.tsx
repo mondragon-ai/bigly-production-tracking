@@ -4,4 +4,5 @@ export type IconTypes =
   | "explode"
   | "delivery"
   | "store"
+  | "link"
   | "fire";
