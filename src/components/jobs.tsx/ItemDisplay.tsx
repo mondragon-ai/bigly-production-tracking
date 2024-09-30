@@ -7,11 +7,9 @@ export const ItemDisplay = () => {
     <div className={styles.itemDisplayWrapper}>
       <header>
         <h4>SKU-1234-M-BLACK-AJ</h4>
-        <Badge />
-        <Badge />
+        <Badge icon={"delivery"} text={"Pending"} tone={"magic"} />
       </header>
       <main>
-        <Button thin={true} text={"Report Error"} />
         <MockupDesign />
         <div className={styles.column}>
           <div className={styles.box} style={{width: "32%"}}>
@@ -36,11 +34,18 @@ export const ItemDisplay = () => {
             />
           </div>
 
-          <div className={styles.box} style={{width: "32%"}}>
-            <Image src={""} width={500} height={500} alt={""} />
-          </div>
+          <div className={styles.box} style={{width: "32%"}}></div>
         </div>
       </main>
+      <footer>
+        <Button
+          tone="descructive"
+          icon="rejected"
+          align="left"
+          thin={true}
+          text={"Report Error"}
+        />
+      </footer>
     </div>
   );
 };

@@ -1,24 +1,62 @@
+import {IconTypes} from "@/lib/types/shared";
+import {Icon} from "./Icon";
 import styles from "./Shared.module.css";
-export const Badge = () => {
+
+type BadgeProps = {
+  icon: IconTypes;
+  text: string;
+  tone: "critical" | "success" | "info" | "magic";
+};
+
+export const Badge = ({icon, text, tone}: BadgeProps) => {
   return (
-    <div className={styles.badge}>
-      <svg
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        width="15"
-        height="15"
-        fill="none"
-        viewBox="0 0 24 24"
+    <div className={styles.badge} style={{backgroundColor: bkgColor(tone)}}>
+      <Icon icon={icon} tone={tone} />
+      <span
+        style={{
+          color: fontColor(tone),
+        }}
       >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1"
-          d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
-        />
-      </svg>
-      <span>Progress</span>
+        {text}
+      </span>
     </div>
   );
+};
+
+export const fontColor = (tone: "critical" | "success" | "info" | "magic") => {
+  switch (tone) {
+    case "critical":
+      return "var(--error-color)";
+
+    case "info":
+      return "var(--info-color)";
+
+    case "magic":
+      return "var(--magic-color)";
+
+    case "success":
+      return "var(--success-color)";
+
+    default:
+      break;
+  }
+};
+
+export const bkgColor = (tone: "critical" | "success" | "info" | "magic") => {
+  switch (tone) {
+    case "critical":
+      return "var(--error-bkg)";
+
+    case "info":
+      return "var(--info-bkg)";
+
+    case "magic":
+      return "var(--magic-bkg)";
+
+    case "success":
+      return "var(--success-bkg)";
+
+    default:
+      break;
+  }
 };

@@ -1,10 +1,21 @@
+import {IconTypes} from "@/lib/types/shared";
 import styles from "./Shared.module.css";
+import {Icon} from "./Icon";
 
 type ButtonProps = {
   text: string;
   thin: boolean;
+  tone: "descructive" | "success" | "";
+  align: "left" | "center";
+  icon?: IconTypes;
 };
-export const Button = ({text, thin}: ButtonProps) => {
+export const Button = ({
+  text,
+  thin,
+  tone,
+  align = "center",
+  icon,
+}: ButtonProps) => {
   return (
     <button
       className={styles.btnBase}
@@ -13,10 +24,39 @@ export const Button = ({text, thin}: ButtonProps) => {
         fontSize: thin ? "14px" : "18px",
         padding: thin ? "0 5px" : "0 18px",
         lineHeight: thin ? "18px" : "50px",
+        backgroundColor: bkgColor(tone),
+        textAlign: align,
       }}
       role="button"
     >
+      {icon && <Icon icon={icon} tone={"critical"} />}
       {text}
     </button>
   );
+};
+
+export const fontColor = (tone: "descructive" | "success" | "") => {
+  switch (tone) {
+    case "descructive":
+      return "var(--error-color)";
+
+    case "success":
+      return "var(--success-color)";
+
+    default:
+      break;
+  }
+};
+
+export const bkgColor = (tone: "descructive" | "success" | "") => {
+  switch (tone) {
+    case "descructive":
+      return "var(--destructive-accent)";
+
+    case "success":
+      return "var(--main-accent)";
+
+    default:
+      break;
+  }
 };

@@ -48,12 +48,20 @@
   margin: 0;
   padding: 0;
 }
+.pageHeaderWrapper .left > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
 
 .pageHeaderWrapper .left h1 {
   font-size: 50px;
   font-weight: 900;
   line-height: 55px;
   color: var(--secondary-text);
+  margin-right: 10px;
 }
 
 .pageHeaderWrapper .left span {
@@ -61,6 +69,10 @@
   font-weight: 400;
   line-height: 16px;
   color: var(--secondary-text);
+}
+
+.pageHeaderWrapper .right {
+  display: flex;
 }
 
 .pageHeaderWrapper .right button {

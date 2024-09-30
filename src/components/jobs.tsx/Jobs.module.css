@@ -11,6 +11,7 @@
   height: auto;
   margin: 0;
   padding: 0;
+  background-color: var(--tertary-background);
   border: 2px solid var(--foreground);
   border-radius: 6px;
   box-shadow: var(--drop-shadow);
@@ -26,6 +27,13 @@
   height: auto;
   margin: 0;
   padding: 1rem;
+}
+
+.itemDisplayWrapper header h4 {
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 20px;
+  color: var(--primary-text);
 }
 
 .itemDisplayWrapper main {
@@ -87,4 +95,30 @@
   margin: 0rem 0;
   padding: 0rem;
   width: 100%;
+}
+
+.column .box {
+  width: auto;
+  height: 150px;
+  min-height: 150px;
+  max-height: 150px;
+}
+
+.column .box img {
+  object-fit: contain;
+  width: auto;
+  height: 90%;
+  padding: 0.5rem;
+}
+
+.itemDisplayWrapper footer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
 }

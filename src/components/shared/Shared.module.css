@@ -40,10 +40,16 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  vertical-align: middle;
+  vertical-align: middle;
+  align-items: center;
+  align-content: center;
+  position: relative;
+  display: flex;
 }
 
 .btnBase:hover {
-  background-color: #fff;
+  background-color: var(--tertary-background) !important;
 }
 
 .btnBase:active {

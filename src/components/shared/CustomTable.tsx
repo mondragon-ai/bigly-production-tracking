@@ -1,7 +1,8 @@
 "use client";
+import {Badge} from "./Badge";
 import {useState} from "react";
 import styles from "./Shared.module.css";
-import {Badge} from "./Badge";
+
 export const CustomTable = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -58,7 +59,7 @@ export const CustomTable = () => {
               <td>{item.size}</td>
               <td>{item.color}</td>
               <td>
-                <Badge />
+                <Badge icon={"store"} text={"success"} tone={"success"} />
               </td>
               <td>{item.type}</td>
               <td>{item.store}</td>
