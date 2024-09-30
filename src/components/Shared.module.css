@@ -75,6 +75,42 @@
   display: flex;
 }
 
+.pageHeaderWrapper .right .staffWrapper {
+  margin-right: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.pageHeaderWrapper .right .staffWrapper > div {
+  position: absolute;
+  left: -40px;
+}
+
+.pageHeaderWrapper .right .staffWrapper > p {
+  position: absolute;
+  left: -100px;
+  font-size: 15px;
+  font-weight: 450;
+  line-height: 16px;
+  color: var(--secondary-text);
+}
+
+.pageHeaderWrapper .right .staffWrapper > div:nth-child(4) {
+  left: -50px;
+}
+.pageHeaderWrapper .right .staffWrapper > div:nth-child(3) {
+  left: -60px;
+}
+.pageHeaderWrapper .right .staffWrapper > div:nth-child(2) {
+  left: -70px;
+}
+.pageHeaderWrapper .right .staffWrapper > div:first-child {
+  left: 0px;
+}
+
 .pageHeaderWrapper .right button {
   margin-right: 1rem;
 }

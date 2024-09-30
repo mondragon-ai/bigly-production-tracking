@@ -74,10 +74,38 @@
   margin: 0 5px;
   top: 5px;
   left: 5px;
-  background-color: var(--magic-bkg);
+  background-color: var(--secondary-background);
+  border: 1px solid var(--secondary-foreground);
+  box-shadow: var(--drop-shadow);
   color: var(--magic-color);
   padding: 5px 7px;
   border-radius: 5px;
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  vertical-align: middle;
+  align-items: center;
+  align-content: center;
+  display: flex;
+}
+
+.toggle:hover {
+  background-color: var(--tertary-background) !important;
+}
+
+.toggle:active {
+  box-shadow: var(--foreground) 0px 2px 0 0;
+  transform: translate(2px, 2px);
 }
 
 .box img {

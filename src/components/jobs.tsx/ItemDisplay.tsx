@@ -53,7 +53,7 @@ export const ItemDisplay = () => {
 export const MockupDesign = () => {
   return (
     <div className={styles.box}>
-      <div className={styles.toggle}>Front</div>
+      <button className={styles.toggle}>Front</button>
       <Image
         src={
           "https://cdn.shopify.com/s/files/1/0860/6305/5167/files/0c699b-3.myshopify.com_2Fmockup_2F1727379220312.png?v=1727380140"
