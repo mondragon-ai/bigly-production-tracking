@@ -1,0 +1,29 @@
+/* =============================================================== */
+/*  1. JOB ITEM DISPLAY                                            */
+/* =============================================================== */
+.itemDisplayWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+}
+
+.itemDisplayWrapper header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+}

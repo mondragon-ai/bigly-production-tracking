@@ -1,0 +1,54 @@
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.page > main {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 95%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.page > main > section {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+/* =============================================================== */
+/*  1. PAGE HEADER                                                 */
+/* =============================================================== */
+.pageHeaderWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.pageHeaderWrapper .right button {
+  margin-right: 1rem;
+}

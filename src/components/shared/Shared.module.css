@@ -26,7 +26,7 @@
 .btnBase {
   background-color: var(--main-accent);
   border: 2px solid var(--foreground);
-  border-radius: 30px;
+  border-radius: 6px;
   box-shadow: var(--drop-shadow);
   color: var(--foreground);
   cursor: pointer;
@@ -47,7 +47,7 @@
 }
 
 .btnBase:active {
-  box-shadow: var(--foreground) 2px 2px 0 0;
+  box-shadow: var(--foreground) 0px 2px 0 0;
   transform: translate(2px, 2px);
 }
 
@@ -91,7 +91,7 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  width: 90%;
+  width: 95%;
   height: auto;
   padding: 1rem;
   background-color: var(--background);
@@ -157,4 +157,51 @@
 
 .topBar svg path {
   stroke: var(--primary-text);
+}
+
+/* =============================================================== */
+/*  5. CUSTOM TABLE                                                */
+/* =============================================================== */
+.tableWrapper {
+  position: relative;
+  width: 100%;
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  overflow: hidden; /* Prevent overflow */
+}
+
+.tableWrapper table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+
+.tableWrapper table,
+.tableWrapper td,
+.tableWrapper th {
+  border: 1px solid black;
+  border: none !important;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.tableWrapper thead {
+  background-color: var(--tertary-background);
+  border: none;
+  border-collapse: collapse;
+}
+
+.tableWrapper tr,
+.tableWrapper td {
+  height: auto;
+  vertical-align: bottom;
+  border: none;
+  text-align: left;
+  border-bottom: 1px solid rgb(222, 222, 222);
+}
+
+.tableWrapper th,
+.tableWrapper td {
+  padding: 7px 0;
 }
