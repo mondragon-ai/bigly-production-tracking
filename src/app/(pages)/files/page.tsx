@@ -4,7 +4,7 @@ import {FileList} from "@/components/shared/FileList";
 import {Badge} from "@/components/shared/Badge";
 import {FileDetail} from "@/components/files/FileDetail";
 
-export default function Home() {
+export default function Files() {
   return (
     <div className={styles.page}>
       <CustomHeader />
@@ -48,7 +48,7 @@ const items = [
   },
 ];
 
-export const CustomHeader = () => {
+const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

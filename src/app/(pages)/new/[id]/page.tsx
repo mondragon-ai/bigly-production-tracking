@@ -5,10 +5,10 @@ import {Badge} from "@/components/shared/Badge";
 import {Avatar} from "@/components/shared/Avatar";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 
-export default function Home() {
+export default function Confirm() {
   return (
     <div className={styles.page}>
-      <Header />
+      <CustomHeader />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <ItemsList headers={headers} items={items} />
@@ -62,26 +62,7 @@ const items = [
   },
 ];
 
-const renderBody = (items: any[]) => {
-  return (
-    <tbody>
-      {items.map((item, index) => (
-        <tr key={item.id}>
-          <td>{item.sku}</td>
-          <td>{item.size}</td>
-          <td>{item.color}</td>
-          <td>
-            <Badge icon={"store"} text={"success"} tone={"success"} />
-          </td>
-          <td>{item.type}</td>
-          <td>{item.store}</td>
-        </tr>
-      ))}
-    </tbody>
-  );
-};
-
-export const Header = () => {
+const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

@@ -5,7 +5,7 @@ import {Badge} from "@/components/shared/Badge";
 import {Avatar} from "@/components/shared/Avatar";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 
-export default function Home() {
+export default function JobDetail() {
   return (
     <div className={styles.page}>
       <CustomHeader />
@@ -62,7 +62,7 @@ const items = [
   },
 ];
 
-export const CustomHeader = () => {
+const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

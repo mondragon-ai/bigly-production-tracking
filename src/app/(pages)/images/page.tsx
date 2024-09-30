@@ -51,7 +51,7 @@ const items = [
   },
 ];
 
-export const CustomHeader = () => {
+const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>

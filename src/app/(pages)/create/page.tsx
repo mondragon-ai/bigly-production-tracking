@@ -5,7 +5,7 @@ import {AddItems} from "@/components/jobs.tsx/AddItems";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 
-export default function Home() {
+export default function Create() {
   return (
     <div className={styles.page}>
       <CustomHeader />
@@ -64,7 +64,7 @@ const items = [
   },
 ];
 
-export const CustomHeader = () => {
+const CustomHeader = () => {
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>
