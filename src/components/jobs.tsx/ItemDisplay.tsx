@@ -1,8 +1,9 @@
 import Image from "next/image";
 import {Badge} from "../shared/Badge";
-import {Button} from "../shared/Button";
 import styles from "./Jobs.module.css";
-export const ItemDisplay = () => {
+import {Button} from "../shared/Button";
+
+export const ItemDisplay = ({is_create}: {is_create: boolean}) => {
   return (
     <div className={styles.itemDisplayWrapper}>
       <header>
@@ -10,6 +11,14 @@ export const ItemDisplay = () => {
         <Badge icon={"delivery"} text={"Pending"} tone={"magic"} />
       </header>
       <main>
+        <div className={styles.txt}>
+          <span>
+            <strong>Size:</strong> M
+          </span>
+          <span>
+            <strong>Color:</strong> Black
+          </span>
+        </div>
         <MockupDesign />
         <div className={styles.column}>
           <div className={styles.box} style={{width: "32%"}}>
@@ -38,13 +47,23 @@ export const ItemDisplay = () => {
         </div>
       </main>
       <footer>
-        <Button
-          tone="descructive"
-          icon="rejected"
-          align="left"
-          thin={true}
-          text={"Report Error"}
-        />
+        {is_create ? (
+          <Button
+            tone="descructive"
+            icon="trash"
+            align="left"
+            thin={true}
+            text={"Remove Item"}
+          />
+        ) : (
+          <Button
+            tone="descructive"
+            icon="rejected"
+            align="left"
+            thin={true}
+            text={"Report Error"}
+          />
+        )}
       </footer>
     </div>
   );

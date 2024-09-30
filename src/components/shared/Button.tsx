@@ -26,6 +26,7 @@ export const Button = ({
         lineHeight: thin ? "18px" : "50px",
         backgroundColor: bkgColor(tone),
         textAlign: align,
+        justifyContent: align == "center" ? "center" : "flex-start",
       }}
       role="button"
     >

@@ -14,7 +14,7 @@ export default function Home() {
           <CustomTable />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          <ItemDisplay />
+          <ItemDisplay is_create={true} />
         </section>
       </main>
     </div>
@@ -43,7 +43,7 @@ export const Header = () => {
             })}
         </div>
         <Button
-          thin={false}
+          thin={true}
           text="DELETE"
           tone={"descructive"}
           align={"center"}

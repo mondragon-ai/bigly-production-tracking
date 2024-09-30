@@ -14,7 +14,7 @@ export default function Home() {
           <CustomTable />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          <ItemDisplay />
+          <ItemDisplay is_create={false} />
         </section>
       </main>
     </div>

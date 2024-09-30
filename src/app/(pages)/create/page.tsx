@@ -3,6 +3,8 @@ import styles from "../../../components/Shared.module.css";
 import {CustomTable} from "@/components/shared/CustomTable";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {Avatar} from "@/components/shared/Avatar";
+import {AddItems} from "@/components/jobs.tsx/AddItems";
+import {AddItem} from "@/components/jobs.tsx/AddItem";
 
 export default function Home() {
   return (
@@ -10,10 +12,12 @@ export default function Home() {
       <Header />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
+          <AddItems />
           <CustomTable />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          <ItemDisplay />
+          {/* <ItemDisplay is_create={true} /> */}
+          <AddItem />
         </section>
       </main>
     </div>
@@ -40,12 +44,13 @@ export const Header = () => {
             })}
         </div>
         <Button
-          thin={false}
+          thin={true}
           text="ADD STAFF"
           tone={"success"}
           align={"center"}
         />
-        <Button thin={false} text="APPROVE" tone={"success"} align={"center"} />
+        <Button thin={true} text="ADD ITEM" tone={"success"} align={"center"} />
+        <Button thin={true} text="APPROVE" tone={"success"} align={"center"} />
       </div>
     </header>
   );
