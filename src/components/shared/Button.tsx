@@ -9,6 +9,7 @@ type ButtonProps = {
   align: "left" | "center";
   icon?: IconTypes;
   width?: number;
+  onClick?: (e: React.FormEvent) => Promise<void>;
 };
 export const Button = ({
   width,
@@ -17,10 +18,12 @@ export const Button = ({
   tone,
   align = "center",
   icon,
+  onClick,
 }: ButtonProps) => {
   const t = tone == "success" ? "success" : "critical";
   return (
     <button
+      onClick={onClick}
       className={styles.btnBase}
       style={{
         fontWeight: thin ? 500 : 600,

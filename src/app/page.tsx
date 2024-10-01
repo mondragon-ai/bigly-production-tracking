@@ -1,8 +1,11 @@
+"use client";
 import {Button} from "@/components/shared/Button";
 import localFont from "next/font/local";
 import styles from "./page.module.css";
 import {LOGO} from "@/lib/constants";
 import Image from "next/image";
+import useLogin from "@/lib/hooks/auth";
+import {useState} from "react";
 
 const geistSans = localFont({
   src: "./fonts/BebasNeue-Regular.ttf",
@@ -11,6 +14,15 @@ const geistSans = localFont({
 });
 
 export default function Enter() {
+  const {login, loading, error} = useLogin();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await login(email, password);
+  };
+
   return (
     <div className={styles.page}>
       <div>
@@ -63,6 +75,7 @@ export default function Enter() {
               thin={false}
               tone={"success"}
               align={"center"}
+              onClick={handleSubmit}
             />
           </div>
         </div>
