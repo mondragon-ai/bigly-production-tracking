@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {Button} from "../shared/Button";
 import styles from "./Users.module.css";
 

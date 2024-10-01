@@ -7,7 +7,7 @@ import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import localFont from "next/font/local";
 
 const geistSans = localFont({
-  src: "../../fonts/BebasNeue-Regular.ttf",
+  src: "../../../fonts/BebasNeue-Regular.ttf",
   variable: "--font-geist-sans",
   weight: "100 900",
 });

@@ -8,8 +8,10 @@ type ButtonProps = {
   tone: "descructive" | "success" | "";
   align: "left" | "center";
   icon?: IconTypes;
+  width?: number;
 };
 export const Button = ({
+  width,
   text,
   thin,
   tone,
@@ -27,6 +29,7 @@ export const Button = ({
         lineHeight: thin ? "18px" : "50px",
         backgroundColor: bkgColor(tone),
         textAlign: align,
+        width: width ? `${width}%` : "auto",
         justifyContent: align == "center" ? "center" : "flex-start",
       }}
       role="button"

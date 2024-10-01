@@ -1,0 +1,412 @@
+@media (prefers-color-scheme: dark) {
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  a.primary:hover {
+    background: var(--button-primary-hover);
+    border-color: transparent;
+  }
+
+  a.secondary:hover {
+    background: var(--button-secondary-hover);
+    border-color: transparent;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+@media (max-width: 600px) {
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.footer {
+  grid-row-start: 3;
+  display: flex;
+  gap: 24px;
+  padding-bottom: 2rem;
+}
+
+.footer a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: black;
+}
+
+.footer img {
+  flex-shrink: 0;
+}
+
+/* =============================================================== */
+/*  2. MAIN PAGE                                                   */
+/* =============================================================== */
+
+.mainPage {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: 100svh;
+  overflow-y: scroll;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  bottom: 0;
+  top: 0;
+}
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: 100svh;
+  overflow-y: scroll;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  bottom: 0;
+  top: 0;
+}
+
+.mainPage > main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.page > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: 100svh;
+  overflow-y: scroll;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+  background: #1d2b64; /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(
+    to right,
+    #1d2b64,
+    #f8cdda
+  ); 
+  background: linear-gradient(to right, #1d2b64, #f8cdda); */
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.page > div .left,
+.page > div .right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  padding: 1rem;
+  width: 49%;
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+}
+
+@keyframes move-background {
+  from {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+  }
+  to {
+    -webkit-transform: translate3d(1000px, 0px, 0px);
+  }
+}
+@-webkit-keyframes move-background {
+  from {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+  }
+  to {
+    -webkit-transform: translate3d(1000px, 0px, 0px);
+  }
+}
+
+@-moz-keyframes move-background {
+  from {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+  }
+  to {
+    -webkit-transform: translate3d(1000px, 0px, 0px);
+  }
+}
+
+@-webkit-keyframes move-background {
+  from {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+  }
+  to {
+    -webkit-transform: translate3d(1000px, 0px, 0px);
+  }
+}
+
+.page > div .left .backgroundContainer {
+  position: absolute; /* Change from fixed to absolute */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.page > div .left .logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 5rem;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.page > div .left .txt {
+  width: auto;
+  height: auto;
+  margin-bottom: 0rem;
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.page > div .left .txt h1 {
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 55px;
+  color: var(--secondary-background);
+  text-align: center;
+}
+
+.page > div .left .stars {
+  background: black
+    url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  z-index: 0;
+  border-radius: 6px;
+}
+
+.page > div .left .twinkling {
+  width: 10000px;
+  height: 100%;
+  background: transparent
+    url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png")
+    repeat;
+  background-size: 1000px 1000px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+
+  border-radius: 6px;
+  -moz-animation: move-background 70s linear infinite;
+  -ms-animation: move-background 70s linear infinite;
+  -o-animation: move-background 70s linear infinite;
+  -webkit-animation: move-background 70s linear infinite;
+  animation: move-background 70s linear infinite;
+}
+
+.page > div .left .clouds {
+  width: 10000px;
+  height: 100%;
+  background: transparent
+    url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/clouds_repeat.png")
+    repeat;
+  background-size: 1000px 1000px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+
+  border-radius: 6px;
+  -moz-animation: move-background 150s linear infinite;
+  -ms-animation: move-background 150s linear infinite;
+  -o-animation: move-background 150s linear infinite;
+  -webkit-animation: move-background 150s linear infinite;
+  animation: move-background 150s linear infinite;
+}
+
+.page > div .left img {
+  height: 50vh;
+  width: 50vh;
+  position: absolute;
+  z-index: 3;
+  right: 20px;
+}
+
+.page > div .right {
+  height: auto;
+  width: 49%;
+  align-items: flex-start;
+  border: none;
+}
+
+.page > div .right img,
+.page > div .right h1,
+.page > div .right span {
+  margin-left: 1rem;
+}
+
+.page > div .right h1 {
+  font-size: 70px;
+  font-weight: 900;
+  line-height: 55px;
+  color: var(--primary-text);
+}
+
+.page > div .right span {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 25px;
+  color: var(--primary-text);
+  margin-bottom: 3rem;
+}
+
+.page > div .right > div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+  width: 88%;
+}
+
+.page > div .right > div > button {
+  margin-top: 1.5rem;
+}
+
+.page > div .right > div .inputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem 0 0rem 0;
+}
+
+.page > div .right > div .inputWrapper input,
+.page > div .right > div .inputWrapper select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 0px 0;
+  display: inline-block;
+  border: 2px solid var(--foreground);
+  border-radius: 4px;
+  color: var(--primary-text);
+  box-sizing: border-box;
+  background-color: var(--background);
+}
+
+.page > div .right > div .inputWrapper label {
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 13px;
+  color: var(--primary-text);
+}
+
+/* Computer (Mac 13-inch to Mac 16-inch) */
+@media only screen and (min-width: 1280px) and (max-width: 3072px) {
+  .mainPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+    align-items: flex-start;
+    background-color: var(--background);
+  }
+  .mainSection {
+    width: 80%;
+    max-width: 80%;
+    background-color: var(--background);
+  }
+}

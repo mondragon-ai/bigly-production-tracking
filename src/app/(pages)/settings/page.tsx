@@ -1,6 +1,5 @@
 import {Button} from "@/components/shared/Button";
 import styles from "../../../components/Shared.module.css";
-import {FileDetail} from "@/components/files/FileDetail";
 import localFont from "next/font/local";
 import {UserList} from "@/components/settings/UserList";
 import {StoreList} from "@/components/settings/StoreList";
