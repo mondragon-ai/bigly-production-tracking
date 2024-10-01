@@ -5,6 +5,14 @@ import {Badge} from "@/components/shared/Badge";
 import {Avatar} from "@/components/shared/Avatar";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 
+import localFont from "next/font/local";
+
+const geistSans = localFont({
+  src: "../fonts/BebasNeue-Regular.ttf",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+
 export default function Home() {
   return (
     <div className={styles.page}>
@@ -67,7 +75,7 @@ const CustomHeader = () => {
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>
         <div>
-          <h1>Job #1234</h1>
+          <h1 className={geistSans.className}>Job #1234</h1>
           <Badge icon={"delivery"} text={"Pressing"} tone={"info"} />
           <Badge icon={"fire"} text={"Priority"} tone={"critical"} />
         </div>

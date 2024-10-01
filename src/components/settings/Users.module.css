@@ -1,0 +1,231 @@
+.imageTableWrapper {
+  position: relative;
+  width: 100%;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  overflow: hidden;
+}
+
+.imageTableWrapper table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+
+.imageTableWrapper table,
+.imageTableWrapper td,
+.imageTableWrapper th {
+  border: 1px solid black;
+  border: none !important;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.imageTableWrapper th {
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 15px;
+  color: var(--secondary-text);
+}
+
+.imageTableWrapper td {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--primary-text);
+}
+
+.imageTableWrapper thead {
+  background-color: var(--tertary-background);
+  border: none;
+  border-collapse: collapse;
+}
+
+.imageTableWrapper thead tr {
+  background-color: var(--secondary-background);
+}
+
+.imageTableWrapper tbody tr {
+  background-color: var(--tertary-background);
+}
+
+.imageTableWrapper tr,
+.imageTableWrapper td {
+  height: auto;
+  vertical-align: middle;
+  border: none;
+  text-align: left;
+  border-bottom: 1px solid rgb(222, 222, 222);
+}
+
+.imageTableWrapper th,
+.imageTableWrapper td {
+  padding: 7px 0;
+}
+
+.imageTableWrapper td img {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+  border: 1px solid var(--foreground);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.imageTableWrapper td .btn {
+  height: 30px;
+  width: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--drop-shadow);
+  padding: 5px;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  background-color: var(--tertiary-background);
+}
+
+/* Side Cards                                           */
+/* ==================================================== */
+.detailWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+}
+
+.detailWrapper header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+}
+
+.detailWrapper header h4 {
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 20px;
+  color: var(--primary-text);
+}
+
+.detailWrapper main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem 0 0rem 0;
+}
+
+.inputWrapper input,
+.inputWrapper select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 0px 0;
+  display: inline-block;
+  border: 2px solid var(--foreground);
+  border-radius: 4px;
+  color: var(--primary-text);
+  box-sizing: border-box;
+  background-color: var(--background);
+}
+
+.inputWrapper label {
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 13px;
+  color: var(--secondary-text);
+}
+
+.box {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  margin: 1rem 0;
+  padding: 1rem;
+  width: 100%;
+}
+
+.boxBtn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  margin: 1rem 0;
+  padding: 1rem;
+  width: 100%;
+}
+.inactive {
+  box-shadow: var(--drop-shadow);
+}
+.boxBtn h5 {
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 18px;
+  color: var(--secondary-text);
+}
+
+.boxBtn p {
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 13px;
+  color: var(--secondary-text);
+}
+
+.box img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.detailWrapper footer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+}

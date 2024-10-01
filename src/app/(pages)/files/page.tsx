@@ -1,8 +1,14 @@
 import {Button} from "@/components/shared/Button";
 import styles from "../../../components/Shared.module.css";
 import {FileList} from "@/components/shared/FileList";
-import {Badge} from "@/components/shared/Badge";
 import {FileDetail} from "@/components/files/FileDetail";
+import localFont from "next/font/local";
+
+const geistSans = localFont({
+  src: "../../fonts/BebasNeue-Regular.ttf",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
 
 export default function Files() {
   return (
@@ -53,7 +59,7 @@ const CustomHeader = () => {
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>
         <div>
-          <h1>Pick List Files</h1>
+          <h1 className={geistSans.className}>Pick List Files</h1>
         </div>
       </div>
       <div className={styles.right}>

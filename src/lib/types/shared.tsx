@@ -6,4 +6,5 @@ export type IconTypes =
   | "store"
   | "link"
   | "fire"
+  | "floppy"
   | "hour_glass";

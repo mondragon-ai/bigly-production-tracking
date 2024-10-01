@@ -1,14 +1,13 @@
-"use client";
-import styles from "./Images.module.css";
+import styles from "./Users.module.css";
 import Image from "next/image";
 import {Icon} from "../shared/Icon";
 
-type CustomTableProps = {
+type UserListProps = {
   headers: string[];
   items: any[];
 };
 
-export const ImageList = ({headers, items}: CustomTableProps) => {
+export const UserList = ({headers, items}: UserListProps) => {
   return (
     <div className={styles.imageTableWrapper}>
       <table>
@@ -20,9 +19,7 @@ export const ImageList = ({headers, items}: CustomTableProps) => {
                 padding: "0 10px",
                 verticalAlign: "middle",
               }}
-            >
-              Image
-            </th>
+            ></th>
             {headers &&
               headers.map((title, index) => {
                 return <th key={index}>{title}</th>;
@@ -49,12 +46,9 @@ export const ImageList = ({headers, items}: CustomTableProps) => {
                 />
               </td>
               <td>{item.name}</td>
+              <td>{item.email}</td>
+              <td>{item.role}</td>
               <td>{item.added}</td>
-              <td>
-                <div className={styles.btn}>
-                  <Icon icon={"link"} tone={"magic"} />
-                </div>
-              </td>
             </tr>
           ))}
         </tbody>

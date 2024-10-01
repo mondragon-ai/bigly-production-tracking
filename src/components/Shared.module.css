@@ -34,6 +34,30 @@
   padding: 0;
 }
 
+.page > div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 95%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.page > div > .rowSection {
+  position: relative;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  padding: 0;
+}
+
 /* =============================================================== */
 /*  1. PAGE HEADER                                                 */
 /* =============================================================== */

@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import styles from "./Jobs.module.css";
 import {Button} from "../shared/Button";
 import {useState} from "react";
@@ -101,7 +100,7 @@ export const AddItem = () => {
       <footer>
         <Button
           tone="success"
-          icon="rejected"
+          icon="floppy"
           align="left"
           thin={true}
           text={"Create Item"}

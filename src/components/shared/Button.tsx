@@ -16,6 +16,7 @@ export const Button = ({
   align = "center",
   icon,
 }: ButtonProps) => {
+  const t = tone == "success" ? "success" : "critical";
   return (
     <button
       className={styles.btnBase}
@@ -30,7 +31,7 @@ export const Button = ({
       }}
       role="button"
     >
-      {icon && <Icon icon={icon} tone={"critical"} />}
+      {icon && <Icon icon={icon} tone={t} />}
       {text}
     </button>
   );

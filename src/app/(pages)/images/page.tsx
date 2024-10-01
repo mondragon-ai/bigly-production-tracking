@@ -2,6 +2,13 @@ import {Button} from "@/components/shared/Button";
 import styles from "../../../components/Shared.module.css";
 import {ImageList} from "@/components/images/ImageList";
 import {ImageDetail} from "@/components/images/ImageDetail";
+import localFont from "next/font/local";
+
+const geistSans = localFont({
+  src: "../../fonts/BebasNeue-Regular.ttf",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
 
 export default function Images() {
   return (
@@ -56,7 +63,7 @@ const CustomHeader = () => {
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>
         <div>
-          <h1>Image List</h1>
+          <h1 className={geistSans.className}>Image List</h1>
         </div>
       </div>
       <div className={styles.right}>

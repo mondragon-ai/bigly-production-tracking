@@ -4,6 +4,13 @@ import {Avatar} from "@/components/shared/Avatar";
 import {AddItems} from "@/components/jobs.tsx/AddItems";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
+import localFont from "next/font/local";
+
+const geistSans = localFont({
+  src: "../../fonts/BebasNeue-Regular.ttf",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
 
 export default function Create() {
   return (
@@ -69,7 +76,7 @@ const CustomHeader = () => {
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>
         <div>
-          <h1>Job #1234</h1>
+          <h1 className={geistSans.className}>Job #1234</h1>
         </div>
         <span>Jan 6 2024 4:20 PM</span>
       </div>
