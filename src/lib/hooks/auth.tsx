@@ -1,6 +1,7 @@
 "use client";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
+import toast from "react-hot-toast";
 
 interface LoginResponse {
   success: boolean;
@@ -32,6 +33,7 @@ const useLogin = () => {
       //   }
 
       //   const data = await response.json();
+      toast.success("Logged In");
       router.push("/jobs");
       return {success: true};
     } catch (error: any) {
