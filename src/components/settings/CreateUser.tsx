@@ -1,12 +1,23 @@
+import {Dispatch, SetStateAction} from "react";
 import {Button} from "../shared/Button";
 import styles from "./Users.module.css";
 import {Staff} from "@/lib/types/shared";
+import {Stages} from "@/lib/types/jobs";
 
-export const CreateUser = ({staff}: {staff: Staff | null}) => {
+export const CreateUser = ({
+  staff,
+  setStaff,
+  createItem,
+}: {
+  staff: Staff | null;
+  setStaff: Dispatch<SetStateAction<Staff | null>>;
+  createItem: (type: "store" | "staff") => void;
+}) => {
   return (
     <div className={styles.detailWrapper}>
       <header>
         <div
+          onClick={() => setStaff((prev) => prev && {...prev, role: "admin"})}
           className={`${styles.boxBtn} ${
             staff?.role !== "admin" ? styles.inactive : null
           }`}
@@ -19,6 +30,7 @@ export const CreateUser = ({staff}: {staff: Staff | null}) => {
           </p>
         </div>
         <div
+          onClick={() => setStaff((prev) => prev && {...prev, role: "staff"})}
           className={`${styles.boxBtn} ${
             staff?.role !== "staff" ? styles.inactive : null
           }`}
@@ -35,16 +47,36 @@ export const CreateUser = ({staff}: {staff: Staff | null}) => {
       <main>
         <div className={styles.inputWrapper}>
           <label htmlFor="first_name">Email</label>
-          <input type="text" value={staff?.email} />
+          <input
+            type="text"
+            value={staff?.email}
+            onChange={(e) =>
+              setStaff((prev) => prev && {...prev, email: e.target.value})
+            }
+          />
         </div>
         <div className={styles.inputWrapper} style={{flexDirection: "row"}}>
           <div style={{width: "49%"}}>
             <label htmlFor="first_name">Name</label>
-            <input type="text" value={staff?.name} />
+            <input
+              type="text"
+              value={staff?.name}
+              onChange={(e) =>
+                setStaff((prev) => prev && {...prev, name: e.target.value})
+              }
+            />
           </div>
           <div style={{width: "49%"}}>
             <label htmlFor="first_name">Role</label>
-            <select id="standard-select">
+            <select
+              id="standard-select"
+              onChange={(e) =>
+                setStaff(
+                  (prev) =>
+                    prev && {...prev, position: e.target.value as Stages},
+                )
+              }
+            >
               {roles &&
                 roles.map((r, i) => {
                   return (
@@ -59,6 +91,7 @@ export const CreateUser = ({staff}: {staff: Staff | null}) => {
       </main>
       <footer>
         <Button
+          onClick={() => createItem("staff")}
           text={"Add Staff"}
           thin={true}
           tone={"success"}
@@ -77,7 +110,13 @@ const roles = [
   {value: "cutting", title: "Cutting"},
 ];
 
-export const UserCard = ({staff}: {staff: Staff | null}) => {
+export const UserCard = ({
+  staff,
+  deleteItem,
+}: {
+  staff: Staff | null;
+  deleteItem: (type: "store" | "staff") => void;
+}) => {
   return (
     <div className={styles.detailWrapper}>
       <header>
@@ -170,6 +209,7 @@ export const UserCard = ({staff}: {staff: Staff | null}) => {
       </main>
       <footer>
         <Button
+          onClick={() => deleteItem("staff")}
           text={"Delete Staff"}
           thin={true}
           tone={"descructive"}

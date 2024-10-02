@@ -1,22 +1,44 @@
 import {StoreDocument} from "@/lib/types/settings";
 import {Button} from "../shared/Button";
 import styles from "./Users.module.css";
+import {Dispatch, SetStateAction} from "react";
 
-export const CreateStore = ({store}: {store: StoreDocument | null}) => {
+export const CreateStore = ({
+  store,
+  createItem,
+  setStore,
+}: {
+  store: StoreDocument | null;
+  setStore: Dispatch<SetStateAction<StoreDocument | null>>;
+  createItem: (type: "store" | "staff") => void;
+}) => {
   return (
     <div className={styles.detailWrapper}>
       <main>
         <div className={styles.inputWrapper}>
           <label htmlFor="first_name">Shopify Store</label>
-          <input type="text" value={store?.name} />
+          <input
+            type="text"
+            value={store?.name}
+            onChange={(e) =>
+              setStore((prev) => prev && {...prev, name: e.target.value})
+            }
+          />
         </div>
         <div className={styles.inputWrapper}>
           <label htmlFor="first_name">API Key</label>
-          <input type="text" value={store?.sphat} />
+          <input
+            type="text"
+            value={store?.sphat}
+            onChange={(e) =>
+              setStore((prev) => prev && {...prev, sphat: e.target.value})
+            }
+          />
         </div>
       </main>
       <footer>
         <Button
+          onClick={() => createItem("store")}
           text={"Add Store"}
           thin={true}
           tone={"success"}
@@ -28,7 +50,13 @@ export const CreateStore = ({store}: {store: StoreDocument | null}) => {
   );
 };
 
-export const StoreCard = ({store}: {store: StoreDocument | null}) => {
+export const StoreCard = ({
+  store,
+  deleteItem,
+}: {
+  store: StoreDocument | null;
+  deleteItem: (type: "store" | "staff") => void;
+}) => {
   return (
     <div className={styles.detailWrapper}>
       <main>
@@ -73,6 +101,7 @@ export const StoreCard = ({store}: {store: StoreDocument | null}) => {
       </main>
       <footer>
         <Button
+          onClick={() => deleteItem("store")}
           text={"Delete Store"}
           thin={true}
           tone={"descructive"}

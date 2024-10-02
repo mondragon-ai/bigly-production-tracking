@@ -12,19 +12,17 @@ import {initialStore} from "@/lib/payloads/store";
 import {useState} from "react";
 
 export default function Settings() {
+  const {data, staff, store, selectItem, setStaff, setStore} = useSettings();
   const [create, setCreate] = useState<{staff: boolean; store: boolean}>({
     staff: false,
     store: false,
   });
-  const {data, staff, store, selectItem, setStaff, setStore} = useSettings();
 
   const handleSelect = (id: string, type: "store" | "staff") => {
-    console.log({id, type});
     selectItem(id, type);
   };
 
   const addItem = (type: "store" | "staff") => {
-    console.log(type);
     if (type == "staff") {
       setStaff(initialStaff);
       setCreate((prev) => ({...prev, staff: true}));
@@ -32,6 +30,30 @@ export default function Settings() {
     if (type == "store") {
       setStore(initialStore);
       setCreate((prev) => ({...prev, store: true}));
+    }
+  };
+
+  const createItem = (type: "store" | "staff") => {
+    console.log(type);
+    if (type == "staff") {
+      setStaff(initialStaff);
+      setCreate((prev) => ({...prev, staff: false}));
+    }
+    if (type == "store") {
+      setStore(initialStore);
+      setCreate((prev) => ({...prev, store: false}));
+    }
+  };
+
+  const deleteItem = (type: "store" | "staff") => {
+    console.log(type);
+    if (type == "staff") {
+      setStaff(initialStaff);
+      setCreate((prev) => ({...prev, staff: false}));
+    }
+    if (type == "store") {
+      setStore(initialStore);
+      setCreate((prev) => ({...prev, store: false}));
     }
   };
 
@@ -68,9 +90,13 @@ export default function Settings() {
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
             {create.staff ? (
-              <CreateUser staff={staff} />
-            ) : staff ? (
-              <UserCard staff={staff} />
+              <CreateUser
+                staff={staff}
+                setStaff={setStaff}
+                createItem={createItem}
+              />
+            ) : staff && staff.id !== "" ? (
+              <UserCard staff={staff} deleteItem={deleteItem} />
             ) : (
               <StartingState type={"user"} />
             )}
@@ -86,9 +112,13 @@ export default function Settings() {
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
             {create.store ? (
-              <CreateStore store={store} />
-            ) : store ? (
-              <StoreCard store={store} />
+              <CreateStore
+                store={store}
+                setStore={setStore}
+                createItem={createItem}
+              />
+            ) : store && store.id !== "" ? (
+              <StoreCard store={store} deleteItem={deleteItem} />
             ) : (
               <StartingState type={"store"} />
             )}
