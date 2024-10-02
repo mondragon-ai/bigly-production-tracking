@@ -1,13 +1,7 @@
 import {StageBoard} from "@/components/jobs.tsx/StageBoard";
 import styles from "../../../components/Shared.module.css";
-import localFont from "next/font/local";
 import PageHeader from "@/components/shared/PageHeader";
-
-const geistSans = localFont({
-  src: "../../fonts/BebasNeue-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+import {job_list} from "@/lib/data/jobs";
 
 export default function Jobs() {
   return (
@@ -34,7 +28,7 @@ export default function Jobs() {
                 <StageBoard
                   key={i}
                   title={s.title}
-                  jobs={jobs}
+                  jobs={job_list}
                   stage={s.stage}
                 />
               );
@@ -72,150 +66,7 @@ const stages = [
     stage: "folding",
   },
   {
-    title: "Complete",
-    stage: "complete",
-  },
-];
-
-const jobs = [
-  {
-    id: "1",
-    job_name: "",
-    is_priority: false,
-    stage: "pending",
-    staff: ["Scrub", "Jack", "Jill", "Diddy"],
-    time_started: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    time_ended: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    error_rate: {
-      pending: 0,
-      printing: 0.5,
-      cutting: 0.2,
-      staging: 0.5,
-      pressing: 1.1,
-      double: 0.3,
-      folding: 0.1,
-    },
-    created_at: "",
-  },
-  {
-    id: "1",
-    job_name: "",
-    is_priority: false,
-    stage: "pending",
-    staff: ["Scrub", "Jack", "Jill", "Diddy"],
-    time_started: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    time_ended: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    error_rate: {
-      pending: 0,
-      printing: 0.5,
-      cutting: 0.2,
-      staging: 0.5,
-      pressing: 1.1,
-      double: 0.3,
-      folding: 0.1,
-    },
-    created_at: "",
-  },
-  {
-    id: "1",
-    job_name: "",
-    is_priority: false,
-    stage: "printing",
-    staff: ["Scrub", "Jack", "Jill", "Diddy"],
-    time_started: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    time_ended: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    error_rate: {
-      pending: 0,
-      printing: 0.5,
-      cutting: 0.2,
-      staging: 0.5,
-      pressing: 1.1,
-      double: 0.3,
-      folding: 0.1,
-    },
-    created_at: "",
-  },
-  {
-    id: "1",
-    job_name: "",
-    is_priority: false,
-    stage: "pressing",
-    staff: ["Scrub", "Jack", "Jill", "Diddy"],
-    time_started: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    time_ended: {
-      pending: "",
-      printing: "",
-      cutting: "",
-      staging: "",
-      pressing: "",
-      double: "",
-      folding: "",
-    },
-    error_rate: {
-      pending: 0,
-      printing: 0.5,
-      cutting: 0.2,
-      staging: 0.5,
-      pressing: 1.1,
-      double: 0.3,
-      folding: 0.1,
-    },
-    created_at: "",
+    title: "Completed",
+    stage: "completed",
   },
 ];

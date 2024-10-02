@@ -1,3 +1,5 @@
+import {Stages} from "./jobs";
+
 export type IconTypes =
   | "rejected"
   | "trash"
@@ -19,3 +21,11 @@ export type LoadingTypes =
   | "requesting"
   | "deleting"
   | null;
+
+export type Staff = {
+  id: string;
+  name: string;
+  email: string;
+  role: "admin" | "staff";
+  position: Stages;
+};

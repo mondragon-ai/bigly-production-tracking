@@ -489,6 +489,10 @@
   color: var(--secondary-text);
 }
 
+.kanbanBoard .box > div > div:nth-child(5) {
+  left: 40px;
+}
+
 .kanbanBoard .box > div > div:nth-child(4) {
   left: 40px;
 }
