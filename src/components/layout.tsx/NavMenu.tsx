@@ -190,7 +190,7 @@ export const NavMenu = () => {
             <li>
               <Link href={"#"}>
                 <div className={styles.avatarWrapper}>
-                  <Avatar />
+                  <Avatar staff={null} />
                   <div className={styles.text}>
                     <h6>Admin</h6>
                     <h5>BiglyBoys@gobigly.com</h5>
