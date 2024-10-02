@@ -258,3 +258,97 @@
   font-size: 8px;
   margin-left: 5px;
 }
+
+/* =============================================================== */
+/*  7. PAGE HEADER                                                 */
+/* =============================================================== */
+.pageHeaderWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+.pageHeaderWrapper .left > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.pageHeaderWrapper .left h1 {
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 55px;
+  color: var(--secondary-text);
+  margin-right: 10px;
+}
+
+.pageHeaderWrapper .left span {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--secondary-text);
+}
+
+.pageHeaderWrapper .right {
+  display: flex;
+}
+
+.pageHeaderWrapper .right .staffWrapper {
+  margin-right: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.pageHeaderWrapper .right .staffWrapper > .avatar:first-child {
+  position: absolute;
+  left: -40px;
+}
+
+.pageHeaderWrapper .right .staffWrapper > p {
+  position: absolute;
+  left: -115px;
+  font-size: 15px;
+  font-weight: 450;
+  line-height: 16px;
+  color: var(--secondary-text);
+}
+
+.pageHeaderWrapper .right .staffWrapper > .avatar:nth-child(6) {
+  position: absolute;
+  left: -90px;
+}
+
+.pageHeaderWrapper .right .staffWrapper > .avatar:nth-child(5) {
+  position: absolute;
+  left: -80px;
+}
+.pageHeaderWrapper .right .staffWrapper > .avatar:nth-child(4) {
+  position: absolute;
+  left: -70px;
+}
+.pageHeaderWrapper .right .staffWrapper > .avatar:nth-child(3) {
+  position: absolute;
+  left: -60px;
+}
+.pageHeaderWrapper .right .staffWrapper > .avatar:nth-child(2) {
+  position: absolute;
+  left: -50px;
+}
+.pageHeaderWrapper .right .staffWrapper > .avatar:nth-child(1) {
+  position: absolute;
+  left: -40px;
+}
+
+.pageHeaderWrapper .right button {
+  margin-right: 1rem;
+}

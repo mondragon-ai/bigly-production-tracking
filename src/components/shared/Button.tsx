@@ -9,7 +9,7 @@ type ButtonProps = {
   align: "left" | "center";
   icon?: IconTypes;
   width?: number;
-  onClick?: (e: React.FormEvent) => Promise<void>;
+  onClick?: (e: any) => void;
 };
 export const Button = ({
   width,

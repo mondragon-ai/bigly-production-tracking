@@ -1,19 +1,31 @@
-import {Button} from "@/components/shared/Button";
+"use client";
 import styles from "../../../components/Shared.module.css";
-import {FileList} from "@/components/shared/FileList";
 import {FileDetail} from "@/components/files/FileDetail";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "../../fonts/BebasNeue-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+import PageHeader from "@/components/shared/PageHeader";
+import {FileList} from "@/components/shared/FileList";
 
 export default function Files() {
+  const handleFileUpload = (file: File) => {
+    console.log("Uploaded file:", file);
+    // Handle the file upload logic here
+  };
+
   return (
     <div className={styles.page}>
-      <CustomHeader />
+      <PageHeader
+        title="Pick List Files"
+        buttons={[
+          {
+            text: "UPLOAD FILE",
+            tone: "success",
+            onClick: handleFileUpload,
+            icon: "link",
+          },
+        ]}
+        date={""}
+        badges={[]}
+        staff={[]}
+      />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <FileList headers={headers} items={items} />
@@ -53,23 +65,3 @@ const items = [
     added: "Jan 6 2024 4:20 PM",
   },
 ];
-
-const CustomHeader = () => {
-  return (
-    <header className={styles.pageHeaderWrapper}>
-      <div className={styles.left}>
-        <div>
-          <h1 className={geistSans.className}>Pick List Files</h1>
-        </div>
-      </div>
-      <div className={styles.right}>
-        <Button
-          thin={true}
-          text="UPLOAD FILE"
-          tone={"success"}
-          align={"center"}
-        />
-      </div>
-    </header>
-  );
-};

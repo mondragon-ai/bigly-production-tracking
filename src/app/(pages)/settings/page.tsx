@@ -1,21 +1,33 @@
-import {Button} from "@/components/shared/Button";
-import styles from "../../../components/Shared.module.css";
-import localFont from "next/font/local";
+import PageHeader from "@/components/shared/PageHeader";
 import {UserList} from "@/components/settings/UserList";
 import {StoreList} from "@/components/settings/StoreList";
+import styles from "../../../components/Shared.module.css";
 import {CreateUser} from "@/components/settings/CreateUser";
 import {CreateStore} from "@/components/settings/CreateStore";
-
-const geistSans = localFont({
-  src: "../../fonts/BebasNeue-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
 
 export default function Settings() {
   return (
     <div className={styles.page}>
-      <CustomHeader />
+      <PageHeader
+        title="Settings"
+        buttons={[
+          {
+            text: "ADD ACCOUNT",
+            tone: "success",
+            onClick: undefined,
+            icon: "link",
+          },
+          {
+            text: "ADD STORE",
+            tone: "success",
+            onClick: undefined,
+            icon: "link",
+          },
+        ]}
+        date={""}
+        badges={[]}
+        staff={[]}
+      />
       <div>
         <div className={styles.rowSection} style={{width: "100%"}}>
           <section style={{width: "55%", paddingRight: "10px"}}>
@@ -80,28 +92,28 @@ const store_items = [
   },
 ];
 
-const CustomHeader = () => {
-  return (
-    <header className={styles.pageHeaderWrapper}>
-      <div className={styles.left}>
-        <div>
-          <h1 className={geistSans.className}>Settings</h1>
-        </div>
-      </div>
-      <div className={styles.right}>
-        <Button
-          thin={true}
-          text="ADD ACCOUNT"
-          tone={"success"}
-          align={"center"}
-        />
-        <Button
-          thin={true}
-          text="ADD STORE"
-          tone={"success"}
-          align={"center"}
-        />
-      </div>
-    </header>
-  );
-};
+// const CustomHeader = () => {
+//   return (
+//     <header className={styles.pageHeaderWrapper}>
+//       <div className={styles.left}>
+//         <div>
+//           <h1 className={geistSans.className}>Settings</h1>
+//         </div>
+//       </div>
+//       <div className={styles.right}>
+//         <Button
+//           thin={true}
+//           text="ADD ACCOUNT"
+//           tone={"success"}
+//           align={"center"}
+//         />
+//         <Button
+//           thin={true}
+//           text="ADD STORE"
+//           tone={"success"}
+//           align={"center"}
+//         />
+//       </div>
+//     </header>
+//   );
+// };

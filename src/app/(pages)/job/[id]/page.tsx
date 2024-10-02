@@ -1,21 +1,42 @@
-import {Button} from "@/components/shared/Button";
 import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
-import {Badge} from "@/components/shared/Badge";
-import {Avatar} from "@/components/shared/Avatar";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "../../../fonts/BebasNeue-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+import PageHeader from "@/components/shared/PageHeader";
 
 export default function JobDetail() {
   return (
     <div className={styles.page}>
-      <CustomHeader />
+      <PageHeader
+        title="Job #1234"
+        buttons={[
+          {
+            text: "DELETE",
+            tone: "success",
+            onClick: undefined,
+            icon: "link",
+          },
+        ]}
+        date={"Jan 6 2024 4:20 PM"}
+        badges={[
+          {
+            icon: "delivery",
+            text: "Pressing",
+            tone: "info",
+          },
+          {
+            icon: "fire",
+            text: "Priority",
+            tone: "critical",
+          },
+        ]}
+        staff={[
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+        ]}
+      />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <ItemsList headers={headers} items={items} />
@@ -66,83 +87,5 @@ const items = [
     status: 5,
     type: "shirt",
     store: "AJ",
-  },
-];
-
-const CustomHeader = () => {
-  return (
-    <header className={styles.pageHeaderWrapper}>
-      <div className={styles.left}>
-        <div>
-          <h1 className={geistSans.className}>Job #1234</h1>
-          <Badge icon={"delivery"} text={"Pressing"} tone={"info"} />
-          <Badge icon={"fire"} text={"Priority"} tone={"critical"} />
-        </div>
-        <span>Jan 6 2024 4:20 PM</span>
-      </div>
-      <div className={styles.right}>
-        <div className={styles.staffWrapper}>
-          {staff.length >= 4 && <p>{`+${staff.length - 4}`}</p>}
-          {staff &&
-            staff.map((s, i) => {
-              if (i <= 4) {
-                return <Avatar key={i} />;
-              }
-            })}
-        </div>
-        <Button
-          thin={true}
-          text="DELETE"
-          tone={"descructive"}
-          align={"center"}
-          icon="trash"
-        />
-      </div>
-    </header>
-  );
-};
-
-const staff = [
-  {
-    name: "Scrub Daddy",
-    id: "1",
-    email: "scrub@gobigly.com",
-    stage: "printing",
-    role: "admin",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
   },
 ];

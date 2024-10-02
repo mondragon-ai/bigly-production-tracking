@@ -1,19 +1,30 @@
-import {Button} from "@/components/shared/Button";
-import styles from "../../../components/Shared.module.css";
-import {ImageList} from "@/components/images/ImageList";
+"use client";
 import {ImageDetail} from "@/components/images/ImageDetail";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "../../fonts/BebasNeue-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+import styles from "../../../components/Shared.module.css";
+import PageHeader from "@/components/shared/PageHeader";
+import {ImageList} from "@/components/images/ImageList";
 
 export default function Images() {
+  const handleImageUpload = (file: File) => {
+    console.log("Uploaded file:", file);
+    // Handle the file upload logic here
+  };
   return (
     <div className={styles.page}>
-      <CustomHeader />
+      <PageHeader
+        title="Image List"
+        buttons={[
+          {
+            text: "UPLOAD IMAGE",
+            tone: "success",
+            onClick: handleImageUpload,
+            icon: "link",
+          },
+        ]}
+        date={""}
+        badges={[]}
+        staff={[]}
+      />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <ImageList headers={headers} items={items} />
@@ -57,23 +68,3 @@ const items = [
     link: "",
   },
 ];
-
-const CustomHeader = () => {
-  return (
-    <header className={styles.pageHeaderWrapper}>
-      <div className={styles.left}>
-        <div>
-          <h1 className={geistSans.className}>Image List</h1>
-        </div>
-      </div>
-      <div className={styles.right}>
-        <Button
-          thin={true}
-          text="UPLOAD FILE"
-          tone={"success"}
-          align={"center"}
-        />
-      </div>
-    </header>
-  );
-};

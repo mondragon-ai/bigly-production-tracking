@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import styles from "./page.module.css";
 import {LOGO} from "@/lib/constants";
 import Image from "next/image";
-import useLogin from "@/lib/hooks/auth";
+import useLogin from "@/lib/hooks/useAuth";
 import {useState} from "react";
 
 const geistSans = localFont({

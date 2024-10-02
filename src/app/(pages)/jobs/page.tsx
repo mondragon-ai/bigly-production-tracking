@@ -1,6 +1,7 @@
 import {StageBoard} from "@/components/jobs.tsx/StageBoard";
 import styles from "../../../components/Shared.module.css";
 import localFont from "next/font/local";
+import PageHeader from "@/components/shared/PageHeader";
 
 const geistSans = localFont({
   src: "../../fonts/BebasNeue-Regular.ttf",
@@ -11,7 +12,13 @@ const geistSans = localFont({
 export default function Jobs() {
   return (
     <div className={styles.page}>
-      <CustomHeader />
+      <PageHeader
+        title="Job List"
+        buttons={[]}
+        date={""}
+        badges={[]}
+        staff={[]}
+      />
       <main>
         <section
           style={{
@@ -69,19 +76,6 @@ const stages = [
     stage: "complete",
   },
 ];
-
-const CustomHeader = () => {
-  return (
-    <header className={styles.pageHeaderWrapper}>
-      <div className={styles.left}>
-        <div>
-          <h1 className={geistSans.className}>Current Job</h1>
-        </div>
-      </div>
-      <div className={styles.right}></div>
-    </header>
-  );
-};
 
 const jobs = [
   {

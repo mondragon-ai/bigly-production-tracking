@@ -1,21 +1,49 @@
-import {Button} from "@/components/shared/Button";
+"use client";
 import styles from "../../../components/Shared.module.css";
-import {Avatar} from "@/components/shared/Avatar";
-import {AddItems} from "@/components/jobs.tsx/AddItems";
-import {AddItem} from "@/components/jobs.tsx/AddItem";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "../../fonts/BebasNeue-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+import {AddItems} from "@/components/jobs.tsx/AddItems";
+import PageHeader from "@/components/shared/PageHeader";
+import {AddItem} from "@/components/jobs.tsx/AddItem";
 
 export default function Create() {
+  const handleAddStaff = () => {
+    // b.text
+    return;
+  };
   return (
     <div className={styles.page}>
-      <CustomHeader />
+      <PageHeader
+        title={"Job #1234"}
+        date={"Jan 6 2024 4:20 PM"}
+        badges={[]}
+        staff={[
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+          {name: "Angel", email: "angel.@goigly.com", id: "1"},
+        ]}
+        buttons={[
+          {
+            text: "ADD STAFF",
+            tone: "success",
+            onClick: handleAddStaff,
+            icon: "link",
+          },
+          {
+            text: "ADD ITEM",
+            tone: "success",
+            onClick: undefined,
+            icon: "link",
+          },
+          {
+            text: "APPROVE",
+            tone: "success",
+            onClick: undefined,
+            icon: "link",
+          },
+        ]}
+      />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
           <AddItems />
@@ -31,7 +59,6 @@ export default function Create() {
 }
 
 const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
-
 const items = [
   {
     id: "1",
@@ -68,82 +95,5 @@ const items = [
     status: 5,
     type: "shirt",
     store: "AJ",
-  },
-];
-
-const CustomHeader = () => {
-  return (
-    <header className={styles.pageHeaderWrapper}>
-      <div className={styles.left}>
-        <div>
-          <h1 className={geistSans.className}>Job #1234</h1>
-        </div>
-        <span>Jan 6 2024 4:20 PM</span>
-      </div>
-      <div className={styles.right}>
-        <div className={styles.staffWrapper}>
-          {staff.length >= 4 && <p>{`+${staff.length - 4}`}</p>}
-          {staff &&
-            staff.map((s, i) => {
-              if (i <= 4) {
-                return <Avatar key={i} />;
-              }
-            })}
-        </div>
-        <Button
-          thin={true}
-          text="ADD STAFF"
-          tone={"success"}
-          align={"center"}
-        />
-        <Button thin={true} text="ADD ITEM" tone={"success"} align={"center"} />
-        <Button thin={true} text="APPROVE" tone={"success"} align={"center"} />
-      </div>
-    </header>
-  );
-};
-
-const staff = [
-  {
-    name: "Scrub Daddy",
-    id: "1",
-    email: "scrub@gobigly.com",
-    stage: "printing",
-    role: "admin",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
-  },
-  {
-    name: "Mia",
-    id: "2",
-    email: "mia@gobigly.com",
-    stage: "cutting",
-    role: "staff",
   },
 ];
