@@ -188,6 +188,86 @@ export const Icon = ({
         </svg>
       );
     }
+    case "badge-check": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="15"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="0.9"
+            d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"
+          />
+        </svg>
+      );
+    }
+    case "clock": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="15"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="0.9"
+            d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      );
+    }
+    case "upload": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="15"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1"
+            d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"
+          />
+        </svg>
+      );
+    }
+    case "wand": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="15"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1"
+            d="M16.872 9.687 20 6.56 17.44 4 4 17.44 6.56 20 16.873 9.687Zm0 0-2.56-2.56M6 7v2m0 0v2m0-2H4m2 0h2m7 7v2m0 0v2m0-2h-2m2 0h2M8 4h.01v.01H8V4Zm2 2h.01v.01H10V6Zm2-2h.01v.01H12V4Zm8 8h.01v.01H20V12Zm-2 2h.01v.01H18V14Zm2 2h.01v.01H20V16Z"
+          />
+        </svg>
+      );
+    }
     default:
       return <></>;
   }

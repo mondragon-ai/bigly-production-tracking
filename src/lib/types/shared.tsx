@@ -7,4 +7,8 @@ export type IconTypes =
   | "link"
   | "fire"
   | "floppy"
+  | "upload"
+  | "clock"
+  | "wand"
+  | "badge-check"
   | "hour_glass";

@@ -1,0 +1,167 @@
+import {FileDocument, FileDetail} from "../types/files";
+
+export const files_list: FileDocument[] = [
+  {
+    id: "1",
+    name: "sales_report_2024.csv",
+    status: "generated",
+    added: "2024-10-01T12:00:00Z",
+    created_at: "2024-10-01T11:30:00Z",
+    total_items: 500,
+    csv_url: "https://example.com/files/sales_report_2024.csv",
+    cleaned_csv_url: "https://example.com/files/cleaned_sales_report_2024.csv",
+  },
+  {
+    id: "2",
+    name: "customer_list.csv",
+    status: "pending",
+    added: "2024-10-02T14:00:00Z",
+    created_at: "2024-10-02T13:45:00Z",
+    total_items: 200,
+    csv_url: "https://example.com/files/customer_list.csv",
+    cleaned_csv_url: "",
+  },
+  {
+    id: "3",
+    name: "inventory_check.csv",
+    status: "generated",
+    added: "2024-09-28T09:00:00Z",
+    created_at: "2024-09-28T08:45:00Z",
+    total_items: 1000,
+    csv_url: "https://example.com/files/inventory_check.csv",
+    cleaned_csv_url: "https://example.com/files/cleaned_inventory_check.csv",
+  },
+  {
+    id: "4",
+    name: "product_data_2024.csv",
+    status: "generated",
+    added: "2024-09-29T17:00:00Z",
+    created_at: "2024-09-29T16:55:00Z",
+    total_items: 350,
+    csv_url: "https://example.com/files/product_data_2024.csv",
+    cleaned_csv_url: "",
+  },
+  {
+    id: "5",
+    name: "order_history.csv",
+    status: "generated",
+    added: "2024-10-02T08:00:00Z",
+    created_at: "2024-10-02T07:50:00Z",
+    total_items: 1200,
+    csv_url: "https://example.com/files/order_history.csv",
+    cleaned_csv_url: "",
+  },
+];
+
+export const file_details: FileDetail[] = [
+  {
+    id: "1",
+    name: "sales_report_2024.csv",
+    status: "generated",
+    added: "2024-10-01T12:00:00Z",
+    created_at: "2024-10-01T11:30:00Z",
+    total_items: 500,
+    csv_url: "https://example.com/files/sales_report_2024.csv",
+    cleaned_csv_url: "https://example.com/files/cleaned_sales_report_2024.csv",
+    csv_data: [
+      {
+        print_sku: "1234-S-LTBLU",
+        store_sku: "STORE-1234-S-LTBLU",
+        type: "shirt",
+      },
+      {
+        print_sku: "1235-M-RED",
+        store_sku: "STORE-1235-M-RED",
+        type: "hoodie",
+      },
+    ],
+  },
+  {
+    id: "2",
+    name: "customer_orders.csv",
+    status: "pending",
+    added: "2024-10-02T14:00:00Z",
+    created_at: "2024-10-02T13:45:00Z",
+    total_items: 300,
+    csv_url: "https://example.com/files/customer_orders.csv",
+    cleaned_csv_url: "",
+    csv_data: [
+      {
+        print_sku: "5678-L-GRN",
+        store_sku: "STORE-5678-L-GRN",
+        type: "shirt",
+      },
+      {
+        print_sku: "5679-XL-BLK",
+        store_sku: "STORE-5679-XL-BLK",
+        type: "hoodie",
+      },
+    ],
+  },
+  {
+    id: "3",
+    name: "inventory_list.csv",
+    status: "generated",
+    added: "2024-09-28T10:00:00Z",
+    created_at: "2024-09-28T09:45:00Z",
+    total_items: 150,
+    csv_url: "https://example.com/files/inventory_list.csv",
+    cleaned_csv_url: "https://example.com/files/cleaned_inventory_list.csv",
+    csv_data: [
+      {
+        print_sku: "3456-XS-BLACK",
+        store_sku: "STORE-3456-XS-BLACK",
+        type: "hoodie",
+      },
+      {
+        print_sku: "3457-M-WHITE",
+        store_sku: "STORE-3457-M-WHITE",
+        type: "shirt",
+      },
+    ],
+  },
+  {
+    id: "4",
+    name: "supplier_data.csv",
+    status: "generated",
+    added: "2024-09-29T18:00:00Z",
+    created_at: "2024-09-29T17:55:00Z",
+    total_items: 100,
+    csv_url: "https://example.com/files/supplier_data.csv",
+    cleaned_csv_url: "",
+    csv_data: [
+      {
+        print_sku: "7890-L-GRAY",
+        store_sku: "STORE-7890-L-GRAY",
+        type: "shirt",
+      },
+      {
+        print_sku: "7891-XXL-RED",
+        store_sku: "STORE-7891-XXL-RED",
+        type: "hoodie",
+      },
+    ],
+  },
+  {
+    id: "5",
+    name: "order_summary.csv",
+    status: "generated",
+    added: "2024-10-03T09:00:00Z",
+    created_at: "2024-10-03T08:45:00Z",
+    total_items: 400,
+    csv_url: "https://example.com/files/order_summary.csv",
+    cleaned_csv_url: "https://example.com/files/cleaned_order_summary.csv",
+    csv_data: [
+      {
+        print_sku: "9012-M-NAVY",
+        store_sku: "STORE-9012-M-NAVY",
+        type: "hoodie",
+      },
+      {
+        print_sku: "9013-S-YELLOW",
+        store_sku: "STORE-9013-S-YELLOW",
+        type: "shirt",
+      },
+    ],
+  },
+];

@@ -1,18 +1,30 @@
+import {FileDetail} from "@/lib/types/files";
 import {Badge} from "../shared/Badge";
 import {Button} from "../shared/Button";
 import styles from "./Files.module.css";
 
-export const FileDetail = () => {
+export const FileDetailCard = ({file_detail}: {file_detail: FileDetail}) => {
   return (
     <div className={styles.fileDetailWrapper}>
       <header>
-        <h5>Pick-List.csv</h5>
-        <Button
-          text={"Generate"}
-          thin={true}
-          tone={"success"}
-          align={"center"}
-        />
+        <h5>{file_detail.name}</h5>
+        {file_detail.status == "generated" ? (
+          <Button
+            text={"Delete"}
+            thin={true}
+            tone={"descructive"}
+            align={"center"}
+            icon="trash"
+          />
+        ) : (
+          <Button
+            text={"Generate Jobs"}
+            thin={true}
+            icon="wand"
+            tone={"success"}
+            align={"center"}
+          />
+        )}
       </header>
 
       <div className={styles.fileTableWrapper}>
@@ -37,8 +49,8 @@ export const FileDetail = () => {
             </tr>
           </thead>
           <tbody>
-            {items.map((item, index) => (
-              <tr key={item.id}>
+            {file_detail.csv_data.map((item, index) => (
+              <tr key={index}>
                 <td
                   style={{
                     textAlign: "left",
@@ -46,9 +58,9 @@ export const FileDetail = () => {
                     verticalAlign: "middle",
                   }}
                 >
-                  {item.print}
+                  {item.print_sku}
                 </td>
-                <td>{item.sku}</td>
+                <td>{item.store_sku}</td>
                 <td>{item.type}</td>
               </tr>
             ))}
@@ -60,36 +72,3 @@ export const FileDetail = () => {
 };
 
 const headers = ["Print SKU", "Item SKU", "Type"];
-
-const items = [
-  {
-    id: "1",
-    print: "1234-S-3XL",
-    sku: "AJ-SKU-1234-M-BLK",
-    type: "Shirt",
-  },
-  {
-    id: "2",
-    print: "1234-S-3XL",
-    sku: "AJ-SKU-1234-M-BLK",
-    type: "Shirt",
-  },
-  {
-    id: "3",
-    print: "1234-S-3XL",
-    sku: "AJ-SKU-1234-M-BLK",
-    type: "Shirt",
-  },
-  {
-    id: "4",
-    print: "1234-S-3XL",
-    sku: "AJ-SKU-1234-M-BLK",
-    type: "Shirt",
-  },
-  {
-    id: "5",
-    print: "1234-S-3XL",
-    sku: "AJ-SKU-1234-M-BLK",
-    type: "Shirt",
-  },
-];

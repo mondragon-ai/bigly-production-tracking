@@ -1,12 +1,13 @@
 "use client";
 import styles from "../../../components/Shared.module.css";
-import {FileDetail} from "@/components/files/FileDetail";
+import {FileDetailCard} from "@/components/files/FileDetail";
 import PageHeader from "@/components/shared/PageHeader";
 import {FileList} from "@/components/shared/FileList";
 import useFiles from "@/lib/hooks/useFiles";
 
 export default function Files() {
-  const {files, loading, error, uploadFiles, fetchAndParseFile} = useFiles();
+  const {files, loading, error, uploadFiles, fetchAndParseFile, file_detail} =
+    useFiles();
 
   const handleFileUpload = async (file: File) => {
     console.log("Uploaded file:", file);
@@ -28,7 +29,7 @@ export default function Files() {
             text: "UPLOAD FILE",
             tone: "success",
             onClick: handleFileUpload,
-            icon: "link",
+            icon: "upload",
           },
         ]}
         date={""}
@@ -40,11 +41,11 @@ export default function Files() {
           <FileList
             handleFileSelect={handleFileSelect}
             headers={headers}
-            items={items}
+            items={files}
           />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          <FileDetail />
+          {file_detail && <FileDetailCard file_detail={file_detail} />}
         </section>
       </main>
     </div>
@@ -52,29 +53,3 @@ export default function Files() {
 }
 
 const headers = ["Name", "Status", "Date Added"];
-const items = [
-  {
-    id: "1",
-    name: "Pick-file.csv",
-    status: "M",
-    added: "Jan 6 2024 4:20 PM",
-  },
-  {
-    id: "2",
-    name: "Pick-file.csv",
-    status: "M",
-    added: "Jan 6 2024 4:20 PM",
-  },
-  {
-    id: "3",
-    name: "Pick-file.csv",
-    status: "M",
-    added: "Jan 6 2024 4:20 PM",
-  },
-  {
-    id: "4",
-    name: "Pick-file.csv",
-    status: "M",
-    added: "Jan 6 2024 4:20 PM",
-  },
-];

@@ -10,6 +10,10 @@ const nextConfig = {
         hostname: "s3-us-west-2.amazonaws.com",
         protocol: "https",
       },
+      {
+        hostname: "firebasestorage.googleapis.com",
+        protocol: "https",
+      },
     ],
   },
 };

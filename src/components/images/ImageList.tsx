@@ -41,7 +41,7 @@ export const ImageList = ({headers, items}: CustomTableProps) => {
               >
                 <Image
                   src={
-                    "https://cdn.shopify.com/s/files/1/0860/6305/5167/files/0c699b-3.myshopify_aa2b05f2-23b5-46ab-87a2-4b38a5ac37f9.png?v=1727380084"
+                    "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca"
                   }
                   alt={""}
                   width={100}

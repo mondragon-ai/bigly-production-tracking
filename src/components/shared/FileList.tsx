@@ -2,10 +2,11 @@
 import {Badge} from "./Badge";
 import {useState} from "react";
 import styles from "./Shared.module.css";
+import {FileDocument} from "@/lib/types/files";
 
 type CustomTableProps = {
   headers: string[];
-  items: any[];
+  items: FileDocument[];
   handleFileSelect: (id: string) => void;
 };
 
@@ -67,7 +68,11 @@ export const FileList = ({
               </td>
               <td>{item.name}</td>
               <td>
-                <Badge icon={"store"} text={"Generated"} tone={"success"} />
+                <Badge
+                  icon={item.status == "generated" ? "badge-check" : "clock"}
+                  text={item.status}
+                  tone={item.status == "generated" ? "success" : "magic"}
+                />
               </td>
               <td>{item.added}</td>
             </tr>
