@@ -4,6 +4,7 @@ import {FileDetailCard} from "@/components/files/FileDetail";
 import PageHeader from "@/components/shared/PageHeader";
 import {FileList} from "@/components/shared/FileList";
 import useFiles from "@/lib/hooks/useFiles";
+import {StartingState} from "@/components/images/StartingState";
 
 export default function Files() {
   const {files, loading, error, uploadFiles, fetchAndParseFile, file_detail} =
@@ -22,7 +23,7 @@ export default function Files() {
   return (
     <div className={styles.page}>
       <PageHeader
-        loading={loading}
+        loading={loading == "posting"}
         title="Pick List Files"
         buttons={[
           {
@@ -45,7 +46,13 @@ export default function Files() {
           />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          {file_detail && <FileDetailCard file_detail={file_detail} />}
+          {file_detail ? (
+            <FileDetailCard file_detail={file_detail} />
+          ) : loading == "requesting" ? (
+            <p>loading</p>
+          ) : (
+            <StartingState type="file" />
+          )}
         </section>
       </main>
     </div>

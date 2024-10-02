@@ -3,10 +3,11 @@ import {useState, useEffect} from "react";
 import {uploadToServer} from "../utils/storage";
 import {FileDetail, FileDocument} from "../types/files";
 import {files_list, file_details} from "@/lib/data/files";
+import {LoadingTypes} from "../types/shared";
 
 interface UseFilesUploadReturn {
   files: FileDocument[];
-  loading: boolean;
+  loading: LoadingTypes;
   error: string | null;
   uploadFiles: (file: File) => Promise<void>;
   fetchAndParseFile: (id: string) => Promise<void>;
@@ -16,11 +17,11 @@ interface UseFilesUploadReturn {
 const useFiles = (): UseFilesUploadReturn => {
   const [files, setFiles] = useState<FileDocument[]>(files_list);
   const [file_detail, setFileDetail] = useState<FileDetail | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<LoadingTypes>(null);
   const [error, setError] = useState<string | null>(null);
 
   const fetchFiles = async () => {
-    setLoading(true);
+    setLoading("loading");
     try {
       //   const response = await fetch("/api/files");
       //   if (!response.ok) throw new Error("Failed to fetch files");
@@ -29,7 +30,7 @@ const useFiles = (): UseFilesUploadReturn => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -38,7 +39,7 @@ const useFiles = (): UseFilesUploadReturn => {
   }, []);
 
   const uploadFiles = async (file: File) => {
-    setLoading(true);
+    setLoading("posting");
     console.log("uploading");
     try {
       const downloadURL = await uploadToServer(file, "files");
@@ -54,12 +55,12 @@ const useFiles = (): UseFilesUploadReturn => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   const fetchAndParseFile = async (id: string) => {
-    setLoading(true);
+    setLoading("requesting");
     console.log("fetching");
     try {
       // const response = await fetch(
@@ -83,7 +84,7 @@ const useFiles = (): UseFilesUploadReturn => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 

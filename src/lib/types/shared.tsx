@@ -12,3 +12,5 @@ export type IconTypes =
   | "wand"
   | "badge-check"
   | "hour_glass";
+
+export type LoadingTypes = "loading" | "posting" | "requesting" | null;

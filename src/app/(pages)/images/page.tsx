@@ -4,25 +4,24 @@ import styles from "../../../components/Shared.module.css";
 import PageHeader from "@/components/shared/PageHeader";
 import {ImageList} from "@/components/images/ImageList";
 import useImageUpload from "@/lib/hooks/useImages";
+import {StartingState} from "@/components/images/StartingState";
 
 export default function Images() {
   const {images, loading, error, uploadImage, img_detail, setImageCard} =
     useImageUpload();
 
   const handleImageUpload = async (file: File) => {
-    console.log("Uploaded file:", file);
     await uploadImage(file);
   };
 
   const handleImageSelect = (id: string) => {
-    console.log({id});
     setImageCard(id);
   };
 
   return (
     <div className={styles.page}>
       <PageHeader
-        loading={loading}
+        loading={loading == "posting"}
         title="Image List"
         buttons={[
           {
@@ -45,7 +44,13 @@ export default function Images() {
           />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          {img_detail && <ImageDetail img_detail={img_detail} />}
+          {img_detail ? (
+            <ImageDetail img_detail={img_detail} />
+          ) : loading == "requesting" ? (
+            <p>loading</p>
+          ) : (
+            <StartingState type="image" />
+          )}
         </section>
       </main>
     </div>

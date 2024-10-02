@@ -3,10 +3,11 @@ import {useState, useEffect} from "react";
 import {uploadToServer} from "../utils/storage";
 import {image_list} from "../data/images";
 import {ImageDocument} from "../types/images";
+import {LoadingTypes} from "../types/shared";
 
 interface UseImageUploadReturn {
   images: ImageDocument[];
-  loading: boolean;
+  loading: LoadingTypes;
   error: string | null;
   uploadImage: (file: File) => Promise<void>;
   img_detail: ImageDocument | null;
@@ -16,11 +17,11 @@ interface UseImageUploadReturn {
 const useImageUpload = (): UseImageUploadReturn => {
   const [images, setImages] = useState<ImageDocument[]>(image_list);
   const [img_detail, setImgDetail] = useState<ImageDocument | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<LoadingTypes>(null);
   const [error, setError] = useState<string | null>(null);
 
   const fetchImages = async () => {
-    setLoading(true);
+    setLoading("loading");
     try {
       //   const response = await fetch("/api/images");
       //   if (!response.ok) throw new Error("Failed to fetch images");
@@ -29,7 +30,7 @@ const useImageUpload = (): UseImageUploadReturn => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -38,7 +39,7 @@ const useImageUpload = (): UseImageUploadReturn => {
   }, []);
 
   const uploadImage = async (file: File) => {
-    setLoading(true);
+    setLoading("posting");
     console.log("uploading");
     try {
       const downloadURL = await uploadToServer(file, "images");
@@ -54,26 +55,14 @@ const useImageUpload = (): UseImageUploadReturn => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   const setImageCard = async (id: string) => {
-    setLoading(true);
-    console.log("fetching");
+    setLoading("requesting");
     try {
-      // const response = await fetch(
-      //   "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   },
-      // );
-      // if (!response.ok) throw new Error("Failed to save image URL");
       const img = images.find((f) => f.id == id);
-      console.log(img);
 
       if (img) {
         setImgDetail(img);
@@ -83,7 +72,7 @@ const useImageUpload = (): UseImageUploadReturn => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 

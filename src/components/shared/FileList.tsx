@@ -3,6 +3,7 @@ import {Badge} from "./Badge";
 import {useState} from "react";
 import styles from "./Shared.module.css";
 import {FileDocument} from "@/lib/types/files";
+import {EmptyState} from "../images/EmptyState";
 
 type CustomTableProps = {
   headers: string[];
@@ -79,6 +80,7 @@ export const FileList = ({
           ))}
         </tbody>
       </table>
+      {!items || items.length == 0 ? <EmptyState /> : null}
     </div>
   );
 };
