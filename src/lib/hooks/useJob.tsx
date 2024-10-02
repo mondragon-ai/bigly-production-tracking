@@ -5,13 +5,15 @@ import {JobDocument} from "../types/jobs";
 import {job_list} from "../data/jobs";
 
 interface JobReturn {
-  jobs: JobDocument[];
+  job: JobDocument;
   loading: LoadingTypes;
   error: string | null;
 }
 
-const useJobs = (): JobReturn => {
-  const [jobs, setJobs] = useState<JobDocument[]>(job_list);
+const useJob = (id: string): JobReturn => {
+  const [job, setJob] = useState<JobDocument>(
+    job_list.find((j) => j.id == id) || job_list[0],
+  );
   const [loading, setLoading] = useState<LoadingTypes>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,8 +42,8 @@ const useJobs = (): JobReturn => {
   return {
     loading,
     error,
-    jobs,
+    job,
   };
 };
 
-export default useJobs;
+export default useJob;

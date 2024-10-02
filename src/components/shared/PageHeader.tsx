@@ -1,21 +1,17 @@
 "use client";
+import {BadgeType, IconTypes} from "@/lib/types/shared";
+import styles from "./Shared.module.css";
 import localFont from "next/font/local";
 import {Avatar} from "./Avatar";
-import {Badge} from "./Badge";
 import {Button} from "./Button";
-import styles from "./Shared.module.css";
-import {IconTypes} from "@/lib/types/shared";
+import {Badge} from "./Badge";
 import {useRef} from "react";
 
 type PageHeaderProps = {
   loading?: boolean;
   title: string;
   date: string;
-  badges: {
-    icon: IconTypes;
-    text: string;
-    tone: "critical" | "success" | "info" | "magic";
-  }[];
+  badges: BadgeType[];
   staff: {
     name: string;
     id: string;

@@ -29,3 +29,9 @@ export type Staff = {
   role: "admin" | "staff";
   position: Stages;
 };
+
+export type BadgeType = {
+  icon: IconTypes;
+  text: string;
+  tone: "critical" | "success" | "info" | "magic";
+};

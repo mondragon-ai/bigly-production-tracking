@@ -1,34 +1,54 @@
+"use client";
 import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
+import useJob from "@/lib/hooks/useJob";
+import {JobDocument} from "@/lib/types/jobs";
+import {BadgeType} from "@/lib/types/shared";
+import {useParams, usePathname} from "next/navigation";
 
 export default function JobDetail() {
+  const params = useParams<{id: string}>();
+  console.log({params});
+  const {job} = useJob(params.id);
+
+  const handleDelete = (id: string) => {
+    console.log({delete: id});
+  };
+
+  const badges = (job: JobDocument) => {
+    const badge_list: BadgeType[] = [
+      {
+        icon: "delivery",
+        text: job.stage,
+        tone: "info",
+      },
+    ];
+    if (job.is_priority) {
+      badge_list.push({
+        icon: "fire",
+        text: "Priority",
+        tone: "critical",
+      });
+    }
+    return badge_list;
+  };
+
   return (
     <div className={styles.page}>
       <PageHeader
-        title="Job #1234"
+        title={`Job #${job.job_name}`}
         buttons={[
           {
             text: "DELETE",
-            tone: "success",
-            onClick: undefined,
-            icon: "link",
+            tone: "descructive",
+            onClick: handleDelete,
+            icon: "trash",
           },
         ]}
-        date={"Jan 6 2024 4:20 PM"}
-        badges={[
-          {
-            icon: "delivery",
-            text: "Pressing",
-            tone: "info",
-          },
-          {
-            icon: "fire",
-            text: "Priority",
-            tone: "critical",
-          },
-        ]}
+        date={job.created_at}
+        badges={badges(job)}
         staff={[
           {name: "Angel", email: "angel.@goigly.com", id: "1"},
           {name: "Angel", email: "angel.@goigly.com", id: "1"},
