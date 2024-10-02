@@ -20,7 +20,7 @@ export type ErrorRate = {[key in Stages]: number};
 export type Images = {
   front: string;
   back: string;
-  sleve: string;
+  sleeve: string;
   front_mockup: string;
   back_mockup: string;
 };

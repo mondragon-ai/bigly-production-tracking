@@ -3,18 +3,26 @@ import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
-import useJob from "@/lib/hooks/useJob";
 import {JobDocument} from "@/lib/types/jobs";
 import {BadgeType} from "@/lib/types/shared";
-import {useParams, usePathname} from "next/navigation";
+import {useParams} from "next/navigation";
+import useJob from "@/lib/hooks/useJob";
 
 export default function JobDetail() {
   const params = useParams<{id: string}>();
-  console.log({params});
-  const {job} = useJob(params.id);
+  const {job, selectItem, item} = useJob(params.id);
 
-  const handleDelete = (id: string) => {
-    console.log({delete: id});
+  const handleDelete = () => {
+    console.log({delete: params.id});
+  };
+
+  const handleReportError = (id: string) => {
+    console.log({error: id});
+  };
+
+  const handleSelectItem = (id: string) => {
+    console.log({select: id});
+    selectItem(id);
   };
 
   const badges = (job: JobDocument) => {
@@ -49,20 +57,24 @@ export default function JobDetail() {
         ]}
         date={job.created_at}
         badges={badges(job)}
-        staff={[
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-        ]}
+        staff={job.staff}
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ItemsList headers={headers} items={items} />
+          <ItemsList
+            headers={headers}
+            items={job.items}
+            handleSelectItem={handleSelectItem}
+          />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          <ItemDisplay is_create={true} />
+          {item && (
+            <ItemDisplay
+              item={item}
+              is_create={false}
+              handleReportError={handleReportError}
+            />
+          )}
         </section>
       </main>
     </div>

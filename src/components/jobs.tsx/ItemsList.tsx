@@ -2,13 +2,19 @@
 import {useState} from "react";
 import styles from "../shared/Shared.module.css";
 import {Badge} from "../shared/Badge";
+import {Items} from "@/lib/types/jobs";
 
 type CustomTableProps = {
   headers: string[];
-  items: any[];
+  items: Items[];
+  handleSelectItem: (id: string) => void;
 };
 
-export const ItemsList = ({headers, items}: CustomTableProps) => {
+export const ItemsList = ({
+  headers,
+  items,
+  handleSelectItem,
+}: CustomTableProps) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const toggleSelection = (id: string) => {
@@ -17,11 +23,6 @@ export const ItemsList = ({headers, items}: CustomTableProps) => {
         ? prevSelected.filter((selectedId) => selectedId !== id)
         : [...prevSelected, id],
     );
-  };
-
-  const deleteSelected = () => {
-    //   handleDelete(selectedIds);
-    setSelectedIds([]); // Clear selection after delete
   };
 
   return (
@@ -36,7 +37,7 @@ export const ItemsList = ({headers, items}: CustomTableProps) => {
                 verticalAlign: "middle",
               }}
             >
-              <input type="checkbox" />
+              {/* <input type="checkbox" /> */}
             </th>
             {headers &&
               headers.map((title, index) => {
@@ -46,7 +47,7 @@ export const ItemsList = ({headers, items}: CustomTableProps) => {
         </thead>
         <tbody>
           {items.map((item, index) => (
-            <tr key={item.id}>
+            <tr key={item.id} onClick={() => handleSelectItem(item.id)}>
               <td
                 style={{
                   textAlign: "center",
@@ -54,17 +55,33 @@ export const ItemsList = ({headers, items}: CustomTableProps) => {
                   verticalAlign: "middle",
                 }}
               >
-                <input
+                {/* <input
                   type="checkbox"
                   checked={selectedIds.includes(item.id)}
                   onChange={() => toggleSelection(item.id)}
-                />
+                /> */}
               </td>
               <td>{item.sku}</td>
               <td>{item.size}</td>
               <td>{item.color}</td>
               <td>
-                <Badge icon={"store"} text={"success"} tone={"success"} />
+                <Badge
+                  icon={
+                    item.status == "pending"
+                      ? "delivery"
+                      : item.status == "completed"
+                      ? "badge-check"
+                      : "rejected"
+                  }
+                  text={item.status}
+                  tone={
+                    item.status == "pending"
+                      ? "magic"
+                      : item.status == "completed"
+                      ? "success"
+                      : "critical"
+                  }
+                />
               </td>
               <td>{item.type}</td>
               <td>{item.store}</td>

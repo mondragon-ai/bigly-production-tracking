@@ -1,19 +1,22 @@
 "use client";
 import {useState, useEffect} from "react";
 import {LoadingTypes} from "../types/shared";
-import {JobDocument} from "../types/jobs";
+import {Items, JobDocument} from "../types/jobs";
 import {job_list} from "../data/jobs";
 
 interface JobReturn {
   job: JobDocument;
   loading: LoadingTypes;
   error: string | null;
+  selectItem: (id: string) => void;
+  item: Items | null;
 }
 
 const useJob = (id: string): JobReturn => {
   const [job, setJob] = useState<JobDocument>(
     job_list.find((j) => j.id == id) || job_list[0],
   );
+  const [item, setItem] = useState<Items | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,10 +42,19 @@ const useJob = (id: string): JobReturn => {
     fetchJobs();
   }, []);
 
+  const selectItem = (id: string) => {
+    setLoading("requesting");
+    setItem(null);
+    const item = job.items.find((i) => i.id == id);
+    if (item) setItem(item);
+  };
+
   return {
     loading,
     error,
     job,
+    selectItem,
+    item,
   };
 };
 

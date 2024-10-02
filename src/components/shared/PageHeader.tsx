@@ -1,5 +1,5 @@
 "use client";
-import {BadgeType, IconTypes} from "@/lib/types/shared";
+import {BadgeType, IconTypes, Staff} from "@/lib/types/shared";
 import styles from "./Shared.module.css";
 import localFont from "next/font/local";
 import {Avatar} from "./Avatar";
@@ -12,11 +12,7 @@ type PageHeaderProps = {
   title: string;
   date: string;
   badges: BadgeType[];
-  staff: {
-    name: string;
-    id: string;
-    email: string;
-  }[];
+  staff: Staff[];
   buttons: {
     onClick: ((e: any) => void) | undefined;
     text: string;

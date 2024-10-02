@@ -90,11 +90,15 @@ export const job_list: JobDocument[] = [
         staff: "John Doe",
         id: "item_001",
         images: {
-          front: "https://example.com/images/item_001_front.png",
-          back: "https://example.com/images/item_001_back.png",
-          sleve: "https://example.com/images/item_001_sleve.png",
-          front_mockup: "https://example.com/images/item_001_front_mockup.png",
-          back_mockup: "https://example.com/images/item_001_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "5678-L-BLUE",
         size: "L",
@@ -109,11 +113,15 @@ export const job_list: JobDocument[] = [
         staff: "Jane Smith",
         id: "item_002",
         images: {
-          front: "https://example.com/images/item_002_front.png",
-          back: "https://example.com/images/item_002_back.png",
-          sleve: "https://example.com/images/item_002_sleve.png",
-          front_mockup: "https://example.com/images/item_002_front_mockup.png",
-          back_mockup: "https://example.com/images/item_002_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "5679-M-RED",
         size: "M",
@@ -183,17 +191,44 @@ export const job_list: JobDocument[] = [
         staff: "Alice Johnson",
         id: "item_003",
         images: {
-          front: "https://example.com/images/item_003_front.png",
-          back: "https://example.com/images/item_003_back.png",
-          sleve: "https://example.com/images/item_003_sleve.png",
-          front_mockup: "https://example.com/images/item_003_front_mockup.png",
-          back_mockup: "https://example.com/images/item_003_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "6789-XL-GREEN",
         size: "XL",
         color: "Green",
         type: "shirt",
         store: "Another Store",
+        status: "rejected",
+      },
+      {
+        has_error: false,
+        staff_error: "",
+        staff: "Bob Williams",
+        id: "item_004",
+        images: {
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
+        },
+        sku: "7890-M-YELLOW",
+        size: "M",
+        color: "Yellow",
+        type: "hoodie",
+        store: "Example Store",
         status: "pending",
       },
     ],
@@ -278,11 +313,15 @@ export const job_list: JobDocument[] = [
         staff: "Bob Williams",
         id: "item_004",
         images: {
-          front: "https://example.com/images/item_004_front.png",
-          back: "https://example.com/images/item_004_back.png",
-          sleve: "https://example.com/images/item_004_sleve.png",
-          front_mockup: "https://example.com/images/item_004_front_mockup.png",
-          back_mockup: "https://example.com/images/item_004_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "7890-M-YELLOW",
         size: "M",
@@ -352,11 +391,15 @@ export const job_list: JobDocument[] = [
         staff: "Tom Harris",
         id: "item_005",
         images: {
-          front: "https://example.com/images/item_005_front.png",
-          back: "https://example.com/images/item_005_back.png",
-          sleve: "https://example.com/images/item_005_sleve.png",
-          front_mockup: "https://example.com/images/item_005_front_mockup.png",
-          back_mockup: "https://example.com/images/item_005_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "8901-S-BLACK",
         size: "S",
@@ -426,11 +469,15 @@ export const job_list: JobDocument[] = [
         staff: "Lucy Brown",
         id: "item_006",
         images: {
-          front: "https://example.com/images/item_006_front.png",
-          back: "https://example.com/images/item_006_back.png",
-          sleve: "https://example.com/images/item_006_sleve.png",
-          front_mockup: "https://example.com/images/item_006_front_mockup.png",
-          back_mockup: "https://example.com/images/item_006_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "3456-L-WHITE",
         size: "L",
@@ -500,11 +547,15 @@ export const job_list: JobDocument[] = [
         staff: "Mark Spencer",
         id: "item_007",
         images: {
-          front: "https://example.com/images/item_007_front.png",
-          back: "https://example.com/images/item_007_back.png",
-          sleve: "https://example.com/images/item_007_sleve.png",
-          front_mockup: "https://example.com/images/item_007_front_mockup.png",
-          back_mockup: "https://example.com/images/item_007_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "9123-XL-GRAY",
         size: "XL",
@@ -574,11 +625,15 @@ export const job_list: JobDocument[] = [
         staff: "Emily Clark",
         id: "item_008",
         images: {
-          front: "https://example.com/images/item_008_front.png",
-          back: "https://example.com/images/item_008_back.png",
-          sleve: "https://example.com/images/item_008_sleve.png",
-          front_mockup: "https://example.com/images/item_008_front_mockup.png",
-          back_mockup: "https://example.com/images/item_008_back_mockup.png",
+          front:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+          back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+          sleeve:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+          front_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+          back_mockup:
+            "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
         },
         sku: "4567-M-BLUE",
         size: "M",

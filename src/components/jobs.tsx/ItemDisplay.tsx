@@ -1,49 +1,65 @@
+"use client";
 import Image from "next/image";
 import {Badge} from "../shared/Badge";
 import styles from "./Jobs.module.css";
 import {Button} from "../shared/Button";
+import {Items} from "@/lib/types/jobs";
+import {useState} from "react";
 
-export const ItemDisplay = ({is_create}: {is_create: boolean}) => {
+export const ItemDisplay = ({
+  is_create,
+  item,
+  handleReportError,
+}: {
+  is_create: boolean;
+  handleReportError: (id: string) => void;
+  item: Items;
+}) => {
+  console.log({item});
   return (
     <div className={styles.itemDisplayWrapper}>
       <header>
-        <h4>SKU-1234-M-BLACK-AJ</h4>
-        <Badge icon={"delivery"} text={"Pending"} tone={"magic"} />
+        <h4>{item.sku}</h4>
+        <Badge
+          icon={
+            item.status == "pending"
+              ? "delivery"
+              : item.status == "completed"
+              ? "badge-check"
+              : "rejected"
+          }
+          text={item.status}
+          tone={
+            item.status == "pending"
+              ? "magic"
+              : item.status == "completed"
+              ? "success"
+              : "critical"
+          }
+        />
       </header>
       <main>
         <div className={styles.txt}>
           <span>
-            <strong>Size:</strong> M
+            <strong>Size:</strong> {item.size}
           </span>
           <span>
-            <strong>Color:</strong> Black
+            <strong>Color:</strong> {item.color}
           </span>
         </div>
-        <MockupDesign />
+        <MockupDesign item={item} />
         <div className={styles.column}>
           <div className={styles.box} style={{width: "32%"}}>
-            <Image
-              src={
-                "https://cdn.shopify.com/s/files/1/0860/6305/5167/files/0c699b-3.myshopify_aa2b05f2-23b5-46ab-87a2-4b38a5ac37f9.png?v=1727380084"
-              }
-              width={500}
-              height={500}
-              alt={""}
-            />
+            <Image src={item.images.front} width={500} height={500} alt={""} />
           </div>
 
           <div className={styles.box} style={{width: "32%"}}>
-            <Image
-              src={
-                "https://cdn.shopify.com/s/files/1/0860/6305/5167/files/0c699b-3.myshopify_4ac5fee4-7c4f-4bda-88f0-d9c0a2deacda.png?v=1727380084"
-              }
-              width={500}
-              height={500}
-              alt={""}
-            />
+            <Image src={item.images.back} width={500} height={500} alt={""} />
           </div>
 
-          <div className={styles.box} style={{width: "32%"}}></div>
+          <div className={styles.box} style={{width: "32%"}}>
+            <Image src={item.images.sleeve} width={500} height={500} alt={""} />
+          </div>
         </div>
       </main>
       <footer>
@@ -55,28 +71,30 @@ export const ItemDisplay = ({is_create}: {is_create: boolean}) => {
             thin={true}
             text={"Remove Item"}
           />
-        ) : (
+        ) : !is_create && !item.has_error ? (
           <Button
+            onClick={() => handleReportError(item.id)}
             tone="descructive"
             icon="rejected"
             align="left"
             thin={true}
             text={"Report Error"}
           />
-        )}
+        ) : null}
       </footer>
     </div>
   );
 };
 
-export const MockupDesign = () => {
+export const MockupDesign = ({item}: {item: Items}) => {
+  const [isFront, setFront] = useState(false);
   return (
     <div className={styles.box}>
-      <button className={styles.toggle}>Front</button>
+      <button className={styles.toggle} onClick={() => setFront(!isFront)}>
+        {isFront ? "Front" : "Back"}
+      </button>
       <Image
-        src={
-          "https://cdn.shopify.com/s/files/1/0860/6305/5167/files/0c699b-3.myshopify.com_2Fmockup_2F1727379220312.png?v=1727380140"
-        }
+        src={isFront ? item.images.front_mockup : item.images.back_mockup}
         width={500}
         height={500}
         alt={""}
