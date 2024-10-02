@@ -16,6 +16,7 @@ export default function Images() {
   return (
     <div className={styles.page}>
       <PageHeader
+        loading={loading}
         title="Image List"
         buttons={[
           {

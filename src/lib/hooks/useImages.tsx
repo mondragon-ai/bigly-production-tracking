@@ -21,6 +21,7 @@ const useImageUpload = (): UseImageUploadReturn => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchImages = async () => {
+    setLoading(true);
     try {
       //   const response = await fetch("/api/images");
       //   if (!response.ok) throw new Error("Failed to fetch images");
@@ -38,6 +39,7 @@ const useImageUpload = (): UseImageUploadReturn => {
   }, []);
 
   const uploadImage = async (file: File) => {
+    setLoading(true);
     console.log("uploading");
     try {
       const downloadURL = await uploadToServer(file, "images");

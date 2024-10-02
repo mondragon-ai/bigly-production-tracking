@@ -10,6 +10,7 @@ type ButtonProps = {
   icon?: IconTypes;
   width?: number;
   onClick?: (e: any) => void;
+  loading?: boolean;
 };
 export const Button = ({
   width,
@@ -19,12 +20,13 @@ export const Button = ({
   align = "center",
   icon,
   onClick,
+  loading = false,
 }: ButtonProps) => {
   const t = tone == "success" ? "success" : "critical";
   return (
     <button
       onClick={onClick}
-      className={styles.btnBase}
+      className={`${styles.btnBase}`}
       style={{
         fontWeight: thin ? 500 : 600,
         fontSize: thin ? "14px" : "18px",
@@ -33,12 +35,13 @@ export const Button = ({
         backgroundColor: bkgColor(tone),
         textAlign: align,
         width: width ? `${width}%` : "auto",
-        justifyContent: align == "center" ? "center" : "flex-start",
+        justifyContent: align == "center" || loading ? "center" : "flex-start",
       }}
+      disabled={loading}
       role="button"
     >
-      {icon && <Icon icon={icon} tone={t} />}
-      {text}
+      {icon && !loading ? <Icon icon={icon} tone={t} /> : null}
+      {loading ? <div className={styles.loader}></div> : text}
     </button>
   );
 };

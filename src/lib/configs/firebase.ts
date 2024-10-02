@@ -7,7 +7,7 @@ const firebaseConfig = {
     process.env.FIREBASE_APIKEY || "AIzaSyCylQNq7xSwh0AZ2aEdRFyw7WTfK-HjoCE",
   authDomain: process.env.AUTHDOMAIN || "",
   projectId: process.env.PROJECT_ID || "",
-  storageBucket: process.env.STORAGE_BUCKET || "",
+  storageBucket: "bigly-server.appspot.com",
   messagingSenderId: process.env.MESSAGE_SENDER_ID || "",
   appId: process.env.APP_ID || "",
 };

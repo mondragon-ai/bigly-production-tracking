@@ -8,6 +8,7 @@ import {IconTypes} from "@/lib/types/shared";
 import {useRef} from "react";
 
 type PageHeaderProps = {
+  loading?: boolean;
   title: string;
   date: string;
   badges: {
@@ -34,7 +35,14 @@ const geistSans = localFont({
   weight: "100 900",
 });
 
-const PageHeader = ({title, date, badges, staff, buttons}: PageHeaderProps) => {
+const PageHeader = ({
+  title,
+  date,
+  badges,
+  staff,
+  buttons,
+  loading,
+}: PageHeaderProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleButtonClick = (e: React.MouseEvent) => {
@@ -102,13 +110,13 @@ const PageHeader = ({title, date, badges, staff, buttons}: PageHeaderProps) => {
         {buttons &&
           buttons.map((button, index) => (
             <Button
+              loading={loading}
               key={index}
               thin={true}
               text={button.text}
               tone={button.tone}
               align={"center"}
               icon={button.icon}
-              //   onClick={button.onClick}
               onClick={handleButtonClick}
             />
           ))}

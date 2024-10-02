@@ -57,6 +57,33 @@
   transform: translate(2px, 2px);
 }
 
+.btnBase svg {
+  margin-right: 5px;
+}
+
+.loading {
+  color: var(--secondary-foreground) !important;
+}
+
+.loader {
+  border: 5px solid var(--background);
+  border-radius: 50%;
+  border-top: 5px solid var(--foreground);
+  width: 20px;
+  height: 20px;
+  margin: 5px 0;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (min-width: 768px) {
   .btnBase {
     min-width: 120px;
