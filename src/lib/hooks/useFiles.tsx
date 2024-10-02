@@ -11,6 +11,7 @@ interface UseFilesUploadReturn {
   error: string | null;
   uploadFiles: (file: File) => Promise<void>;
   fetchAndParseFile: (id: string) => Promise<void>;
+  deleteFile: (id: string) => Promise<void>;
   file_detail: FileDetail | null;
 }
 
@@ -61,7 +62,6 @@ const useFiles = (): UseFilesUploadReturn => {
 
   const fetchAndParseFile = async (id: string) => {
     setLoading("requesting");
-    console.log("fetching");
     try {
       // const response = await fetch(
       //   "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
@@ -74,13 +74,33 @@ const useFiles = (): UseFilesUploadReturn => {
       // );
       // if (!response.ok) throw new Error("Failed to save image URL");
       const file_detail = file_details.find((f) => f.id == id);
-      console.log(file_detail);
 
       if (file_detail) {
         setFileDetail(file_detail);
       } else {
         setFileDetail(null);
       }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const deleteFile = async (id: string) => {
+    setLoading("deleting");
+    try {
+      //   const response = await fetch("/api/images", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({name: file.name, link: downloadURL}),
+      //   });
+      //   if (!response.ok) throw new Error("Failed to save image URL");
+      const new_list = files.filter((f) => f.id !== id);
+      setFiles(new_list);
+      setFileDetail(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
@@ -95,6 +115,7 @@ const useFiles = (): UseFilesUploadReturn => {
     uploadFiles,
     fetchAndParseFile,
     file_detail,
+    deleteFile,
   };
 };
 

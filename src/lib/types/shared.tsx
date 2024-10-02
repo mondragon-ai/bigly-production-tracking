@@ -13,4 +13,9 @@ export type IconTypes =
   | "badge-check"
   | "hour_glass";
 
-export type LoadingTypes = "loading" | "posting" | "requesting" | null;
+export type LoadingTypes =
+  | "loading"
+  | "posting"
+  | "requesting"
+  | "deleting"
+  | null;

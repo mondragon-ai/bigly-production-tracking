@@ -1,30 +1,37 @@
 import {FileDetail} from "@/lib/types/files";
-import {Badge} from "../shared/Badge";
 import {Button} from "../shared/Button";
 import styles from "./Files.module.css";
 
-export const FileDetailCard = ({file_detail}: {file_detail: FileDetail}) => {
+export const FileDetailCard = ({
+  file_detail,
+  handleDeleteFile,
+}: {
+  file_detail: FileDetail;
+  handleDeleteFile: (id: string) => void;
+}) => {
   return (
     <div className={styles.fileDetailWrapper}>
       <header>
         <h5>{file_detail.name}</h5>
-        {file_detail.status == "generated" ? (
+        <div>
+          {file_detail.status == "pending" && (
+            <Button
+              text={"Generate Jobs"}
+              thin={true}
+              icon="wand"
+              tone={"success"}
+              align={"center"}
+            />
+          )}
           <Button
+            onClick={() => handleDeleteFile(file_detail.id)}
             text={"Delete"}
             thin={true}
             tone={"descructive"}
             align={"center"}
             icon="trash"
           />
-        ) : (
-          <Button
-            text={"Generate Jobs"}
-            thin={true}
-            icon="wand"
-            tone={"success"}
-            align={"center"}
-          />
-        )}
+        </div>
       </header>
 
       <div className={styles.fileTableWrapper}>

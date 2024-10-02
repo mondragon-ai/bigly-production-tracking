@@ -12,6 +12,7 @@ interface UseImageUploadReturn {
   uploadImage: (file: File) => Promise<void>;
   img_detail: ImageDocument | null;
   setImageCard: (id: string) => Promise<void>;
+  deleteImage: (id: string) => Promise<void>;
 }
 
 const useImageUpload = (): UseImageUploadReturn => {
@@ -76,6 +77,27 @@ const useImageUpload = (): UseImageUploadReturn => {
     }
   };
 
+  const deleteImage = async (id: string) => {
+    setLoading("deleting");
+    try {
+      //   const response = await fetch("/api/images", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({name: file.name, link: downloadURL}),
+      //   });
+      //   if (!response.ok) throw new Error("Failed to save image URL");
+      const new_list = images.filter((i) => i.id !== id);
+      setImages(new_list);
+      setImgDetail(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(null);
+    }
+  };
+
   return {
     images,
     loading,
@@ -83,6 +105,7 @@ const useImageUpload = (): UseImageUploadReturn => {
     uploadImage,
     setImageCard,
     img_detail,
+    deleteImage,
   };
 };
 

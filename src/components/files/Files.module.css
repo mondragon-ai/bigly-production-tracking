@@ -37,6 +37,21 @@
   color: var(--primary-text);
 }
 
+.fileDetailWrapper header > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.fileDetailWrapper header > div > button {
+  margin-left: 10px;
+}
+
 .fileTableWrapper {
   position: relative;
   width: 100%;

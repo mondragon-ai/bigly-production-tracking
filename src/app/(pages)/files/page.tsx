@@ -7,17 +7,26 @@ import useFiles from "@/lib/hooks/useFiles";
 import {StartingState} from "@/components/images/StartingState";
 
 export default function Files() {
-  const {files, loading, error, uploadFiles, fetchAndParseFile, file_detail} =
-    useFiles();
+  const {
+    files,
+    loading,
+    error,
+    uploadFiles,
+    fetchAndParseFile,
+    file_detail,
+    deleteFile,
+  } = useFiles();
 
   const handleFileUpload = async (file: File) => {
-    console.log("Uploaded file:", file);
     await uploadFiles(file);
   };
 
   const handleFileSelect = async (id: string) => {
-    console.log({id});
     await fetchAndParseFile(id);
+  };
+
+  const handleDeleteFile = async (id: string) => {
+    await deleteFile(id);
   };
 
   return (
@@ -47,7 +56,10 @@ export default function Files() {
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {file_detail ? (
-            <FileDetailCard file_detail={file_detail} />
+            <FileDetailCard
+              file_detail={file_detail}
+              handleDeleteFile={handleDeleteFile}
+            />
           ) : loading == "requesting" ? (
             <p>loading</p>
           ) : (

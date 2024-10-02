@@ -3,12 +3,19 @@ import {Button} from "../shared/Button";
 import styles from "./Images.module.css";
 import {ImageDocument} from "@/lib/types/images";
 
-export const ImageDetail = ({img_detail}: {img_detail: ImageDocument}) => {
+export const ImageDetail = ({
+  img_detail,
+  handleDeleteImage,
+}: {
+  img_detail: ImageDocument;
+  handleDeleteImage: (id: string) => void;
+}) => {
   return (
     <div className={styles.imageDetailWrapper}>
       <header>
         <h5>{img_detail.name}</h5>
         <Button
+          onClick={() => handleDeleteImage(img_detail.id)}
           text={"Delete Image"}
           thin={true}
           tone={"descructive"}

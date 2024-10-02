@@ -7,8 +7,15 @@ import useImageUpload from "@/lib/hooks/useImages";
 import {StartingState} from "@/components/images/StartingState";
 
 export default function Images() {
-  const {images, loading, error, uploadImage, img_detail, setImageCard} =
-    useImageUpload();
+  const {
+    images,
+    loading,
+    error,
+    uploadImage,
+    img_detail,
+    setImageCard,
+    deleteImage,
+  } = useImageUpload();
 
   const handleImageUpload = async (file: File) => {
     await uploadImage(file);
@@ -16,6 +23,10 @@ export default function Images() {
 
   const handleImageSelect = (id: string) => {
     setImageCard(id);
+  };
+
+  const handleDeleteImage = (id: string) => {
+    deleteImage(id);
   };
 
   return (
@@ -45,7 +56,10 @@ export default function Images() {
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {img_detail ? (
-            <ImageDetail img_detail={img_detail} />
+            <ImageDetail
+              img_detail={img_detail}
+              handleDeleteImage={handleDeleteImage}
+            />
           ) : loading == "requesting" ? (
             <p>loading</p>
           ) : (
