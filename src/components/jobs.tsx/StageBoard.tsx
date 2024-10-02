@@ -4,14 +4,16 @@ import {Badge} from "../shared/Badge";
 import styles from "./Jobs.module.css";
 import {getHoursDifference} from "@/lib/utils/converter.tsx/time";
 import {getStateErrorRate} from "@/lib/utils/converter.tsx/analytics";
+import {SkeletonBadge, SkeletonText} from "../skeleton/SkeletonText";
 
 type StageBoardProps = {
   title: string;
   jobs: any[];
   stage: string;
+  loading: boolean;
 };
 
-export const StageBoard = ({title, jobs, stage}: StageBoardProps) => {
+export const StageBoard = ({title, jobs, stage, loading}: StageBoardProps) => {
   return (
     <div className={styles.kanbanBoard}>
       <header>
@@ -26,16 +28,23 @@ export const StageBoard = ({title, jobs, stage}: StageBoardProps) => {
         </h4>
       </header>
       <main>
-        {jobs &&
-          jobs.map((job, i) => {
-            if (job.stage == stage) {
-              return <Job key={i} job={job} />;
-            }
-          })}
+        {jobs && !loading
+          ? jobs.map((job, i) => {
+              if (job.stage == stage) {
+                return <Job key={i} job={job} />;
+              }
+            })
+          : jobs.map((job, i) => {
+              if (job.stage == stage) {
+                return <JobSkeleton key={i} />;
+              }
+            })}
       </main>
     </div>
   );
 };
+
+const loading = ["", "", ""];
 
 export const Job = ({job}: {job: JobDocument}) => {
   const href = job.stage == "pending" ? `/new/${job.id}}` : `/job/${job.id}}`;
@@ -69,6 +78,26 @@ export const Job = ({job}: {job: JobDocument}) => {
           text={`${getStateErrorRate(job, job.stage)}`}
           tone={"critical"}
         />
+      </footer>
+    </a>
+  );
+};
+
+export const JobSkeleton = () => {
+  return (
+    <a href={"#"} className={styles.box}>
+      <header>
+        <SkeletonText width={40} header={true} />
+        <SkeletonBadge />
+      </header>
+      <div>
+        <Avatar staff={null} />
+        <Avatar staff={null} />
+        <Avatar staff={null} />
+      </div>
+      <footer>
+        <SkeletonBadge />
+        <SkeletonBadge />
       </footer>
     </a>
   );

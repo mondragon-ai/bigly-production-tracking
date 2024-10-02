@@ -1,9 +1,11 @@
+"use client";
 import {StageBoard} from "@/components/jobs.tsx/StageBoard";
 import styles from "../../../components/Shared.module.css";
 import PageHeader from "@/components/shared/PageHeader";
-import {job_list} from "@/lib/data/jobs";
+import useJobs from "@/lib/hooks/useJobs";
 
 export default function Jobs() {
+  const {jobs, loading} = useJobs();
   return (
     <div className={styles.page}>
       <PageHeader
@@ -22,17 +24,17 @@ export default function Jobs() {
             flexDirection: "row",
           }}
         >
-          {stages &&
-            stages.map((s, i) => {
-              return (
-                <StageBoard
-                  key={i}
-                  title={s.title}
-                  jobs={job_list}
-                  stage={s.stage}
-                />
-              );
-            })}
+          {stages.map((s, i) => {
+            return (
+              <StageBoard
+                loading={loading == "loading"}
+                key={i}
+                title={s.title}
+                jobs={jobs}
+                stage={s.stage}
+              />
+            );
+          })}
         </section>
       </main>
     </div>
