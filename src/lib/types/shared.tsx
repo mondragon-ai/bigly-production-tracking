@@ -28,6 +28,7 @@ export type Staff = {
   email: string;
   role: "admin" | "staff";
   position: Stages;
+  created_at?: string;
 };
 
 export type BadgeType = {

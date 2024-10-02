@@ -1,11 +1,20 @@
+"use client";
 import PageHeader from "@/components/shared/PageHeader";
 import {UserList} from "@/components/settings/UserList";
 import {StoreList} from "@/components/settings/StoreList";
 import styles from "../../../components/Shared.module.css";
 import {CreateUser} from "@/components/settings/CreateUser";
 import {CreateStore} from "@/components/settings/CreateStore";
+import {useSettings} from "@/lib/hooks/useSettings";
 
 export default function Settings() {
+  const {data, staff, store, selectItem} = useSettings();
+
+  const handleSelect = (id: string, type: "store" | "staff") => {
+    console.log({id, type});
+    selectItem(id, type);
+  };
+
   return (
     <div className={styles.page}>
       <PageHeader
@@ -31,18 +40,26 @@ export default function Settings() {
       <div>
         <div className={styles.rowSection} style={{width: "100%"}}>
           <section style={{width: "55%", paddingRight: "10px"}}>
-            <UserList headers={users_headers} items={users_items} />
+            <UserList
+              headers={users_headers}
+              items={data.staff}
+              selectItem={handleSelect}
+            />
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
-            <CreateUser />
+            <CreateUser staff={staff} />
           </section>
         </div>
         <div className={styles.rowSection} style={{width: "100%"}}>
           <section style={{width: "55%", paddingRight: "10px"}}>
-            <StoreList headers={store_header} items={store_items} />
+            <StoreList
+              headers={store_header}
+              items={data.store}
+              selectItem={handleSelect}
+            />
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
-            <CreateStore />
+            <CreateStore store={store} />
           </section>
         </div>
       </div>

@@ -221,6 +221,8 @@
 
   .sidebar nav .topNav ul li a .numbers {
     justify-self: end;
+    padding: 5px 7px;
+    border-radius: 3px;
   }
 
   .avatarWrapper {
