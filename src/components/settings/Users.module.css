@@ -218,6 +218,13 @@
   object-fit: contain;
 }
 
+.detailWrapper .box span {
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 16px;
+  color: var(--secondary-text);
+}
+
 .detailWrapper footer {
   position: relative;
   display: flex;

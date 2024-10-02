@@ -1,5 +1,5 @@
 "use client";
-import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {LoadingTypes, Staff} from "../types/shared";
 import {SettingsPage, StoreDocument} from "../types/settings";
 import {settings_data} from "../data/settings";
@@ -15,6 +15,8 @@ interface SettingsReturn {
   data: SettingsPage;
   staff: Staff | null;
   store: StoreDocument | null;
+  setStaff: Dispatch<SetStateAction<Staff | null>>;
+  setStore: Dispatch<SetStateAction<StoreDocument | null>>;
 }
 
 export const useSettings = (): SettingsReturn => {
@@ -78,6 +80,8 @@ export const useSettings = (): SettingsReturn => {
     addItem,
     createStaff,
     createStore,
+    setStaff,
+    setStore,
     staff,
     store,
   };

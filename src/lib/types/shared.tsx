@@ -13,6 +13,7 @@ export type IconTypes =
   | "clock"
   | "wand"
   | "badge-check"
+  | "add-user"
   | "hour_glass";
 
 export type LoadingTypes =
