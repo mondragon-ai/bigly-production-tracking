@@ -6,9 +6,14 @@ import styles from "./Shared.module.css";
 type CustomTableProps = {
   headers: string[];
   items: any[];
+  handleFileSelect: (id: string) => void;
 };
 
-export const FileList = ({headers, items}: CustomTableProps) => {
+export const FileList = ({
+  headers,
+  items,
+  handleFileSelect,
+}: CustomTableProps) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const toggleSelection = (id: string) => {
@@ -46,7 +51,7 @@ export const FileList = ({headers, items}: CustomTableProps) => {
         </thead>
         <tbody>
           {items.map((item, index) => (
-            <tr key={item.id}>
+            <tr key={item.id} onClick={() => handleFileSelect(item.id)}>
               <td
                 style={{
                   textAlign: "center",
