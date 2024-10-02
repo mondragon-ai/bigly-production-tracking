@@ -9,13 +9,12 @@ import {useState} from "react";
 export const ItemDisplay = ({
   is_create,
   item,
-  handleReportError,
+  onClick,
 }: {
   is_create: boolean;
-  handleReportError: (id: string) => void;
+  onClick: (id: string) => void;
   item: Items;
 }) => {
-  console.log({item});
   return (
     <div className={styles.itemDisplayWrapper}>
       <header>
@@ -65,6 +64,7 @@ export const ItemDisplay = ({
       <footer>
         {is_create ? (
           <Button
+            onClick={() => onClick(item.id)}
             tone="descructive"
             icon="trash"
             align="left"
@@ -73,7 +73,7 @@ export const ItemDisplay = ({
           />
         ) : !is_create && !item.has_error ? (
           <Button
-            onClick={() => handleReportError(item.id)}
+            onClick={() => onClick(item.id)}
             tone="descructive"
             icon="rejected"
             align="left"

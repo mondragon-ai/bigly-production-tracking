@@ -10,10 +10,11 @@ import useJob from "@/lib/hooks/useJob";
 
 export default function JobDetail() {
   const params = useParams<{id: string}>();
-  const {job, selectItem, item} = useJob(params.id);
+  const {job, selectItem, item, deleteJob} = useJob(params.id);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     console.log({delete: params.id});
+    await deleteJob(params.id);
   };
 
   const handleReportError = (id: string) => {
@@ -72,7 +73,7 @@ export default function JobDetail() {
             <ItemDisplay
               item={item}
               is_create={false}
-              handleReportError={handleReportError}
+              onClick={handleReportError}
             />
           )}
         </section>

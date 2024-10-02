@@ -1,66 +1,110 @@
+"use client";
 import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
+import {useParams} from "next/navigation";
+import useJob from "@/lib/hooks/useJob";
+import {JobDocument} from "@/lib/types/jobs";
+import {BadgeType} from "@/lib/types/shared";
+import {StartingState} from "@/components/images/StartingState";
 
 export default function Confirm() {
+  const params = useParams<{id: string}>();
+  const {job, selectItem, item, loading, deleteJob, removeItem, approveJob} =
+    useJob(params.id);
+
+  const handleDeleteJob = async () => {
+    console.log({delete: params.id});
+    await deleteJob(params.id);
+  };
+
+  const handleRemoveItem = async (id: string) => {
+    console.log({remove: id});
+    await removeItem(id);
+  };
+
+  const handleSelectItem = (id: string) => {
+    console.log({select: id});
+    selectItem(id);
+  };
+
+  const handleApprove = async () => {
+    console.log({approve: params.id});
+    await approveJob(params.id);
+  };
+
+  const openStaff = () => {
+    alert("READY TO ADD");
+  };
+
+  const badges = (job: JobDocument) => {
+    const badge_list: BadgeType[] = [
+      {
+        icon: "delivery",
+        text: job.stage,
+        tone: "info",
+      },
+    ];
+    if (job.is_priority) {
+      badge_list.push({
+        icon: "fire",
+        text: "Priority",
+        tone: "critical",
+      });
+    }
+    return badge_list;
+  };
+
   return (
     <div className={styles.page}>
       <PageHeader
         title="Job #1234"
+        loading={loading == "posting"}
         buttons={[
-          {
-            text: "ADD ACCOUNT",
-            tone: "success",
-            onClick: undefined,
-            icon: "link",
-          },
           {
             text: "ADD STAFF",
             tone: "success",
-            onClick: undefined,
+            onClick: openStaff,
             icon: "link",
           },
           {
             text: "APPROVE",
             tone: "success",
-            onClick: undefined,
-            icon: "link",
+            onClick: handleApprove,
+            icon: "badge-check",
           },
           {
             text: "DELETE",
-            tone: "success",
-            onClick: undefined,
-            icon: "link",
+            tone: "descructive",
+            onClick: handleDeleteJob,
+            icon: "trash",
           },
         ]}
-        date={"Jan 6 2024 4:20 PM"}
-        badges={[
-          {
-            icon: "delivery",
-            text: "Pressing",
-            tone: "info",
-          },
-          {
-            icon: "fire",
-            text: "Priority",
-            tone: "critical",
-          },
-        ]}
-        staff={[
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-          {name: "Angel", email: "angel.@goigly.com", id: "1"},
-        ]}
+        date={job.created_at}
+        badges={badges(job)}
+        staff={job.staff}
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ItemsList headers={headers} items={items} />
+          <ItemsList
+            headers={headers}
+            items={job.items}
+            handleSelectItem={handleSelectItem}
+          />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          <ItemDisplay is_create={false} />
+          {item ? (
+            <ItemDisplay
+              is_create={true}
+              onClick={handleRemoveItem}
+              item={item}
+            />
+          ) : loading == "requesting" ? (
+            <p>loading</p>
+          ) : (
+            <StartingState type="item" />
+          )}
         </section>
       </main>
     </div>
@@ -68,42 +112,3 @@ export default function Confirm() {
 }
 
 const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
-
-const items = [
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-];

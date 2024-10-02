@@ -9,6 +9,9 @@ interface JobReturn {
   loading: LoadingTypes;
   error: string | null;
   selectItem: (id: string) => void;
+  deleteJob: (id: string) => Promise<void>;
+  removeItem: (id: string) => Promise<void>;
+  approveJob: (id: string) => Promise<void>;
   item: Items | null;
 }
 
@@ -47,6 +50,61 @@ const useJob = (id: string): JobReturn => {
     setItem(null);
     const item = job.items.find((i) => i.id == id);
     if (item) setItem(item);
+    setLoading(null);
+  };
+
+  const deleteJob = async (id: string) => {
+    setLoading("posting");
+    try {
+      const delay = (s: number) => {
+        return new Promise((resolve) => setTimeout(resolve, s));
+      };
+      await delay(500);
+      //   const response = await fetch("/api/images");
+      //   if (!response.ok) throw new Error("Failed to fetch images");
+      //   const data: Image[] = await response.json();
+      //   setImages(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const removeItem = async () => {
+    setLoading("posting");
+    try {
+      const delay = (s: number) => {
+        return new Promise((resolve) => setTimeout(resolve, s));
+      };
+      await delay(500);
+      //   const response = await fetch("/api/images");
+      //   if (!response.ok) throw new Error("Failed to fetch images");
+      //   const data: Image[] = await response.json();
+      //   setImages(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const approveJob = async () => {
+    setLoading("posting");
+    try {
+      const delay = (s: number) => {
+        return new Promise((resolve) => setTimeout(resolve, s));
+      };
+      await delay(500);
+      //   const response = await fetch("/api/images");
+      //   if (!response.ok) throw new Error("Failed to fetch images");
+      //   const data: Image[] = await response.json();
+      //   setImages(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(null);
+    }
   };
 
   return {
@@ -55,6 +113,9 @@ const useJob = (id: string): JobReturn => {
     job,
     selectItem,
     item,
+    deleteJob,
+    approveJob,
+    removeItem,
   };
 };
 
