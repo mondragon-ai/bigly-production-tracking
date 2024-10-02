@@ -1,14 +1,26 @@
 "use client";
-import styles from "./Images.module.css";
 import Image from "next/image";
 import {Icon} from "../shared/Icon";
+import styles from "./Images.module.css";
+import {copyToClipBoard} from "@/lib/utils/shared";
+import {ImageDocument} from "@/lib/types/images";
+import toast from "react-hot-toast";
 
 type CustomTableProps = {
   headers: string[];
-  items: any[];
+  items: ImageDocument[];
+  handleImageSelect: (id: string) => void;
 };
 
-export const ImageList = ({headers, items}: CustomTableProps) => {
+export const ImageList = ({
+  headers,
+  items,
+  handleImageSelect,
+}: CustomTableProps) => {
+  const handleCopy = (value: string) => {
+    copyToClipBoard(value);
+    toast.success("copied to clipboard");
+  };
   return (
     <div className={styles.imageTableWrapper}>
       <table>
@@ -31,7 +43,7 @@ export const ImageList = ({headers, items}: CustomTableProps) => {
         </thead>
         <tbody>
           {items.map((item, index) => (
-            <tr key={item.id}>
+            <tr key={index} onClick={() => handleImageSelect(item.id)}>
               <td
                 style={{
                   textAlign: "center",
@@ -51,9 +63,13 @@ export const ImageList = ({headers, items}: CustomTableProps) => {
               <td>{item.name}</td>
               <td>{item.added}</td>
               <td>
-                <div className={styles.btn}>
+                <button
+                  className={styles.btn}
+                  role="button"
+                  onClick={() => handleCopy(item.url)}
+                >
                   <Icon icon={"link"} tone={"magic"} />
-                </div>
+                </button>
               </td>
             </tr>
           ))}

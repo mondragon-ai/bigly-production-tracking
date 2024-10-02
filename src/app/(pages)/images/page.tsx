@@ -6,11 +6,17 @@ import {ImageList} from "@/components/images/ImageList";
 import useImageUpload from "@/lib/hooks/useImages";
 
 export default function Images() {
-  const {images, loading, error, uploadImage} = useImageUpload();
+  const {images, loading, error, uploadImage, img_detail, setImageCard} =
+    useImageUpload();
 
   const handleImageUpload = async (file: File) => {
     console.log("Uploaded file:", file);
     await uploadImage(file);
+  };
+
+  const handleImageSelect = (id: string) => {
+    console.log({id});
+    setImageCard(id);
   };
 
   return (
@@ -32,10 +38,14 @@ export default function Images() {
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ImageList headers={headers} items={items} />
+          <ImageList
+            handleImageSelect={handleImageSelect}
+            headers={headers}
+            items={images}
+          />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          <ImageDetail />
+          {img_detail && <ImageDetail img_detail={img_detail} />}
         </section>
       </main>
     </div>
@@ -43,33 +53,3 @@ export default function Images() {
 }
 
 const headers = ["File Name", "Date Added", "Link"];
-const items = [
-  {
-    id: "1",
-    image: "",
-    name: "Pick-file.csv",
-    added: "Jan 6 2024 4:20 PM",
-    link: "",
-  },
-  {
-    id: "1",
-    image: "",
-    name: "Pick-file.csv",
-    added: "Jan 6 2024 4:20 PM",
-    link: "",
-  },
-  {
-    id: "1",
-    image: "",
-    name: "Pick-file.csv",
-    added: "Jan 6 2024 4:20 PM",
-    link: "",
-  },
-  {
-    id: "1",
-    image: "",
-    name: "Pick-file.csv",
-    added: "Jan 6 2024 4:20 PM",
-    link: "",
-  },
-];

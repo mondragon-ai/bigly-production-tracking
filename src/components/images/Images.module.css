@@ -126,6 +126,17 @@
   border: 1px solid var(--foreground);
   border-radius: 5px;
   background-color: var(--tertiary-background);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.imageTableWrapper td .btn:hover {
+  background-color: var(--tertary-background) !important;
+}
+
+.imageTableWrapper td .btn:active {
+  box-shadow: var(--foreground) 0px 2px 0 0;
+  transform: translate(2px, 2px);
 }
 
 .imageDetailWrapper {

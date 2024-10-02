@@ -57,6 +57,7 @@ const useFiles = (): UseFilesUploadReturn => {
       setLoading(false);
     }
   };
+
   const fetchAndParseFile = async (id: string) => {
     setLoading(true);
     console.log("fetching");
