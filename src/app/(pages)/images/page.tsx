@@ -3,12 +3,16 @@ import {ImageDetail} from "@/components/images/ImageDetail";
 import styles from "../../../components/Shared.module.css";
 import PageHeader from "@/components/shared/PageHeader";
 import {ImageList} from "@/components/images/ImageList";
+import useImageUpload from "@/lib/hooks/useImages";
 
 export default function Images() {
-  const handleImageUpload = (file: File) => {
+  const {images, loading, error, uploadImage} = useImageUpload();
+
+  const handleImageUpload = async (file: File) => {
     console.log("Uploaded file:", file);
-    // Handle the file upload logic here
+    await uploadImage(file);
   };
+
   return (
     <div className={styles.page}>
       <PageHeader

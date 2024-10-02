@@ -3,7 +3,8 @@ import {getAuth} from "firebase/auth";
 import {getStorage} from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_APIKEY || "",
+  apiKey:
+    process.env.FIREBASE_APIKEY || "AIzaSyCylQNq7xSwh0AZ2aEdRFyw7WTfK-HjoCE",
   authDomain: process.env.AUTHDOMAIN || "",
   projectId: process.env.PROJECT_ID || "",
   storageBucket: process.env.STORAGE_BUCKET || "",

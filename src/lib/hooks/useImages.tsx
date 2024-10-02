@@ -1,5 +1,6 @@
 "use client";
 import {useState, useEffect} from "react";
+import {uploadToServer} from "../utils/storage";
 
 interface Image {
   id: string;
@@ -37,8 +38,10 @@ const useImageUpload = (): UseImageUploadReturn => {
   }, []);
 
   const uploadImage = async (file: File) => {
+    console.log("uploading");
     try {
-      //   const downloadURL = await uploadToServer(file, setImages);
+      const downloadURL = await uploadToServer(file, "images");
+      console.log(downloadURL);
       //   const response = await fetch("/api/images", {
       //     method: "POST",
       //     headers: {
