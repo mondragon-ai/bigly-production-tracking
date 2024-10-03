@@ -28,12 +28,10 @@ export const NavMenu = () => {
           <ul>
             <li>
               <Link
-                href={"/"}
+                href={"/analytics"}
                 style={{
                   backgroundColor:
-                    slug === "analytics"
-                      ? "var(----tertary-background)"
-                      : "transparent",
+                    slug === "analytics" ? "white" : "transparent",
                 }}
               >
                 <div className={styles.left}>
@@ -217,7 +215,7 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"#"}
+                href={"/"}
                 style={{
                   backgroundColor:
                     slug === "settings"

@@ -97,6 +97,10 @@
 
 .pageHeaderWrapper .right {
   display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .pageHeaderWrapper .right .staffWrapper {
@@ -137,4 +141,49 @@
 
 .pageHeaderWrapper .right button {
   margin-right: 1rem;
+}
+
+/* =============================================================== */
+/*  2. ANALYTICS                                                   */
+/* =============================================================== */
+.chartContainer {
+  position: relative;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+}
+
+.aTxt {
+  position: relative;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+}
+
+.aTxt > h1 {
+  line-height: 22px;
+}
+
+.aTxt > span {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.chartWrapperBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 1rem;
+  background-color: var(--background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
 }

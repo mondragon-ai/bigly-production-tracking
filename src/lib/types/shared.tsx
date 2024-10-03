@@ -12,6 +12,7 @@ export type IconTypes =
   | "upload"
   | "clock"
   | "wand"
+  | "calendar"
   | "search"
   | "badge-check"
   | "shopping-bag"
