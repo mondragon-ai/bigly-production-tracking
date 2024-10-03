@@ -25,6 +25,14 @@ export type Images = {
   back_mockup: string;
 };
 
+export type ImageFiles = {
+  front: File | null;
+  back: File | null;
+  sleeve: File | null;
+  front_mockup: File | null;
+  back_mockup: File | null;
+};
+
 export type Items = {
   has_error: boolean;
   staff_error: string;

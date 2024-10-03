@@ -1,4 +1,4 @@
-import {JobDocument} from "../types/jobs";
+import {Items, JobDocument} from "../types/jobs";
 
 const stages = [
   {
@@ -645,5 +645,31 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-07T07:00:00Z",
     updated_at: "2024-10-07T15:00:00Z",
+  },
+];
+
+export const item_list: Items[] = [
+  {
+    has_error: true,
+    staff_error: "Improper pressing temperature",
+    staff: "Tom Harris",
+    id: "item_005",
+    images: {
+      front:
+        "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_da3ce9dd-ce48-4495-85f0-2895394df776.png?v=1726788817",
+      back: "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify_1a858997-2d33-4720-8171-af67379b2c16.png?v=1726788817",
+      sleeve:
+        "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/5a763c-56.myshopify_391a04ff-7c4d-4af1-a509-f3f031906f4a.png?v=1726808028",
+      front_mockup:
+        "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726786082414.png?v=1726788887",
+      back_mockup:
+        "https://cdn.shopify.com/s/files/1/0731/7048/5544/files/0c699b-3.myshopify.com_2Fmockup_2F1726787535089.png?v=1726788840",
+    },
+    sku: "8901-S-BLACK",
+    size: "S",
+    color: "Black",
+    type: "shirt",
+    store: "Third Store",
+    status: "pending",
   },
 ];

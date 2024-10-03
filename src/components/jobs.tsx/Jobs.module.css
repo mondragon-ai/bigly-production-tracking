@@ -77,6 +77,7 @@
   width: 100%;
 }
 
+.btn,
 .toggle {
   position: absolute;
   display: flex;
@@ -115,13 +116,73 @@
   display: flex;
 }
 
+.btn:hover,
 .toggle:hover {
   background-color: var(--tertary-background) !important;
 }
 
+.btn:active,
 .toggle:active {
   box-shadow: var(--foreground) 0px 2px 0 0;
   transform: translate(2px, 2px);
+}
+
+.btn {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.createHdrLeft span {
+  font-size: 10px;
+  font-weight: 450;
+  line-height: 15px;
+  color: var(--secondary-accent);
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.createHdrLeft {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.createHdrLeft label {
+  position: relative;
+  width: 50px;
+  height: 19.5px;
+  background: #fff;
+  display: inline-block;
+  border-radius: 100px;
+  box-shadow: 0px 2px 6px -2px rgba(0, 0, 0, 0.4);
+}
+
+.createHdrLeft label .fill {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  bottom: 0;
+  border-radius: 50%;
+  background: var(--secondary-accent);
+  width: 16px;
+  height: 16px;
+  transition: 0.4s left;
+}
+
+.createHdrLeft label input {
+  width: 0;
+  visibility: hidden;
+}
+
+.createHdrLeft label input:checked + span.fill {
+  left: calc(100% - 18px);
 }
 
 .itemDisplayWrapper .box img {
@@ -295,6 +356,11 @@
   padding: 0;
   margin: 0;
   display: inline-block;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .searchWrapper input {
@@ -357,6 +423,10 @@
   background-color: var(--background);
 }
 
+.selectWrapper select {
+  width: 98%;
+}
+
 .inputWrapper label {
   font-size: 12px;
   font-weight: 450;
@@ -371,16 +441,24 @@
 .itemDisplayWrapper .box .fileUpload {
   text-align: center;
   width: 100%;
-  /* border: 1px dashed var(--magic-color); */
-  padding: 1.5rem;
+  padding: 1rem 0.5rem;
   position: relative;
   cursor: pointer;
 }
 
+.itemDisplayWrapper .box .fileUpload h3 {
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 15px;
+  color: var(--secondary-text);
+}
+
 .itemDisplayWrapper .box .fileUpload p {
-  font-size: 0.87rem;
-  margin-top: 10px;
-  color: #bbcada;
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 350;
+  line-height: 13px;
+  color: var(--secondary-text);
 }
 
 .itemDisplayWrapper .box .fileUpload input {

@@ -5,12 +5,13 @@ import {useState} from "react";
 import {StoreDocument} from "@/lib/types/settings";
 import {Items} from "@/lib/types/jobs";
 import {EmptyState} from "../images/EmptyState";
+import {item_list} from "@/lib/data/jobs";
 
 export const AddItems = ({
   handleSelectItem,
   stores,
 }: {
-  handleSelectItem: () => void;
+  handleSelectItem: (item: Items) => void;
   stores: StoreDocument[];
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -31,10 +32,27 @@ export const AddItems = ({
     console.log({query, store});
     const curr_store = stores.map((s) => s.name == store);
     if (store.toLocaleUpperCase() == "BIGLY") {
-      console.log("ALGOLIA");
+      // TODO: search algolia with query
+      // TODO: set items
     } else {
-      console.log("SHOPIFY");
+      const item = item_list.filter(
+        (i) => i.sku.includes(query) || i.id.includes(query),
+      );
+      console.log({item});
+      if (item) {
+        setItems(item || []);
+      } else {
+        setItems([]);
+      }
     }
+    if (query == "") {
+      setItems([]);
+    }
+  };
+
+  const handleItemSelect = async (id: string) => {
+    const item = item_list.find((i) => i.id == id);
+    if (item) await handleSelectItem(item);
   };
 
   return (
@@ -65,8 +83,12 @@ export const AddItems = ({
         {isOpen && stores && stores.length != 0 && (
           <div className={styles.storeModal}>
             {stores &&
-              stores.map((s) => {
-                return <div onClick={() => closeModal(s.name)}>{s.name}</div>;
+              stores.map((s, i) => {
+                return (
+                  <div key={i} onClick={() => closeModal(s.name)}>
+                    {s.name}
+                  </div>
+                );
               })}
           </div>
         )}
@@ -92,7 +114,7 @@ export const AddItems = ({
           </thead>
           <tbody>
             {items.map((item, index) => (
-              <tr key={item.id} onClick={() => handleSelectItem()}>
+              <tr key={item.id} onClick={() => handleItemSelect(item.id)}>
                 <td
                   style={{
                     textAlign: "center",
@@ -115,12 +137,12 @@ export const AddItems = ({
             ))}
           </tbody>
         </table>
-        {
+        {items.length == 0 && (
           <EmptyState
             icon="search"
             text="Please selet a store and start a search"
           />
-        }
+        )}
       </div>
     </div>
   );

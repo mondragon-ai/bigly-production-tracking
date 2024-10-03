@@ -1,4 +1,4 @@
-import {JobDocument} from "../types/jobs";
+import {ImageFiles, Images, Items, JobDocument} from "../types/jobs";
 
 export const initialJobs = (): JobDocument => {
   return {
@@ -39,5 +39,47 @@ export const initialJobs = (): JobDocument => {
     items: [],
     created_at: "",
     updated_at: "",
+  };
+};
+
+export const initialItem = (): Items => {
+  return {
+    has_error: false,
+    staff_error: "",
+    staff: "",
+    id: "",
+    images: {
+      front: "",
+      back: "",
+      sleeve: "",
+      front_mockup: "",
+      back_mockup: "",
+    },
+    sku: "",
+    size: "",
+    color: "",
+    type: "shirt",
+    store: "bigly",
+    status: "pending",
+  };
+};
+
+export const initalImages = (): Images => {
+  return {
+    front: "",
+    back: "",
+    sleeve: "",
+    front_mockup: "",
+    back_mockup: "",
+  };
+};
+
+export const initalImageFiles = (): ImageFiles => {
+  return {
+    front: null,
+    back: null,
+    sleeve: null,
+    front_mockup: null,
+    back_mockup: null,
   };
 };

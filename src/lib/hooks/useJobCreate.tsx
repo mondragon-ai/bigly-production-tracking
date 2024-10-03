@@ -5,7 +5,7 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import {Items, JobDocument, Stages} from "@/lib/types/jobs";
+import {ImageFiles, Items, JobDocument, Stages} from "@/lib/types/jobs";
 import {initialJobs} from "../payloads/jobs";
 import {LoadingTypes} from "../types/shared";
 import {StoreDocument} from "../types/settings";
@@ -17,13 +17,13 @@ type UseJobCreateProps = () => {
   loading: LoadingTypes;
   setJob: Dispatch<SetStateAction<JobDocument>>;
   handleApproveJob: () => void;
-  handleCreateItem: () => void;
-  handleSelectItem: () => void;
+  handleCreateItem: (item: Items, images: ImageFiles) => void;
+  handleSelectItem: (item: Items) => void;
 };
 
 export const useJobCreate: UseJobCreateProps = () => {
   const [job, setJob] = useState<JobDocument>(initialJobs());
-  const [stores, setStores] = useState<StoreDocument[]>(store_list);
+  const [stores, setStores] = useState<StoreDocument[]>([]);
   const [loading, setLoading] = useState<LoadingTypes>(null);
 
   const handleApproveJob = useCallback(() => {
@@ -31,20 +31,26 @@ export const useJobCreate: UseJobCreateProps = () => {
     console.log(`READY TO APPROVE JOB with state`);
   }, []);
 
-  const handleCreateItem = useCallback(() => {
-    // setJobItems((prevItems) => [...prevItems, item]);
-    // logic to create an item and append to job item list, e.g., API call
-    console.log("READY TO CREATE ITEM:");
-  }, []);
+  const handleCreateItem = useCallback(
+    (item: Items, images: ImageFiles) => {
+      console.log("READY TO CREATE ITEM:", item, images);
+    },
+    [job, stores],
+  );
 
-  const handleSelectItem = useCallback(() => {
-    // logic to select an item and add it to the job item list state
-    console.log("ITEM SELECTED:");
-  }, []);
+  const handleSelectItem = useCallback(
+    (item: Items) => {
+      if (!job.items.includes(item)) {
+        setJob((prev) => ({...prev, items: [...prev.items, item]}));
+      }
+    },
+    [job, stores],
+  );
 
   const fetchStores = () => {
     setLoading("loading");
     try {
+      setStores(store_list);
     } catch (error) {
       console.error("Error fetching stores: ", error);
     } finally {

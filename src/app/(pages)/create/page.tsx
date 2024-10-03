@@ -61,7 +61,7 @@ export default function Create() {
           <AddItems handleSelectItem={handleSelectItem} stores={stores} />
           <ItemsList
             headers={headers}
-            items={[] as Items[]}
+            items={job.items}
             handleSelectItem={() => {}}
           />
         </section>
