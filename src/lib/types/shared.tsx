@@ -12,6 +12,7 @@ export type IconTypes =
   | "upload"
   | "clock"
   | "wand"
+  | "search"
   | "badge-check"
   | "add-user"
   | "hour_glass";

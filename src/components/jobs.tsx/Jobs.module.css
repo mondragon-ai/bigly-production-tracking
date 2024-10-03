@@ -288,6 +288,15 @@
   margin: 0;
   padding: 0rem;
 }
+
+.inputWrapper {
+  width: 100%;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+
 .searchWrapper input {
   width: 100%;
   padding: 12px 20px;
@@ -348,6 +357,13 @@
   background-color: var(--background);
 }
 
+.inputWrapper label {
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 13px;
+  color: var(--secondary-text);
+}
+
 .selectWrapper input {
   width: 100%;
 }
@@ -378,6 +394,41 @@
   right: 0;
   opacity: 0;
   cursor: pointer;
+}
+
+/* Store Modal */
+/* ===============================================================  */
+
+.storeModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  height: auto;
+  width: 200px;
+  top: 90px;
+  right: 15px;
+  cursor: pointer;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  z-index: 5;
+}
+.storeModal > div {
+  padding: 0.5rem;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid var(--secondary-background);
+}
+
+.storeModal > div:last-of-type {
+  border-bottom: 1px solid transparent;
 }
 
 /* =============================================================== */

@@ -5,12 +5,29 @@ import {AddItems} from "@/components/jobs.tsx/AddItems";
 import PageHeader from "@/components/shared/PageHeader";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
 import {Items} from "@/lib/types/jobs";
+import {useJobCreate} from "@/lib/hooks/useJobCreate";
 
 export default function Create() {
+  const {
+    stores,
+    job,
+    setJob,
+    loading,
+    handleApproveJob,
+    handleCreateItem,
+    handleSelectItem,
+  } = useJobCreate();
+
   const handleAddStaff = () => {
-    // b.text
+    alert("READY TO OPEN STAFF");
     return;
   };
+
+  const openAddItem = () => {
+    alert("READY TO OPEN ADD ITEM");
+    return;
+  };
+
   return (
     <div className={styles.page}>
       <PageHeader
@@ -23,25 +40,25 @@ export default function Create() {
             text: "ADD STAFF",
             tone: "success",
             onClick: handleAddStaff,
-            icon: "link",
+            icon: "add-user",
           },
           {
             text: "ADD ITEM",
             tone: "success",
-            onClick: undefined,
-            icon: "link",
+            onClick: openAddItem,
+            icon: "wand",
           },
           {
             text: "APPROVE",
             tone: "success",
-            onClick: undefined,
-            icon: "link",
+            onClick: handleApproveJob,
+            icon: "badge-check",
           },
         ]}
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <AddItems />
+          <AddItems handleSelectItem={handleSelectItem} stores={stores} />
           <ItemsList
             headers={headers}
             items={[] as Items[]}
@@ -49,8 +66,7 @@ export default function Create() {
           />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          {/* <ItemDisplay is_create={true} /> */}
-          <AddItem />
+          <AddItem handleCreateItem={handleCreateItem} />
         </section>
       </main>
     </div>

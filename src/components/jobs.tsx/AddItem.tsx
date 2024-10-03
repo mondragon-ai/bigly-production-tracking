@@ -3,7 +3,7 @@ import styles from "./Jobs.module.css";
 import {Button} from "../shared/Button";
 import {useState} from "react";
 
-export const AddItem = () => {
+export const AddItem = ({handleCreateItem}: {handleCreateItem: () => void}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedName, setSelectedName] = useState("");
 
@@ -99,6 +99,7 @@ export const AddItem = () => {
       </main>
       <footer>
         <Button
+          onClick={handleCreateItem}
           tone="success"
           icon="floppy"
           align="left"
