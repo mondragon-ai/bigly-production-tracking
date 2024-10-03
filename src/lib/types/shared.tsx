@@ -14,6 +14,7 @@ export type IconTypes =
   | "wand"
   | "search"
   | "badge-check"
+  | "shopping-bag"
   | "add-user"
   | "hour_glass";
 

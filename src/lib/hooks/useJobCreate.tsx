@@ -15,8 +15,8 @@ type UseJobCreateProps = () => {
   job: JobDocument;
   stores: StoreDocument[];
   loading: LoadingTypes;
-  setJob: Dispatch<SetStateAction<JobDocument>>;
   handleApproveJob: () => void;
+  removeItem: (id: string) => void;
   handleCreateItem: (item: Items, images: ImageFiles) => void;
   handleSelectItem: (item: Items) => void;
 };
@@ -27,13 +27,19 @@ export const useJobCreate: UseJobCreateProps = () => {
   const [loading, setLoading] = useState<LoadingTypes>(null);
 
   const handleApproveJob = useCallback(() => {
-    // logic to approve the job with the given jobState, e.g., API request
-    console.log(`READY TO APPROVE JOB with state`);
-  }, []);
+    console.log("READY TO APPROVE JOB with state", job);
+  }, [job, stores]);
 
   const handleCreateItem = useCallback(
     (item: Items, images: ImageFiles) => {
       console.log("READY TO CREATE ITEM:", item, images);
+      // upload images -> imges w/ urls
+      // assign images to item -> payload
+      // create item
+
+      if (!job.items.includes(item)) {
+        setJob((prev) => ({...prev, items: [...prev.items, item]}));
+      }
     },
     [job, stores],
   );
@@ -46,6 +52,15 @@ export const useJobCreate: UseJobCreateProps = () => {
     },
     [job, stores],
   );
+
+  const removeItem = async (id: string) => {
+    setLoading("deleting");
+    const new_list = job.items.filter((i) => i.id !== id);
+    if (new_list) {
+      setJob((p) => ({...p, items: new_list}));
+    }
+    setLoading(null);
+  };
 
   const fetchStores = () => {
     setLoading("loading");
@@ -66,6 +81,7 @@ export const useJobCreate: UseJobCreateProps = () => {
     job,
     loading,
     stores,
+    removeItem,
     setJob,
     handleApproveJob,
     handleCreateItem,

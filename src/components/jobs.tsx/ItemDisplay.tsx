@@ -36,6 +36,7 @@ export const ItemDisplay = ({
               : "critical"
           }
         />
+        <Badge icon={"shopping-bag"} text={item.type} tone={"info"} />
       </header>
       <main>
         <div className={styles.txt}>
