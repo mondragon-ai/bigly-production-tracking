@@ -1,7 +1,9 @@
 "use clients";
-import {NameValueProps} from "@/lib/types/analytics";
+import {ChartDateProps, NameValueProps} from "@/lib/types/analytics";
 import {useState} from "react";
 import {
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -24,10 +26,39 @@ const geistSans = localFont({
   weight: "100 900",
 });
 
-export const BarChartStats = ({data}: {data: any[]}) => {
+const CustomTooltip = ({active, payload, label, isMoney}: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{`${label}: ${payload[0].value}`}</p>
+        {/* <p className="intro">{`Value: ${
+          isMoney ? "$" + payload[0].value : payload[0].value
+        }`}</p> */}
+      </div>
+    );
+  }
+};
+
+const CustomYAxis = ({value, name}: any) => {
+  return <div>hello</div>;
+};
+
+export const LineChartStats = ({
+  data,
+  isMoney,
+}: {
+  data: ChartDateProps[];
+  isMoney?: boolean;
+}) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={data} margin={{top: 5, right: 0, left: -20, bottom: 5}}>
+      <AreaChart data={data} margin={{top: 5, right: 0, left: -10, bottom: 5}}>
+        <defs>
+          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#0096C7" stopOpacity={0.5} />
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity={0} />
+          </linearGradient>
+        </defs>
         <CartesianGrid horizontal={false} vertical={false} />
         <XAxis
           interval="preserveStartEnd"
@@ -35,9 +66,52 @@ export const BarChartStats = ({data}: {data: any[]}) => {
           padding={{left: 10, right: 10}}
           axisLine={false}
           tickSize={0}
+          angle={90}
         />
-        <YAxis axisLine={false} padding={{top: 0, bottom: 10}} tickSize={0} />
-        <Tooltip />
+        <YAxis
+          axisLine={false}
+          padding={{top: 0, bottom: 40}}
+          tickSize={0}
+          tickFormatter={(time) => {
+            if (isMoney) {
+              return `$${time}`;
+            } else {
+              return `${time}`;
+            }
+          }}
+        />
+        <Tooltip content={<CustomTooltip isMoney={isMoney} />} />
+        <Area
+          type="monotone"
+          dataKey="value"
+          stroke="#0096C7"
+          fillOpacity={1}
+          fill="url(#colorUv)"
+        />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+};
+
+export const BarChartStats = ({data}: {data: any[]}) => {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart data={data} margin={{top: 5, right: 0, left: -20, bottom: 5}}>
+        <CartesianGrid horizontal={false} vertical={false} />
+        <XAxis
+          interval="preserveStartEnd"
+          dataKey="name"
+          padding={{left: 10, right: 10}}
+          axisLine={false}
+          tickSize={0}
+        />
+        <YAxis
+          axisLine={false}
+          padding={{top: 0, bottom: 10}}
+          tick={<CustomYAxis />}
+        />
+        {/* <Tooltip /> */}
+        <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="value" fill="#0096C7" />
       </BarChart>
     </ResponsiveContainer>

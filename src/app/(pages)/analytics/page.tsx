@@ -1,14 +1,8 @@
 "use client";
-import localFont from "next/font/local";
+import {AnalyticsHeader} from "@/components/analytics/AnalyticsHeader";
 import styles from "../../../components/Shared.module.css";
-import {Button} from "@/components/shared/Button";
-import {HalfCircleStats, PieChartStats} from "@/components/analytics/charts";
-
-const geistSans = localFont({
-  src: "../../fonts/BebasNeue-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
+import {BarChartStats, LineChartStats} from "@/components/analytics/charts";
 
 export default function Analytics() {
   return (
@@ -19,15 +13,53 @@ export default function Analytics() {
           className={styles.rowSection}
           style={{marginTop: "1rem", justifyContent: "space-between"}}
         >
-          <div className={styles.chartWrapperBox} style={{width: "32%"}}>
-            w
-          </div>
-          <div className={styles.chartWrapperBox} style={{width: "32%"}}>
-            s
-          </div>
-          <div className={styles.chartWrapperBox} style={{width: "32%"}}>
-            c
-          </div>
+          <AnalyticsCard
+            title={"Test"}
+            width={33}
+            main_value={"12222"}
+            metric="%"
+          >
+            <LineChartStats
+              data={[
+                {date: "mon", value: 12},
+                {date: "yes", value: 3},
+                {date: "today", value: 4},
+              ]}
+            />
+          </AnalyticsCard>
+
+          <AnalyticsCard
+            title={"Test"}
+            width={33}
+            main_value={"12222"}
+            metric="%"
+          >
+            <BarChartStats
+              data={[
+                {name: "printing", value: 1},
+                {name: "cutting", value: 0.2},
+                {name: "pressing", value: 3},
+                {name: "double", value: 0.3},
+                {name: "folding", value: 0.2},
+              ]}
+            />
+          </AnalyticsCard>
+          <AnalyticsCard
+            title={"Test"}
+            width={33}
+            main_value={"12222"}
+            metric="%"
+          >
+            <BarChartStats
+              data={[
+                {name: "printing", value: 1},
+                {name: "cutting", value: 0.2},
+                {name: "pressing", value: 3},
+                {name: "double", value: 0.3},
+                {name: "folding", value: 0.2},
+              ]}
+            />
+          </AnalyticsCard>
         </section>
         <section
           className={styles.rowSection}
@@ -61,44 +93,3 @@ export default function Analytics() {
     </div>
   );
 }
-
-const AnalyticsHeader = () => {
-  return (
-    <header
-      className={styles.pageHeaderWrapper}
-      style={{
-        alignItems: "flex-end",
-      }}
-    >
-      <div className={styles.left}>
-        <div>
-          <h1 className={geistSans.className}>Analytics</h1>
-        </div>
-
-        <Button
-          loading={false}
-          thin={true}
-          text={"TODAY"}
-          tone={"success"}
-          align={"center"}
-          icon={"calendar"}
-          onClick={() => {}}
-        />
-      </div>
-      <div className={styles.right}>
-        <div className={styles.aTxt}>
-          <h1 className={geistSans.className}>3.3k</h1>
-          <span>total item</span>
-        </div>
-        <div className={styles.chartContainer}>
-          <HalfCircleStats
-            data={[
-              {name: "completed", value: 120},
-              {name: "needed", value: 20},
-            ]}
-          />
-        </div>
-      </div>
-    </header>
-  );
-};
