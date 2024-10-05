@@ -70,7 +70,9 @@ export const ItemsList = ({
                 <td>{item.type}</td>
                 <td>{item.store}</td>
                 {is_inventory ? (
-                  <td>{Number((item as any).inventory_levl)}</td>
+                  <td style={{textAlign: "left"}}>
+                    {Number((item as any).inventory_levl)}
+                  </td>
                 ) : null}
               </tr>
             );

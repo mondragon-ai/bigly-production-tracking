@@ -6,6 +6,7 @@ import {Avatar} from "./Avatar";
 import {Button} from "./Button";
 import {Badge} from "./Badge";
 import {Dispatch, SetStateAction, useRef} from "react";
+import {Icon} from "./Icon";
 
 type PageHeaderProps = {
   has_qr_code?: string;
@@ -87,7 +88,11 @@ const PageHeader = ({
         />
         <div>
           <h1 className={geistSans.className}>{title}</h1>
-          {has_qr_code && <Badge icon={"qr-code"} text={""} tone={"success"} />}
+          {has_qr_code && (
+            <button className={styles.btn} role="button" onClick={openQrCode}>
+              <Icon icon={"qr-code"} tone={"magic"} />
+            </button>
+          )}
           {setPriority && (
             <div className={styles.toggleWrapper}>
               <label>

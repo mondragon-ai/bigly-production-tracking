@@ -425,6 +425,32 @@
   margin-right: 1rem;
 }
 
+.pageHeaderWrapper .btn {
+  height: 30px;
+  width: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--drop-shadow);
+  padding: 5px;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  background-color: var(--tertiary-background);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.pageHeaderWrapper .btn:hover {
+  background-color: var(--tertary-background) !important;
+}
+
+.pageHeaderWrapper .btn:active {
+  box-shadow: var(--foreground) 0px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
 /* Store Modal */
 /* ===============================================================  */
 

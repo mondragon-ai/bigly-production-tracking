@@ -7,35 +7,51 @@ import {Items} from "@/lib/types/jobs";
 import {useState} from "react";
 import {InventoryDocument} from "@/lib/types/inventory";
 import {badgeColor, badgeIcon} from "@/lib/utils/shared";
+import {Icon} from "../shared/Icon";
 
 export const ItemDisplay = ({
   is_create,
   item,
   onClick,
+  has_qr_code,
 }: {
   is_create: boolean;
   onClick: (id: string) => void;
   item: Items | InventoryDocument;
+  has_qr_code?: string;
 }) => {
   return (
     <div className={styles.itemDisplayWrapper}>
       <header>
-        <h4>{item.sku}</h4>
-        <Badge
-          icon={badgeIcon(item.status)}
-          text={item.status}
-          tone={badgeColor(item.status)}
-        />
-        <Badge icon={"shopping-bag"} text={item.type} tone={"info"} />
+        <div>
+          <h4>{item.sku}</h4>
+          <Badge
+            icon={badgeIcon(item.status)}
+            text={item.status}
+            tone={badgeColor(item.status)}
+          />
+          <Badge icon={"shopping-bag"} text={item.type} tone={"info"} />
+        </div>
+        {has_qr_code && (
+          <button className={styles.btn} role="button" onClick={() => {}}>
+            <Icon icon={"qr-code"} tone={"magic"} />
+          </button>
+        )}
       </header>
       <main>
         <div className={styles.txt}>
           <span>
-            <strong>Size:</strong> {item.size}
+            <strong>{item.size}</strong> / <strong>{item.color}</strong> -{" "}
+            {has_qr_code && (
+              <strong>{(item as any).inventory_levl} units</strong>
+            )}
           </span>
-          <span>
-            <strong>Color:</strong> {item.color}
-          </span>
+          {has_qr_code && (
+            <span>
+              <strong>{(item as InventoryDocument).location.room}</strong> /{" "}
+              <strong>{(item as InventoryDocument).location.shelf}</strong>
+            </span>
+          )}
         </div>
         <MockupDesign item={item} />
         <div className={styles.column}>

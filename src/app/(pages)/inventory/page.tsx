@@ -31,7 +31,12 @@ export default function Inventory() {
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {item ? (
-            <ItemDisplay is_create={true} onClick={deleteItem} item={item} />
+            <ItemDisplay
+              is_create={true}
+              onClick={deleteItem}
+              item={item}
+              has_qr_code="123"
+            />
           ) : loading == "loading" ? (
             <p>loading</p>
           ) : (
@@ -43,4 +48,4 @@ export default function Inventory() {
   );
 }
 
-const headers = ["SKU", "Size", "Color", "Status", "Type", "Store", "qty"];
+const headers = ["SKU", "Size", "Color", "Status", "Type", "Store", "Qty"];
