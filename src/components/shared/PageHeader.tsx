@@ -74,7 +74,21 @@ const PageHeader = ({
   };
 
   const openQrCode = () => {
-    console.log("OPEN QR CODE");
+    const printWindow = window.open("", "", "height=500, width=500");
+    if (printWindow) {
+      printWindow.document.write(`
+          <html>
+            <head>
+              <title>${title}</title>
+            </head>
+            <body style="margin:0; display:flex; justify-content:center; align-items:center; height:100vh;">
+              <img src="${has_qr_code}" alt="Job QR Code" style="max-width:100%; max-height:100%;" />
+            </body>
+          </html>
+        `);
+      printWindow.document.close();
+      printWindow.print();
+    }
   };
 
   return (

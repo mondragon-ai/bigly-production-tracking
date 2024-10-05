@@ -3,6 +3,7 @@ import styles from "../Shared.module.css";
 import {HalfCircleStats} from "./charts";
 
 import localFont from "next/font/local";
+import {useState} from "react";
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
   variable: "--font-geist-sans",
@@ -10,6 +11,18 @@ const geistSans = localFont({
 });
 
 export const AnalyticsHeader = () => {
+  const [modal, openModal] = useState(false);
+  const handleSelectModal = (
+    type:
+      | "today"
+      | "yesterday"
+      | "seven_days"
+      | "thirty_days"
+      | "ninety_days"
+      | "twelve_months",
+  ) => {
+    openModal((p) => !p);
+  };
   return (
     <header
       className={styles.pageHeaderWrapper}
@@ -29,8 +42,31 @@ export const AnalyticsHeader = () => {
           tone={"success"}
           align={"center"}
           icon={"calendar"}
-          onClick={() => {}}
+          onClick={() => openModal((p) => !p)}
         />
+
+        {modal && (
+          <div className={styles.timeFramWrapper}>
+            <div onClick={() => handleSelectModal("today")}>
+              <span>Today</span>
+            </div>
+            <div onClick={() => handleSelectModal("yesterday")}>
+              <span>Yesterday</span>
+            </div>
+            <div onClick={() => handleSelectModal("seven_days")}>
+              <span>7 Days</span>
+            </div>
+            <div onClick={() => handleSelectModal("thirty_days")}>
+              <span>30 Days</span>
+            </div>
+            <div onClick={() => handleSelectModal("ninety_days")}>
+              <span>90 Days</span>
+            </div>
+            <div onClick={() => handleSelectModal("twelve_months")}>
+              <span>12 Months</span>
+            </div>
+          </div>
+        )}
       </div>
       <div className={styles.right}>
         <div className={styles.aTxt}>

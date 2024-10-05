@@ -48,7 +48,9 @@ export default function JobDetail() {
   return (
     <div className={styles.page}>
       <PageHeader
-        has_qr_code={"1234"}
+        has_qr_code={
+          "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca"
+        }
         title={`Job #${job.job_name}`}
         buttons={[
           {

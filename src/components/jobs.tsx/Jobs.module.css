@@ -320,6 +320,10 @@
 .itemsTableWrapper tbody tr {
   background-color: var(--tertary-background);
 }
+.itemsTableWrapper tbody tr:hover {
+  cursor: pointer;
+  background-color: var(--seconday-background);
+}
 
 .itemsTableWrapper tr,
 .itemsTableWrapper td {

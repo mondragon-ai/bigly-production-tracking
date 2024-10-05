@@ -214,9 +214,16 @@
   .sidebar nav .bottomNav ul li a h5 {
     font-size: 13px;
     font-weight: 100;
-    color: var(--primary-text);
+    color: var(--secondary-text);
     margin: 0;
     padding: 0;
+  }
+
+  .sidebar nav .topNav ul li:hover a h5,
+  .sidebar nav .bottomNav ul li:hover a h5 {
+    font-size: 13px;
+    font-weight: 550 !important;
+    color: var(--secondary-text);
   }
 
   .sidebar nav .topNav ul li a .numbers {

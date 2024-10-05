@@ -20,6 +20,25 @@ export const ItemDisplay = ({
   item: Items | InventoryDocument;
   has_qr_code?: string;
 }) => {
+  const openQrCode = () => {
+    // Create a new window to print the image
+    const printWindow = window.open("", "", "height=500, width=500");
+    if (printWindow) {
+      printWindow.document.write(`
+          <html>
+            <head>
+              <title>${item.sku}</title>
+            </head>
+            <body style="margin:0; display:flex; justify-content:center; align-items:center; height:100vh;">
+              <img src="${has_qr_code}" alt="Item QR Code" style="max-width:100%; max-height:100%;" />
+            </body>
+          </html>
+        `);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
   return (
     <div className={styles.itemDisplayWrapper}>
       <header>
@@ -33,7 +52,7 @@ export const ItemDisplay = ({
           <Badge icon={"shopping-bag"} text={item.type} tone={"info"} />
         </div>
         {has_qr_code && (
-          <button className={styles.btn} role="button" onClick={() => {}}>
+          <button className={styles.btn} role="button" onClick={openQrCode}>
             <Icon icon={"qr-code"} tone={"magic"} />
           </button>
         )}

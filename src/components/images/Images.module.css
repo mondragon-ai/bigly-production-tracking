@@ -89,6 +89,10 @@
 .imageTableWrapper tbody tr {
   background-color: var(--tertary-background);
 }
+.imageTableWrapper tbody tr:hover {
+  cursor: pointer;
+  background-color: var(--seconday-background);
+}
 
 .imageTableWrapper tr,
 .imageTableWrapper td {

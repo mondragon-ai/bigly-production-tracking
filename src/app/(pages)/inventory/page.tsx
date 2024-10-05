@@ -35,7 +35,7 @@ export default function Inventory() {
               is_create={true}
               onClick={deleteItem}
               item={item}
-              has_qr_code="123"
+              has_qr_code="https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca"
             />
           ) : loading == "loading" ? (
             <p>loading</p>

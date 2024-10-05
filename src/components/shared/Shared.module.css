@@ -289,7 +289,13 @@
 }
 
 .tableWrapper tbody tr {
+  cursor: pointer;
   background-color: var(--tertary-background);
+}
+
+.tableWrapper tbody tr:hover {
+  cursor: pointer;
+  background-color: var(--seconday-background);
 }
 
 .tableWrapper tr,
@@ -440,6 +446,7 @@
   background-color: var(--tertiary-background);
   cursor: pointer;
   touch-action: manipulation;
+  margin-bottom: 10px;
 }
 
 .pageHeaderWrapper .btn:hover {
@@ -513,6 +520,11 @@
 
 .storeModal tbody tr {
   background-color: var(--tertary-background);
+}
+
+.storeModal tbody tr:hover {
+  cursor: pointer;
+  background-color: var(--seconday-background);
 }
 
 .storeModal tr,
