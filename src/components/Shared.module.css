@@ -185,6 +185,7 @@
   padding: 0rem;
   background-color: var(--background);
   border: 2px solid var(--foreground);
+  box-shadow: var(--drop-shadow);
   border-radius: 6px;
 }
 
@@ -236,4 +237,21 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+
+.toolWrapper {
+  background-color: #fff;
+  padding: 5px 7px;
+  background-color: var(--background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+}
+
+.toolWrapper p {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--secondary-text);
+  margin-left: 3px;
 }
