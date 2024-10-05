@@ -28,7 +28,7 @@
   border: 2px solid var(--foreground);
   border-radius: 6px;
   box-shadow: var(--drop-shadow);
-  color: var(--foreground);
+  color: #171717 !important;
   cursor: pointer;
   touch-action: manipulation;
   display: inline-block;
@@ -50,11 +50,13 @@
 
 .btnBase:hover {
   background-color: var(--tertary-background) !important;
+  color: var(--secondary-foreground) !important;
 }
 
 .btnBase:active {
   box-shadow: var(--foreground) 0px 2px 0 0;
   transform: translate(2px, 2px);
+  color: var(--secondary-foreground) !important;
 }
 
 .btnBase svg {
@@ -378,4 +380,82 @@
 
 .pageHeaderWrapper .right button {
   margin-right: 1rem;
+}
+
+/* Store Modal */
+/* ===============================================================  */
+
+.storeModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  height: auto;
+  width: 400px;
+  top: 0px;
+  right: 15px;
+  cursor: pointer;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  z-index: 5;
+  overflow: hidden; /* Prevent overflow */
+}
+.storeModal table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+
+.storeModal table,
+.storeModal td,
+.storeModal th {
+  border: 1px solid black;
+  border: none !important;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.storeModal th {
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 15px;
+  color: var(--secondary-text);
+}
+
+.storeModal td {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--primary-text);
+}
+
+.storeModal thead {
+  background-color: var(--tertary-background);
+  border: none;
+  border-collapse: collapse;
+}
+
+.storeModal thead tr {
+  background-color: var(--secondary-background);
+}
+
+.storeModal tbody tr {
+  background-color: var(--tertary-background);
+}
+
+.storeModal tr,
+.storeModal td {
+  height: auto;
+  vertical-align: bottom;
+  border: none;
+  text-align: left;
+  border-bottom: 1px solid rgb(222, 222, 222);
+}
+
+.storeModal th,
+.storeModal td {
+  padding: 7px 0;
 }

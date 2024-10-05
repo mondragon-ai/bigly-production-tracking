@@ -5,16 +5,22 @@ import PageHeader from "@/components/shared/PageHeader";
 import {FileList} from "@/components/shared/FileList";
 import useFiles from "@/lib/hooks/useFiles";
 import {StartingState} from "@/components/images/StartingState";
+import {AddStaff} from "@/components/shared/AddStaff";
+import {useState} from "react";
 
 export default function Files() {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [modal, openModal] = useState<boolean>(false);
   const {
     files,
     loading,
+    staff,
     error,
     uploadFiles,
     fetchAndParseFile,
     file_detail,
     deleteFile,
+    genreateJobs,
   } = useFiles();
 
   const handleFileUpload = async (file: File) => {
@@ -29,12 +35,28 @@ export default function Files() {
     await deleteFile(id);
   };
 
+  const handleAddStaff = () => {
+    openModal(!modal);
+    return;
+  };
+
+  const handleGenerate = (id: string) => {
+    const added_staff = staff.filter((s) => selectedIds.includes(s.id));
+    genreateJobs(id, added_staff);
+  };
+
   return (
     <div className={styles.page}>
       <PageHeader
         loading={loading == "posting"}
         title="Pick List Files"
         buttons={[
+          {
+            text: "ADD STAFF",
+            tone: "success",
+            onClick: handleAddStaff,
+            icon: "add-user",
+          },
           {
             text: "UPLOAD FILE",
             tone: "success",
@@ -47,6 +69,14 @@ export default function Files() {
         staff={[]}
       />
       <main>
+        {modal && (
+          <AddStaff
+            can_select={true}
+            setSelectedIds={setSelectedIds}
+            selectedIds={selectedIds}
+            staff={staff}
+          />
+        )}
         <section style={{width: "55%", paddingRight: "10px"}}>
           <FileList
             handleFileSelect={handleFileSelect}
@@ -58,6 +88,7 @@ export default function Files() {
           {file_detail ? (
             <FileDetailCard
               file_detail={file_detail}
+              handleGenerate={handleGenerate}
               handleDeleteFile={handleDeleteFile}
             />
           ) : loading == "requesting" ? (

@@ -1,6 +1,12 @@
+"use client";
+import {useRouter} from "next/navigation";
 import {Button} from "./Button";
 import styles from "./Shared.module.css";
 export const TopBar = () => {
+  const nav = useRouter();
+  const handleNavigate = () => {
+    nav.push("/create");
+  };
   return (
     <header className={styles.topBarWrapper}>
       <div className={styles.topBar}>
@@ -28,6 +34,7 @@ export const TopBar = () => {
             <div className={styles.notification}>1</div>
           </div>
           <Button
+            onClick={handleNavigate}
             text="CREATE JOB"
             thin={false}
             tone={"success"}

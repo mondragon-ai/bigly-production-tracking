@@ -8,8 +8,12 @@ import useJob from "@/lib/hooks/useJob";
 import {JobDocument} from "@/lib/types/jobs";
 import {BadgeType} from "@/lib/types/shared";
 import {StartingState} from "@/components/images/StartingState";
+import {useState} from "react";
+import {AddStaff} from "@/components/shared/AddStaff";
 
 export default function Confirm() {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [modal, openModal] = useState<boolean>(false);
   const params = useParams<{id: string}>();
   const {job, selectItem, item, loading, deleteJob, removeItem, approveJob} =
     useJob(params.id);
@@ -35,7 +39,7 @@ export default function Confirm() {
   };
 
   const openStaff = () => {
-    alert("READY TO ADD");
+    openModal(!modal);
   };
 
   const badges = (job: JobDocument) => {
@@ -63,10 +67,10 @@ export default function Confirm() {
         loading={loading == "posting"}
         buttons={[
           {
-            text: "ADD STAFF",
-            tone: "success",
-            onClick: openStaff,
-            icon: "link",
+            text: "DELETE",
+            tone: "descructive",
+            onClick: handleDeleteJob,
+            icon: "trash",
           },
           {
             text: "APPROVE",
@@ -74,18 +78,21 @@ export default function Confirm() {
             onClick: handleApprove,
             icon: "badge-check",
           },
-          {
-            text: "DELETE",
-            tone: "descructive",
-            onClick: handleDeleteJob,
-            icon: "trash",
-          },
         ]}
+        openStaff={openStaff}
         date={job.created_at}
         badges={badges(job)}
         staff={job.staff}
       />
       <main>
+        {modal && (
+          <AddStaff
+            can_select={false}
+            setSelectedIds={setSelectedIds}
+            selectedIds={selectedIds}
+            staff={job.staff}
+          />
+        )}
         <section style={{width: "55%", paddingRight: "10px"}}>
           <ItemsList
             headers={headers}

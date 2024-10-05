@@ -31,7 +31,9 @@ export const NavMenu = () => {
                 href={"/analytics"}
                 style={{
                   backgroundColor:
-                    slug === "analytics" ? "white" : "transparent",
+                    slug === "analytics"
+                      ? "var(--tertary-background)"
+                      : "transparent",
                 }}
               >
                 <div className={styles.left}>
@@ -59,7 +61,10 @@ export const NavMenu = () => {
               <Link
                 href={"/jobs"}
                 style={{
-                  backgroundColor: slug === "jobs" ? "white" : "transparent",
+                  backgroundColor:
+                    slug === "jobs"
+                      ? "var(--tertary-background)"
+                      : "transparent",
                 }}
               >
                 <div className={styles.left}>
@@ -84,7 +89,10 @@ export const NavMenu = () => {
                 <h5
                   className={styles.numbers}
                   style={{
-                    backgroundColor: slug !== "jobs" ? "white" : "transparent",
+                    backgroundColor:
+                      slug !== "jobs"
+                        ? "var(--tertary-background)"
+                        : "transparent",
                   }}
                 >
                   2,500
@@ -95,7 +103,10 @@ export const NavMenu = () => {
               <Link
                 href={"/create"}
                 style={{
-                  backgroundColor: slug === "create" ? "white" : "transparent",
+                  backgroundColor:
+                    slug === "create"
+                      ? "var(--tertary-background)"
+                      : "transparent",
                 }}
               >
                 <div className={styles.left}>
@@ -123,7 +134,10 @@ export const NavMenu = () => {
               <Link
                 href={"/files"}
                 style={{
-                  backgroundColor: slug === "files" ? "white" : "transparent",
+                  backgroundColor:
+                    slug === "files"
+                      ? "var(--tertary-background)"
+                      : "transparent",
                 }}
               >
                 <div className={styles.left}>
@@ -151,7 +165,10 @@ export const NavMenu = () => {
               <Link
                 href={"/images"}
                 style={{
-                  backgroundColor: slug === "images" ? "white" : "transparent",
+                  backgroundColor:
+                    slug === "images"
+                      ? "var(--tertary-background)"
+                      : "transparent",
                 }}
               >
                 <div className={styles.left}>
@@ -189,7 +206,9 @@ export const NavMenu = () => {
                 href={"/settings"}
                 style={{
                   backgroundColor:
-                    slug === "settings" ? "white" : "transparent",
+                    slug === "settings"
+                      ? "var(--tertary-background)"
+                      : "transparent",
                 }}
               >
                 <div className={styles.left}>

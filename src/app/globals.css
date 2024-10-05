@@ -26,11 +26,12 @@
   --info-bkg: #e5e5e5;
   --info-color: #cccccc;
 }
-/* 
-@media (prefers-color-scheme: dark) {
+
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #171717;
     --secondary-background: #39393a;
+    --tertary-background: #000000;
     --foreground: #f1f1f1;
     --secondary-foreground: #ebebeb;
 
@@ -40,6 +41,20 @@
 
     --primary-text: #f1f1f1;
     --secondary-text: #ebebeb;
+
+    --drop-shadow: #ebebeb 0px 5px 0 0;
+
+    --success-bkg: #b4fed2;
+    --success-color: #298459;
+
+    --magic-bkg: #e8e5ff;
+    --magic-color: #5700d1;
+
+    --error-bkg: #fed3d1;
+    --error-color: #8d1f0b;
+
+    --info-bkg: #e5e5e5;
+    --info-color: #cccccc;
   }
 } */
 

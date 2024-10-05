@@ -7,10 +7,11 @@ import {JobDocument} from "@/lib/types/jobs";
 import {BadgeType} from "@/lib/types/shared";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
+import {StartingState} from "@/components/images/StartingState";
 
 export default function JobDetail() {
   const params = useParams<{id: string}>();
-  const {job, selectItem, item, deleteJob} = useJob(params.id);
+  const {job, loading, selectItem, item, deleteJob} = useJob(params.id);
 
   const handleDelete = async () => {
     console.log({delete: params.id});
@@ -69,12 +70,16 @@ export default function JobDetail() {
           />
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
-          {item && (
+          {item ? (
             <ItemDisplay
-              item={item}
               is_create={false}
               onClick={handleReportError}
+              item={item}
             />
+          ) : loading == "requesting" ? (
+            <p>loading</p>
+          ) : (
+            <StartingState type="item" />
           )}
         </section>
       </main>
@@ -83,42 +88,3 @@ export default function JobDetail() {
 }
 
 const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
-
-const items = [
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    status: 5,
-    type: "shirt",
-    store: "AJ",
-  },
-];

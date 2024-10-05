@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import {Avatar} from "./Avatar";
 import {Button} from "./Button";
 import {Badge} from "./Badge";
-import {useRef} from "react";
+import {Dispatch, SetStateAction, useRef} from "react";
 
 type PageHeaderProps = {
   loading?: boolean;
@@ -19,6 +19,7 @@ type PageHeaderProps = {
     tone: "" | "success" | "descructive";
     icon: IconTypes;
   }[];
+  openStaff?: () => void;
 };
 
 const geistSans = localFont({
@@ -34,6 +35,7 @@ const PageHeader = ({
   staff,
   buttons,
   loading,
+  openStaff,
 }: PageHeaderProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -90,7 +92,7 @@ const PageHeader = ({
         {date && <span>{date}</span>}
       </div>
       <div className={styles.right}>
-        <div className={styles.staffWrapper}>
+        <div className={styles.staffWrapper} onClick={openStaff}>
           {staff.length > 4 && <p>{`+${staff.length - 4}`}</p>}
           {staff &&
             staff.map((s, i) => {

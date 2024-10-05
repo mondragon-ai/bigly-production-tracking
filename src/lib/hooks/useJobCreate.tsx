@@ -7,12 +7,13 @@ import {
 } from "react";
 import {ImageFiles, Items, JobDocument, Stages} from "@/lib/types/jobs";
 import {initialJobs} from "../payloads/jobs";
-import {LoadingTypes} from "../types/shared";
+import {LoadingTypes, Staff} from "../types/shared";
 import {StoreDocument} from "../types/settings";
-import {store_list} from "../data/settings";
+import {staff_list, store_list} from "../data/settings";
 
 type UseJobCreateProps = () => {
   job: JobDocument;
+  staff: Staff[];
   stores: StoreDocument[];
   loading: LoadingTypes;
   handleApproveJob: () => void;
@@ -22,6 +23,7 @@ type UseJobCreateProps = () => {
 };
 
 export const useJobCreate: UseJobCreateProps = () => {
+  const [staff, setStaff] = useState<Staff[]>([]);
   const [job, setJob] = useState<JobDocument>(initialJobs());
   const [stores, setStores] = useState<StoreDocument[]>([]);
   const [loading, setLoading] = useState<LoadingTypes>(null);
@@ -66,6 +68,7 @@ export const useJobCreate: UseJobCreateProps = () => {
     setLoading("loading");
     try {
       setStores(store_list);
+      setStaff(staff_list);
     } catch (error) {
       console.error("Error fetching stores: ", error);
     } finally {
@@ -80,6 +83,7 @@ export const useJobCreate: UseJobCreateProps = () => {
   return {
     job,
     loading,
+    staff,
     stores,
     removeItem,
     setJob,

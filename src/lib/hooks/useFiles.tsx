@@ -3,20 +3,24 @@ import {useState, useEffect} from "react";
 import {uploadToServer} from "../utils/storage";
 import {FileDetail, FileDocument} from "../types/files";
 import {files_list, file_details} from "@/lib/data/files";
-import {LoadingTypes} from "../types/shared";
+import {LoadingTypes, Staff} from "../types/shared";
+import {staff_list} from "../data/settings";
 
 interface UseFilesUploadReturn {
   files: FileDocument[];
   loading: LoadingTypes;
+  staff: Staff[];
   error: string | null;
   uploadFiles: (file: File) => Promise<void>;
   fetchAndParseFile: (id: string) => Promise<void>;
   deleteFile: (id: string) => Promise<void>;
   file_detail: FileDetail | null;
+  genreateJobs: (id: string, staff: Staff[]) => Promise<void>;
 }
 
 const useFiles = (): UseFilesUploadReturn => {
-  const [files, setFiles] = useState<FileDocument[]>(files_list);
+  const [files, setFiles] = useState<FileDocument[]>([]);
+  const [staff, setStaff] = useState<Staff[]>([]);
   const [file_detail, setFileDetail] = useState<FileDetail | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +31,8 @@ const useFiles = (): UseFilesUploadReturn => {
       //   const response = await fetch("/api/files");
       //   if (!response.ok) throw new Error("Failed to fetch files");
       //   const data: Image[] = await response.json();
-      //   setFiles(data);
+      setFiles(files_list);
+      setStaff(staff_list);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
@@ -108,12 +113,25 @@ const useFiles = (): UseFilesUploadReturn => {
     }
   };
 
+  const genreateJobs = async (id: string, staff: Staff[]) => {
+    setLoading("posting");
+    try {
+      console.log({file: id, staff});
+    } catch (error) {
+      console.error("ERROR: Generating Jobs: ", error);
+    } finally {
+      setLoading(null);
+    }
+  };
+
   return {
     files,
     loading,
+    staff,
     error,
     uploadFiles,
     fetchAndParseFile,
+    genreateJobs,
     file_detail,
     deleteFile,
   };

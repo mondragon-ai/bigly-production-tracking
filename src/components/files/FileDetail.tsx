@@ -5,9 +5,11 @@ import styles from "./Files.module.css";
 export const FileDetailCard = ({
   file_detail,
   handleDeleteFile,
+  handleGenerate,
 }: {
   file_detail: FileDetail;
   handleDeleteFile: (id: string) => void;
+  handleGenerate: (id: string) => void;
 }) => {
   return (
     <div className={styles.fileDetailWrapper}>
@@ -16,6 +18,7 @@ export const FileDetailCard = ({
         <div>
           {file_detail.status == "pending" && (
             <Button
+              onClick={() => handleGenerate(file_detail.id)}
               text={"Generate Jobs"}
               thin={true}
               icon="wand"
