@@ -48,6 +48,7 @@ export default function JobDetail() {
   return (
     <div className={styles.page}>
       <PageHeader
+        has_qr_code={"1234"}
         title={`Job #${job.job_name}`}
         buttons={[
           {

@@ -5,6 +5,8 @@ import styles from "./Jobs.module.css";
 import {Button} from "../shared/Button";
 import {Items} from "@/lib/types/jobs";
 import {useState} from "react";
+import {InventoryDocument} from "@/lib/types/inventory";
+import {badgeColor, badgeIcon} from "@/lib/utils/shared";
 
 export const ItemDisplay = ({
   is_create,
@@ -13,28 +15,16 @@ export const ItemDisplay = ({
 }: {
   is_create: boolean;
   onClick: (id: string) => void;
-  item: Items;
+  item: Items | InventoryDocument;
 }) => {
   return (
     <div className={styles.itemDisplayWrapper}>
       <header>
         <h4>{item.sku}</h4>
         <Badge
-          icon={
-            item.status == "pending"
-              ? "delivery"
-              : item.status == "completed"
-              ? "badge-check"
-              : "rejected"
-          }
+          icon={badgeIcon(item.status)}
           text={item.status}
-          tone={
-            item.status == "pending"
-              ? "magic"
-              : item.status == "completed"
-              ? "success"
-              : "critical"
-          }
+          tone={badgeColor(item.status)}
         />
         <Badge icon={"shopping-bag"} text={item.type} tone={"info"} />
       </header>
@@ -50,15 +40,37 @@ export const ItemDisplay = ({
         <MockupDesign item={item} />
         <div className={styles.column}>
           <div className={styles.box} style={{width: "32%"}}>
-            <Image src={item.images.front} width={500} height={500} alt={""} />
+            {item.images.front ? (
+              <Image
+                src={item.images.front}
+                width={500}
+                height={500}
+                alt={""}
+              />
+            ) : (
+              <div style={{height: "150px"}}></div>
+            )}
           </div>
 
           <div className={styles.box} style={{width: "32%"}}>
-            <Image src={item.images.back} width={500} height={500} alt={""} />
+            {item.images.back ? (
+              <Image src={item.images.back} width={500} height={500} alt={""} />
+            ) : (
+              <div style={{height: "150px"}}></div>
+            )}
           </div>
 
           <div className={styles.box} style={{width: "32%"}}>
-            <Image src={item.images.sleeve} width={500} height={500} alt={""} />
+            {item.images.sleeve ? (
+              <Image
+                src={item.images.sleeve}
+                width={500}
+                height={500}
+                alt={""}
+              />
+            ) : (
+              <div style={{height: "150px"}}></div>
+            )}
           </div>
         </div>
       </main>
@@ -72,7 +84,7 @@ export const ItemDisplay = ({
             thin={true}
             text={"Remove Item"}
           />
-        ) : !is_create && !item.has_error ? (
+        ) : !is_create && !(item as any).has_error ? (
           <Button
             onClick={() => onClick(item.id)}
             tone="descructive"
@@ -87,19 +99,23 @@ export const ItemDisplay = ({
   );
 };
 
-export const MockupDesign = ({item}: {item: Items}) => {
+export const MockupDesign = ({item}: {item: Items | InventoryDocument}) => {
   const [isFront, setFront] = useState(false);
   return (
     <div className={styles.box}>
       <button className={styles.toggle} onClick={() => setFront(!isFront)}>
         {isFront ? "Front" : "Back"}
       </button>
-      <Image
-        src={isFront ? item.images.front_mockup : item.images.back_mockup}
-        width={500}
-        height={500}
-        alt={""}
-      />
+      {item.images[isFront ? "front_mockup" : "back_mockup"] ? (
+        <Image
+          src={isFront ? item.images.front_mockup : item.images.back_mockup}
+          width={500}
+          height={500}
+          alt={""}
+        />
+      ) : (
+        <div style={{height: "150px"}}></div>
+      )}
     </div>
   );
 };

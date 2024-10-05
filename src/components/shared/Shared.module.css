@@ -194,6 +194,49 @@
   stroke: var(--primary-text);
 }
 
+.toggleWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.toggleWrapper label {
+  position: relative;
+  width: 50px;
+  height: 19.5px;
+  background: #fff;
+  display: inline-block;
+  border-radius: 100px;
+  box-shadow: 0px 2px 6px -2px rgba(0, 0, 0, 0.4);
+}
+
+.toggleWrapper label .fill {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  bottom: 0;
+  border-radius: 50%;
+  background: var(--destructive-accent);
+  width: 16px;
+  height: 16px;
+  transition: 0.4s left;
+}
+
+.toggleWrapper label input {
+  width: 0;
+  visibility: hidden;
+}
+
+.toggleWrapper label input:checked + span.fill {
+  left: calc(100% - 18px);
+}
+
 /* =============================================================== */
 /*  5. CUSTOM TABLE                                                */
 /* =============================================================== */

@@ -7,14 +7,15 @@ import {AddItems} from "@/components/jobs.tsx/AddItems";
 import PageHeader from "@/components/shared/PageHeader";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
 import {useJobCreate} from "@/lib/hooks/useJobCreate";
+import {AddStaff} from "@/components/shared/AddStaff";
 import {Items} from "@/lib/types/jobs";
 import {useState} from "react";
-import {AddStaff} from "@/components/shared/AddStaff";
-import {Staff} from "@/lib/types/shared";
+import {BadgeType} from "@/lib/types/shared";
 
 export default function Create() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [modal, openModal] = useState<boolean>(false);
+  const [priority, setPriority] = useState<boolean>(false);
   const [createItem, openItem] = useState(true);
   const [item, setItem] = useState<null | Items>(null);
   const {
@@ -57,12 +58,23 @@ export default function Create() {
     }
   };
 
+  const Priority = (): BadgeType[] => {
+    return [
+      {
+        icon: "fire",
+        text: "Priority",
+        tone: "critical",
+      },
+    ];
+  };
+
   return (
     <div className={styles.page}>
       <PageHeader
+        setPriority={setPriority}
         title={"Create Job"}
         date={"Today"}
-        badges={[]}
+        badges={priority ? Priority() : []}
         staff={[]}
         buttons={[
           {

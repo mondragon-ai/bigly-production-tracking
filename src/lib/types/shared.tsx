@@ -16,6 +16,7 @@ export type IconTypes =
   | "search"
   | "badge-check"
   | "shopping-bag"
+  | "qr-code"
   | "add-user"
   | "hour_glass";
 

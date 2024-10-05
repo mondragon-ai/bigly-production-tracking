@@ -8,6 +8,7 @@ import {Badge} from "./Badge";
 import {Dispatch, SetStateAction, useRef} from "react";
 
 type PageHeaderProps = {
+  has_qr_code?: string;
   loading?: boolean;
   title: string;
   date: string;
@@ -20,6 +21,7 @@ type PageHeaderProps = {
     icon: IconTypes;
   }[];
   openStaff?: () => void;
+  setPriority?: Dispatch<SetStateAction<boolean>>;
 };
 
 const geistSans = localFont({
@@ -36,6 +38,8 @@ const PageHeader = ({
   buttons,
   loading,
   openStaff,
+  has_qr_code = "",
+  setPriority,
 }: PageHeaderProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -68,6 +72,10 @@ const PageHeader = ({
     }
   };
 
+  const openQrCode = () => {
+    console.log("OPEN QR CODE");
+  };
+
   return (
     <header className={styles.pageHeaderWrapper}>
       <div className={styles.left}>
@@ -79,6 +87,18 @@ const PageHeader = ({
         />
         <div>
           <h1 className={geistSans.className}>{title}</h1>
+          {has_qr_code && <Badge icon={"qr-code"} text={""} tone={"success"} />}
+          {setPriority && (
+            <div className={styles.toggleWrapper}>
+              <label>
+                <input
+                  type="checkbox"
+                  onClick={() => setPriority((prev) => !prev)}
+                />
+                <span className={styles.fill}></span>
+              </label>
+            </div>
+          )}
           {badges &&
             badges.map((badge, index) => (
               <Badge
