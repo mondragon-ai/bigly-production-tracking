@@ -65,7 +65,8 @@ export default function Confirm() {
     <div className={styles.page}>
       <PageHeader
         title="Job #1234"
-        loading={loading == "posting"}
+        set_loaders={true}
+        loading={loading}
         buttons={[
           {
             text: "DELETE",

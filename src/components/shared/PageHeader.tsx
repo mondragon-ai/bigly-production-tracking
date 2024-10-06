@@ -1,5 +1,5 @@
 "use client";
-import {BadgeType, IconTypes, Staff} from "@/lib/types/shared";
+import {BadgeType, IconTypes, LoadingTypes, Staff} from "@/lib/types/shared";
 import styles from "./Shared.module.css";
 import localFont from "next/font/local";
 import {Avatar} from "./Avatar";
@@ -7,10 +7,11 @@ import {Button} from "./Button";
 import {Badge} from "./Badge";
 import {Dispatch, SetStateAction, useRef} from "react";
 import {Icon} from "./Icon";
+import {SkeletonBadge, SkeletonText} from "../skeleton/SkeletonText";
 
 type PageHeaderProps = {
   has_qr_code?: string;
-  loading?: boolean;
+  loading?: LoadingTypes;
   title: string;
   date: string;
   badges: BadgeType[];
@@ -23,6 +24,7 @@ type PageHeaderProps = {
   }[];
   openStaff?: () => void;
   setPriority?: Dispatch<SetStateAction<boolean>>;
+  set_loaders?: boolean;
 };
 
 const geistSans = localFont({
@@ -41,6 +43,7 @@ const PageHeader = ({
   openStaff,
   has_qr_code = "",
   setPriority,
+  set_loaders = false,
 }: PageHeaderProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -101,12 +104,18 @@ const PageHeader = ({
           style={{visibility: "hidden"}}
         />
         <div>
-          <h1 className={geistSans.className}>{title}</h1>
-          {has_qr_code && (
+          {loading == "loading" && set_loaders ? (
+            <SkeletonText width={100} header={true} />
+          ) : (
+            <h1 className={geistSans.className}>{title}</h1>
+          )}
+          {loading == "loading" &&
+          set_loaders &&
+          has_qr_code ? null : has_qr_code ? (
             <button className={styles.btn} role="button" onClick={openQrCode}>
               <Icon icon={"qr-code"} tone={"magic"} />
             </button>
-          )}
+          ) : null}
           {setPriority && (
             <div className={styles.toggleWrapper}>
               <label>
@@ -118,7 +127,9 @@ const PageHeader = ({
               </label>
             </div>
           )}
-          {badges &&
+          {loading == "loading" && set_loaders && badges ? (
+            <SkeletonBadge />
+          ) : badges ? (
             badges.map((badge, index) => (
               <Badge
                 key={index}
@@ -126,24 +137,33 @@ const PageHeader = ({
                 text={badge.text}
                 tone={badge.tone}
               />
-            ))}
+            ))
+          ) : null}
         </div>
-        {date && <span>{date}</span>}
+        {loading == "loading" && set_loaders && date ? (
+          <SkeletonText color="#cccccc" width={30} header={true} />
+        ) : date ? (
+          <span>{date}</span>
+        ) : null}
       </div>
       <div className={styles.right}>
-        <div className={styles.staffWrapper} onClick={openStaff}>
-          {staff.length > 4 && <p>{`+${staff.length - 4}`}</p>}
-          {staff &&
-            staff.map((s, i) => {
-              if (i <= 4) {
-                return <Avatar staff={null} key={i} />;
-              }
-            })}
-        </div>
+        {loading == "loading" && set_loaders && staff ? (
+          <SkeletonBadge />
+        ) : (
+          <div className={styles.staffWrapper} onClick={openStaff}>
+            {staff.length > 4 && <p>{`+${staff.length - 4}`}</p>}
+            {staff &&
+              staff.map((s, i) => {
+                if (i <= 4) {
+                  return <Avatar staff={null} key={i} />;
+                }
+              })}
+          </div>
+        )}
         {buttons &&
           buttons.map((button, index) => (
             <Button
-              loading={loading}
+              loading={loading == "requesting" || loading == "posting"}
               key={index}
               thin={true}
               text={button.text}

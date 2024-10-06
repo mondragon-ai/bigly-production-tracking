@@ -17,9 +17,9 @@ export default function Files() {
     loading,
     staff,
     error,
+    file_detail,
     uploadFiles,
     fetchAndParseFile,
-    file_detail,
     deleteFile,
     genreateJobs,
   } = useFiles();
@@ -37,7 +37,8 @@ export default function Files() {
   return (
     <div className={styles.page}>
       <PageHeader
-        loading={loading == "posting"}
+        set_loaders={false}
+        loading={loading}
         title="Pick List Files"
         buttons={[
           {

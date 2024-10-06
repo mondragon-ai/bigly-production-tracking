@@ -61,6 +61,8 @@ export default function JobDetail() {
             icon: "trash",
           },
         ]}
+        loading={loading}
+        set_loaders={true}
         date={job.created_at}
         badges={badges(job)}
         staff={job.staff}
