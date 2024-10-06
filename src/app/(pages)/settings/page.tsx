@@ -10,9 +10,11 @@ import {useSettings} from "@/lib/hooks/useSettings";
 import {initialStaff} from "@/lib/payloads/staff";
 import {initialStore} from "@/lib/payloads/store";
 import {useState} from "react";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Settings() {
-  const {data, staff, store, selectItem, setStaff, setStore} = useSettings();
+  const {data, staff, store, loading, selectItem, setStaff, setStore} =
+    useSettings();
   const [create, setCreate] = useState<{staff: boolean; store: boolean}>({
     staff: false,
     store: false,
@@ -82,11 +84,15 @@ export default function Settings() {
       <div>
         <div className={styles.rowSection} style={{width: "100%"}}>
           <section style={{width: "55%", paddingRight: "10px"}}>
-            <UserList
-              headers={users_headers}
-              items={data.staff}
-              selectItem={handleSelect}
-            />
+            {loading == "loading" ? (
+              <SkeletonList width={100} />
+            ) : (
+              <UserList
+                headers={users_headers}
+                items={data.staff}
+                selectItem={handleSelect}
+              />
+            )}
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
             {create.staff ? (
@@ -97,6 +103,8 @@ export default function Settings() {
               />
             ) : staff && staff.id !== "" ? (
               <UserCard staff={staff} deleteItem={deleteItem} />
+            ) : loading == "requesting" || loading == "loading" ? (
+              <SkeletonDetail width={100} />
             ) : (
               <StartingState type={"user"} />
             )}
@@ -104,11 +112,15 @@ export default function Settings() {
         </div>
         <div className={styles.rowSection} style={{width: "100%"}}>
           <section style={{width: "55%", paddingRight: "10px"}}>
-            <StoreList
-              headers={store_header}
-              items={data.store}
-              selectItem={handleSelect}
-            />
+            {loading == "loading" ? (
+              <SkeletonList width={100} />
+            ) : (
+              <StoreList
+                headers={store_header}
+                items={data.store}
+                selectItem={handleSelect}
+              />
+            )}
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
             {create.store ? (
@@ -119,6 +131,8 @@ export default function Settings() {
               />
             ) : store && store.id !== "" ? (
               <StoreCard store={store} deleteItem={deleteItem} />
+            ) : loading == "requesting" || loading == "loading" ? (
+              <SkeletonDetail width={100} />
             ) : (
               <StartingState type={"store"} />
             )}

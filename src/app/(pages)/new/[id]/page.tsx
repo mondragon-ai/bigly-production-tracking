@@ -10,6 +10,7 @@ import {BadgeType} from "@/lib/types/shared";
 import {StartingState} from "@/components/images/StartingState";
 import {useState} from "react";
 import {AddStaff} from "@/components/shared/AddStaff";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Confirm() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -94,11 +95,15 @@ export default function Confirm() {
           />
         )}
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ItemsList
-            headers={headers}
-            items={job.items}
-            handleSelectItem={handleSelectItem}
-          />
+          {loading == "loading" ? (
+            <SkeletonList width={100} />
+          ) : (
+            <ItemsList
+              headers={headers}
+              items={job.items}
+              handleSelectItem={handleSelectItem}
+            />
+          )}
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {item ? (
@@ -107,8 +112,8 @@ export default function Confirm() {
               onClick={handleRemoveItem}
               item={item}
             />
-          ) : loading == "requesting" ? (
-            <p>loading</p>
+          ) : loading == "requesting" || loading == "loading" ? (
+            <SkeletonDetail width={100} />
           ) : (
             <StartingState type="item" />
           )}

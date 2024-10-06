@@ -155,6 +155,13 @@
   width: 250px;
 }
 
+.chartContainer > .sklHalf {
+  background-color: var(--info-color);
+  border-radius: 5px;
+  height: 80px;
+  width: 80%;
+}
+
 .aTxt {
   position: relative;
   height: auto;

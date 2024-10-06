@@ -4,6 +4,7 @@ import {uploadToServer} from "../utils/storage";
 import {image_list} from "../data/images";
 import {ImageDocument} from "../types/images";
 import {LoadingTypes} from "../types/shared";
+import {delay} from "../utils/shared";
 
 interface UseImageUploadReturn {
   images: ImageDocument[];
@@ -18,12 +19,13 @@ interface UseImageUploadReturn {
 const useImageUpload = (): UseImageUploadReturn => {
   const [images, setImages] = useState<ImageDocument[]>(image_list);
   const [img_detail, setImgDetail] = useState<ImageDocument | null>(null);
-  const [loading, setLoading] = useState<LoadingTypes>(null);
+  const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchImages = async () => {
     setLoading("loading");
     try {
+      await delay(1500);
       //   const response = await fetch("/api/images");
       //   if (!response.ok) throw new Error("Failed to fetch images");
       //   const data: Image[] = await response.json();

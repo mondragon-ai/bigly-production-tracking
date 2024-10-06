@@ -7,6 +7,7 @@ import useFiles from "@/lib/hooks/useFiles";
 import {StartingState} from "@/components/images/StartingState";
 import {AddStaff} from "@/components/shared/AddStaff";
 import {useState} from "react";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Files() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -22,18 +23,6 @@ export default function Files() {
     deleteFile,
     genreateJobs,
   } = useFiles();
-
-  const handleFileUpload = async (file: File) => {
-    await uploadFiles(file);
-  };
-
-  const handleFileSelect = async (id: string) => {
-    await fetchAndParseFile(id);
-  };
-
-  const handleDeleteFile = async (id: string) => {
-    await deleteFile(id);
-  };
 
   const handleAddStaff = () => {
     openModal(!modal);
@@ -60,7 +49,7 @@ export default function Files() {
           {
             text: "UPLOAD FILE",
             tone: "success",
-            onClick: handleFileUpload,
+            onClick: uploadFiles,
             icon: "upload",
           },
         ]}
@@ -78,21 +67,25 @@ export default function Files() {
           />
         )}
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <FileList
-            handleFileSelect={handleFileSelect}
-            headers={headers}
-            items={files}
-          />
+          {loading == "loading" ? (
+            <SkeletonList width={100} />
+          ) : (
+            <FileList
+              handleFileSelect={fetchAndParseFile}
+              headers={headers}
+              items={files}
+            />
+          )}
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {file_detail ? (
             <FileDetailCard
               file_detail={file_detail}
               handleGenerate={handleGenerate}
-              handleDeleteFile={handleDeleteFile}
+              handleDeleteFile={deleteFile}
             />
-          ) : loading == "requesting" ? (
-            <p>loading</p>
+          ) : loading == "requesting" || loading == "loading" ? (
+            <SkeletonDetail width={100} />
           ) : (
             <StartingState type="file" />
           )}

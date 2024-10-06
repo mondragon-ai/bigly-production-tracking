@@ -5,6 +5,7 @@ import {FileDetail, FileDocument} from "../types/files";
 import {files_list, file_details} from "@/lib/data/files";
 import {LoadingTypes, Staff} from "../types/shared";
 import {staff_list} from "../data/settings";
+import {delay} from "../utils/shared";
 
 interface UseFilesUploadReturn {
   files: FileDocument[];
@@ -22,12 +23,13 @@ const useFiles = (): UseFilesUploadReturn => {
   const [files, setFiles] = useState<FileDocument[]>([]);
   const [staff, setStaff] = useState<Staff[]>([]);
   const [file_detail, setFileDetail] = useState<FileDetail | null>(null);
-  const [loading, setLoading] = useState<LoadingTypes>(null);
+  const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchFiles = async () => {
     setLoading("loading");
     try {
+      await delay(1500);
       //   const response = await fetch("/api/files");
       //   if (!response.ok) throw new Error("Failed to fetch files");
       //   const data: Image[] = await response.json();

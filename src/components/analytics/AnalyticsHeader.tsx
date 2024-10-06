@@ -4,13 +4,15 @@ import {HalfCircleStats} from "./charts";
 
 import localFont from "next/font/local";
 import {useState} from "react";
+import {LoadingTypes} from "@/lib/types/shared";
+import {SkeletonText} from "../skeleton/SkeletonText";
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 
-export const AnalyticsHeader = () => {
+export const AnalyticsHeader = ({loading}: {loading: LoadingTypes}) => {
   const [modal, openModal] = useState(false);
   const handleSelectModal = (
     type:
@@ -68,32 +70,57 @@ export const AnalyticsHeader = () => {
           </div>
         )}
       </div>
-      <div className={styles.right}>
-        <div className={styles.aTxt}>
-          <h1 className={geistSans.className}>3.3k</h1>
-          <span>total units</span>
+      {loading == "loading" ? (
+        <SkeletonHeader />
+      ) : (
+        <div className={styles.right}>
+          <div className={styles.aTxt}>
+            <h1 className={geistSans.className}>3.3k</h1>
+            <span>total units</span>
+          </div>
+          <div className={styles.chartContainer}>
+            <HalfCircleStats
+              data={[
+                {name: "completed", value: 120},
+                {name: "needed", value: 20},
+              ]}
+            />
+          </div>
+          <div className={styles.aTxt}>
+            <h1 className={geistSans.className}>140</h1>
+            <span>total jobs</span>
+          </div>
+          <div className={styles.chartContainer}>
+            <HalfCircleStats
+              data={[
+                {name: "completed", value: 120},
+                {name: "needed", value: 18},
+              ]}
+            />
+          </div>
         </div>
-        <div className={styles.chartContainer}>
-          <HalfCircleStats
-            data={[
-              {name: "completed", value: 120},
-              {name: "needed", value: 20},
-            ]}
-          />
-        </div>
-        <div className={styles.aTxt}>
-          <h1 className={geistSans.className}>140</h1>
-          <span>total jobs</span>
-        </div>
-        <div className={styles.chartContainer}>
-          <HalfCircleStats
-            data={[
-              {name: "completed", value: 120},
-              {name: "needed", value: 18},
-            ]}
-          />
-        </div>
-      </div>
+      )}
     </header>
+  );
+};
+
+const SkeletonHeader = () => {
+  return (
+    <div className={styles.right}>
+      <div className={styles.aTxt}>
+        <SkeletonText width={100} header={true} />
+        <span>total units</span>
+      </div>
+      <div className={styles.chartContainer}>
+        <div className={styles.sklHalf}></div>
+      </div>
+      <div className={styles.aTxt}>
+        <SkeletonText width={100} header={true} />
+        <span>total jobs</span>
+      </div>
+      <div className={styles.chartContainer}>
+        <div className={styles.sklHalf}></div>
+      </div>
+    </div>
   );
 };

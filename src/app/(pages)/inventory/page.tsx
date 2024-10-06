@@ -5,6 +5,7 @@ import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
 import {StartingState} from "@/components/images/StartingState";
 import useInventory from "@/lib/hooks/useInventory";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Inventory() {
   const {inventory, item, loading, handleSelectItem, deleteItem} =
@@ -22,12 +23,16 @@ export default function Inventory() {
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ItemsList
-            is_inventory={true}
-            headers={headers}
-            items={inventory}
-            handleSelectItem={handleSelectItem}
-          />
+          {loading == "loading" ? (
+            <SkeletonList width={100} />
+          ) : (
+            <ItemsList
+              is_inventory={true}
+              headers={headers}
+              items={inventory}
+              handleSelectItem={handleSelectItem}
+            />
+          )}
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {item ? (
@@ -37,8 +42,8 @@ export default function Inventory() {
               item={item}
               has_qr_code="https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca"
             />
-          ) : loading == "loading" ? (
-            <p>loading</p>
+          ) : loading == "requesting" || loading == "loading" ? (
+            <SkeletonDetail width={100} />
           ) : (
             <StartingState type="item" />
           )}

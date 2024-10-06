@@ -5,6 +5,7 @@ import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
 import useItems from "@/lib/hooks/useItems";
 import {StartingState} from "@/components/images/StartingState";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Items() {
   const {items, item, loading, handleSelectItem, deleteItem} = useItems();
@@ -21,17 +22,21 @@ export default function Items() {
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ItemsList
-            headers={headers}
-            items={items}
-            handleSelectItem={handleSelectItem}
-          />
+          {loading == "loading" ? (
+            <SkeletonList width={100} />
+          ) : (
+            <ItemsList
+              headers={headers}
+              items={items}
+              handleSelectItem={handleSelectItem}
+            />
+          )}
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {item ? (
             <ItemDisplay is_create={true} onClick={deleteItem} item={item} />
-          ) : loading == "loading" ? (
-            <p>loading</p>
+          ) : loading == "requesting" || loading == "loading" ? (
+            <SkeletonDetail width={100} />
           ) : (
             <StartingState type="item" />
           )}

@@ -3,6 +3,7 @@ import {useState, useEffect, useCallback} from "react";
 import {InventoryDocument} from "../types/inventory";
 import {invenroy_list} from "../data/inventory";
 import {LoadingTypes} from "../types/shared";
+import {delay} from "../utils/shared";
 
 interface InventoryReturn {
   inventory: InventoryDocument[];
@@ -16,15 +17,12 @@ interface InventoryReturn {
 const useInventory = (): InventoryReturn => {
   const [inventory, setInventory] = useState<InventoryDocument[]>([]);
   const [item, setItem] = useState<InventoryDocument | null>(null);
-  const [loading, setLoading] = useState<LoadingTypes>(null);
+  const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchInventory = async () => {
     setLoading("loading");
     try {
-      const delay = (s: number) => {
-        return new Promise((resolve) => setTimeout(resolve, s));
-      };
       await delay(1500);
       setInventory(invenroy_list);
     } catch (err) {

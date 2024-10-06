@@ -5,6 +5,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import {ImageList} from "@/components/images/ImageList";
 import useImageUpload from "@/lib/hooks/useImages";
 import {StartingState} from "@/components/images/StartingState";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Images() {
   const {
@@ -48,11 +49,15 @@ export default function Images() {
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ImageList
-            handleImageSelect={handleImageSelect}
-            headers={headers}
-            items={images}
-          />
+          {loading == "loading" ? (
+            <SkeletonList width={100} />
+          ) : (
+            <ImageList
+              handleImageSelect={handleImageSelect}
+              headers={headers}
+              items={images}
+            />
+          )}
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {img_detail ? (
@@ -60,8 +65,8 @@ export default function Images() {
               img_detail={img_detail}
               handleDeleteImage={handleDeleteImage}
             />
-          ) : loading == "requesting" ? (
-            <p>loading</p>
+          ) : loading == "requesting" || loading == "loading" ? (
+            <SkeletonDetail width={100} />
           ) : (
             <StartingState type="image" />
           )}

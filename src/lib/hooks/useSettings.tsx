@@ -3,6 +3,7 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {LoadingTypes, Staff} from "../types/shared";
 import {SettingsPage, StoreDocument} from "../types/settings";
 import {settings_data} from "../data/settings";
+import {delay} from "../utils/shared";
 
 interface SettingsReturn {
   loading: LoadingTypes;
@@ -23,12 +24,13 @@ export const useSettings = (): SettingsReturn => {
   const [data, setData] = useState<SettingsPage>(settings_data);
   const [staff, setStaff] = useState<Staff | null>(null);
   const [store, setStore] = useState<StoreDocument | null>(null);
-  const [loading, setLoading] = useState<LoadingTypes>(null);
+  const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchImages = async () => {
     setLoading("loading");
     try {
+      await delay(1500);
       //   const response = await fetch("/api/images");
       //   if (!response.ok) throw new Error("Failed to fetch images");
       //   const data: Image[] = await response.json();

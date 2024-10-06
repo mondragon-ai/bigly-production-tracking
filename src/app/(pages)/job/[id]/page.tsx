@@ -8,6 +8,7 @@ import {BadgeType} from "@/lib/types/shared";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
 import {StartingState} from "@/components/images/StartingState";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function JobDetail() {
   const params = useParams<{id: string}>();
@@ -66,11 +67,15 @@ export default function JobDetail() {
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
-          <ItemsList
-            headers={headers}
-            items={job.items}
-            handleSelectItem={handleSelectItem}
-          />
+          {loading == "loading" ? (
+            <SkeletonList width={100} />
+          ) : (
+            <ItemsList
+              headers={headers}
+              items={job.items}
+              handleSelectItem={handleSelectItem}
+            />
+          )}
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {item ? (
@@ -79,8 +84,8 @@ export default function JobDetail() {
               onClick={handleReportError}
               item={item}
             />
-          ) : loading == "requesting" ? (
-            <p>loading</p>
+          ) : loading == "requesting" || loading == "loading" ? (
+            <SkeletonDetail width={100} />
           ) : (
             <StartingState type="item" />
           )}

@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import {LoadingTypes} from "../types/shared";
 import {Items, JobDocument} from "../types/jobs";
 import {job_list} from "../data/jobs";
+import {delay} from "../utils/shared";
 
 interface JobReturn {
   job: JobDocument;
@@ -20,15 +21,12 @@ const useJob = (id: string): JobReturn => {
     job_list.find((j) => j.id == id) || job_list[0],
   );
   const [item, setItem] = useState<Items | null>(null);
-  const [loading, setLoading] = useState<LoadingTypes>(null);
+  const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchJobs = async () => {
     setLoading("loading");
     try {
-      const delay = (s: number) => {
-        return new Promise((resolve) => setTimeout(resolve, s));
-      };
       await delay(1500);
       //   const response = await fetch("/api/images");
       //   if (!response.ok) throw new Error("Failed to fetch images");
