@@ -6,15 +6,25 @@ import styles from "./Layout.module.css";
 import {useEffect, useState} from "react";
 import {Divider} from "../shared/Divider";
 import {usePathname} from "next/navigation";
+import {useGlobalContext} from "@/lib/store/context";
+import {initialUser} from "@/lib/data/store";
+import {useRouter} from "next/navigation";
 
 export const NavMenu = () => {
+  const router = useRouter();
   const pathname = usePathname();
+  const {globalState, setGlobalState} = useGlobalContext();
   const [slug, setSlug] = useState("");
 
   useEffect(() => {
     const slug = pathname.split("/")[1];
     setSlug(slug);
   }, [pathname]);
+
+  const handleLogout = () => {
+    router.push("/");
+    setGlobalState("user", initialUser);
+  };
 
   return (
     <header className={styles.sidebar}>
@@ -379,6 +389,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 href={"/"}
+                onClick={handleLogout}
                 style={{
                   backgroundColor:
                     slug === "settings"
@@ -413,8 +424,8 @@ export const NavMenu = () => {
                 <div className={styles.avatarWrapper}>
                   <Avatar staff={null} />
                   <div className={styles.text}>
-                    <h6>Admin</h6>
-                    <h5>BiglyBoys@gobigly.com</h5>
+                    <h6>{globalState.user.role}</h6>
+                    <h5>{globalState.user.email}</h5>
                   </div>
                 </div>
               </Link>

@@ -1,7 +1,9 @@
 "use client";
+import {useGlobalContext} from "../store/context";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
 import toast from "react-hot-toast";
+import {useState} from "react";
+import {UserType} from "../types/store";
 
 interface LoginResponse {
   success: boolean;
@@ -11,6 +13,7 @@ interface LoginResponse {
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const {setGlobalState} = useGlobalContext();
   const router = useRouter();
 
   const login = async (
@@ -33,6 +36,19 @@ const useLogin = () => {
       //   }
 
       //   const data = await response.json();
+
+      const user: UserType = {
+        id: "exampleId",
+        name: "User Name",
+        email: "testyMctester@gmail.com",
+        role: "admin",
+        jwt: "exampleJWTToken",
+        position: "printing",
+      };
+
+      // Update global state and save session
+      setGlobalState("user", user);
+
       toast.success("Logged In");
       router.push("/jobs");
       return {success: true};
