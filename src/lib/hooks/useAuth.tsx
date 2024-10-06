@@ -4,6 +4,7 @@ import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 import {useState} from "react";
 import {UserType} from "../types/store";
+import {delay} from "../utils/shared";
 
 interface LoginResponse {
   success: boolean;
@@ -23,6 +24,7 @@ const useLogin = () => {
     setLoading(true);
     setError(null);
     try {
+      await delay(1500);
       //   const response = await fetch('/api/login', {
       //     method: 'POST',
       //     headers: {
@@ -37,21 +39,33 @@ const useLogin = () => {
 
       //   const data = await response.json();
 
-      const user: UserType = {
-        id: "exampleId",
-        name: "User Name",
-        email: "testyMctester@gmail.com",
-        role: "admin",
-        jwt: "exampleJWTToken",
-        position: "printing",
-      };
+      const payload = {email, password};
+      console.log({payload});
 
-      // Update global state and save session
-      setGlobalState("user", user);
+      if (true) {
+        const user: UserType = {
+          id: "exampleId",
+          name: "User Name",
+          email: "testyMctester@gmail.com",
+          role: "admin",
+          jwt: "exampleJWTToken",
+          position: "printing",
+        };
 
-      toast.success("Logged In");
-      router.push("/jobs");
-      return {success: true};
+        // Update global state and save session
+        setGlobalState("user", user);
+
+        toast.success("Logged In");
+        router.push("/jobs");
+        return {success: true};
+      } else {
+        // 403 -> wrong cred
+        // 409 -> cred does not exist
+        // 500 -> server
+        setError("Error logging in");
+        toast.error("Error logging in");
+        return {success: false};
+      }
     } catch (error: any) {
       setError(error.message);
       return {success: false, error: error.message};
@@ -60,7 +74,7 @@ const useLogin = () => {
     }
   };
 
-  return {login, loading, error};
+  return {login, loading, error, setError};
 };
 
 export default useLogin;

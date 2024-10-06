@@ -394,6 +394,13 @@
   color: var(--primary-text);
 }
 
+.togglePass {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  cursor: pointer;
+}
+
 /* Computer (Mac 13-inch to Mac 16-inch) */
 @media only screen and (min-width: 1280px) and (max-width: 3072px) {
   .mainPage {

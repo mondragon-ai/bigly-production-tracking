@@ -1,10 +1,11 @@
 "use client";
 import {Button} from "@/components/shared/Button";
+import {Icon} from "@/components/shared/Icon";
+import useLogin from "@/lib/hooks/useAuth";
 import localFont from "next/font/local";
 import styles from "./page.module.css";
 import {LOGO} from "@/lib/constants";
 import Image from "next/image";
-import useLogin from "@/lib/hooks/useAuth";
 import {useState} from "react";
 
 const geistSans = localFont({
@@ -14,12 +15,18 @@ const geistSans = localFont({
 });
 
 export default function Enter() {
-  const {login, loading, error} = useLogin();
+  const {login, loading, error, setError} = useLogin();
   const [email, setEmail] = useState("");
+  const [show, toggleShow] = useState(false);
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    if (email == "" || password == "") {
+      setError("Email and password is required");
+      return;
+    }
     await login(email, password);
   };
 
@@ -61,15 +68,41 @@ export default function Enter() {
           <span>Sign in and start tracking</span>
           <div>
             <div className={styles.inputWrapper}>
-              <label htmlFor="first_name">Email</label>
-              <input type="text" placeholder="biglyboys@gobigly.com" />
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="biglyboys@gobigly.com"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
             <div className={styles.inputWrapper}>
-              <label htmlFor="first_name">Password</label>
-              <input type="password" placeholder="******" />
+              <label htmlFor="password">Password</label>
+              <input
+                type={show ? "text" : "password"}
+                placeholder="******"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div
+                className={styles.togglePass}
+                onClick={() => toggleShow(!show)}
+              >
+                <Icon icon={show ? "eye" : "eye-slash"} tone={"info"} />
+              </div>
             </div>
+            <p
+              style={{
+                textAlign: "center",
+                marginTop: 10,
+                width: "100%",
+              }}
+            >
+              {error}
+            </p>
             <Button
+              loading={loading}
               width={100}
               text={"Log In"}
               thin={false}

@@ -41,7 +41,6 @@ export const ItemsList = ({
         </thead>
         <tbody>
           {items.map((item, index) => {
-            console.log(typeof (item as any).inventory_levl);
             return (
               <tr key={item.id} onClick={() => handleSelectItem(item.id)}>
                 <td
@@ -50,13 +49,7 @@ export const ItemsList = ({
                     padding: "0 10px",
                     verticalAlign: "middle",
                   }}
-                >
-                  {/* <input
-                  type="checkbox"
-                  checked={selectedIds.includes(item.id)}
-                  onChange={() => toggleSelection(item.id)}
-                /> */}
-                </td>
+                ></td>
                 <td>{item.sku}</td>
                 <td>{item.size}</td>
                 <td>{item.color}</td>

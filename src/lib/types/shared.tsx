@@ -11,6 +11,8 @@ export type IconTypes =
   | "floppy"
   | "upload"
   | "clock"
+  | "eye-slash"
+  | "eye"
   | "wand"
   | "calendar"
   | "search"

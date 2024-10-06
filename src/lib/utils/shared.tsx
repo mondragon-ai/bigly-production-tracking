@@ -71,3 +71,7 @@ export const badgeColor = (
       return "magic";
   }
 };
+
+export const delay = (s: number) => {
+  return new Promise((resolve) => setTimeout(resolve, s));
+};
