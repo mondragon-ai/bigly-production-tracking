@@ -104,10 +104,13 @@ export const CreateUser = ({
 };
 
 const roles = [
-  {value: "manager", title: "Manager"},
-  {value: "team_lead", title: "Team Lead"},
-  {value: "pressing", title: "Pressing"},
+  {value: "", title: "Select Position"},
+  {value: "printing", title: "Printing"},
   {value: "cutting", title: "Cutting"},
+  {value: "pressing", title: "Pressing"},
+  {value: "double", title: "Double"},
+  {value: "folding", title: "Folding"},
+  {value: "manager", title: "Manager"},
 ];
 
 export const UserCard = ({

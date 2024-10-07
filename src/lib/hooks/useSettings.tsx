@@ -3,7 +3,10 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {LoadingTypes, Staff} from "../types/shared";
 import {SettingsPage, StoreDocument} from "../types/settings";
 import {settings_data} from "../data/settings";
-import {delay} from "../utils/shared";
+import {delay, handleHttpError} from "../utils/shared";
+import toast from "react-hot-toast";
+import {SERVER_URL} from "../constants";
+import {createCurrentSeconds} from "../utils/time";
 
 interface SettingsReturn {
   loading: LoadingTypes;
@@ -27,6 +30,7 @@ export const useSettings = (): SettingsReturn => {
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
+  const seconds = createCurrentSeconds();
   const fetchImages = async () => {
     setLoading("loading");
     try {
@@ -67,7 +71,36 @@ export const useSettings = (): SettingsReturn => {
 
   const createStaff = async (staff: Staff) => {
     setLoading("posting");
+    console.log(staff);
+    try {
+      const response = await fetch(`${SERVER_URL}/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({user: staff}),
+      });
+
+      if (response.ok) {
+        toast.success("Created Staff");
+        setData((p) => ({
+          ...p,
+          staff: [...p.staff, {...staff, id: staff.email, created_at: seconds}],
+        }));
+        return;
+      } else {
+        const data = await response.json();
+        handleHttpError(response.status, data.message, setError);
+        return;
+      }
+    } catch (error: any) {
+      handleHttpError(500, "Server Error.", setError);
+      return;
+    } finally {
+      setLoading(null);
+    }
   };
+
   const createStore = async (store: StoreDocument) => {
     setLoading("posting");
   };

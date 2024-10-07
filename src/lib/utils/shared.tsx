@@ -1,4 +1,6 @@
+import toast from "react-hot-toast";
 import {IconTypes} from "../types/shared";
+import {Dispatch, SetStateAction} from "react";
 
 export const copyToClipBoard = (value: string) => {
   if (navigator) {
@@ -74,4 +76,29 @@ export const badgeColor = (
 
 export const delay = (s: number) => {
   return new Promise((resolve) => setTimeout(resolve, s));
+};
+
+export const handleHttpError = (
+  status: number,
+  message: string,
+  setError: Dispatch<SetStateAction<string | null>>,
+): void => {
+  switch (status) {
+    case 403:
+      toast.error(message);
+      setError(message);
+      return;
+    case 409:
+      toast.error(message);
+      setError(message);
+      return;
+    case 500:
+      toast.error(message);
+      setError(message);
+      return;
+    default:
+      toast.error(message);
+      setError(message);
+      return;
+  }
 };

@@ -13,8 +13,16 @@ import {useState} from "react";
 import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Settings() {
-  const {data, staff, store, loading, selectItem, setStaff, setStore} =
-    useSettings();
+  const {
+    data,
+    staff,
+    store,
+    loading,
+    selectItem,
+    setStaff,
+    setStore,
+    createStaff,
+  } = useSettings();
   const [create, setCreate] = useState<{staff: boolean; store: boolean}>({
     staff: false,
     store: false,
@@ -37,9 +45,8 @@ export default function Settings() {
 
   const createItem = (type: "store" | "staff") => {
     console.log(type);
-    if (type == "staff") {
-      setStaff(initialStaff);
-      setCreate((prev) => ({...prev, staff: false}));
+    if (type == "staff" && staff) {
+      createStaff(staff);
     }
     if (type == "store") {
       setStore(initialStore);

@@ -1,15 +1,11 @@
 "use client";
+import {delay, handleHttpError} from "../utils/shared";
 import {useGlobalContext} from "../store/context";
 import {useRouter} from "next/navigation";
+import {UserType} from "../types/store";
 import toast from "react-hot-toast";
 import {useState} from "react";
-import {UserType} from "../types/store";
-import {delay} from "../utils/shared";
-
-interface LoginResponse {
-  success: boolean;
-  error?: string;
-}
+import {SERVER_URL} from "../constants";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -17,58 +13,46 @@ const useLogin = () => {
   const {setGlobalState} = useGlobalContext();
   const router = useRouter();
 
-  const login = async (
-    email: string,
-    password: string,
-  ): Promise<LoginResponse> => {
+  const login = async (email: string, password: string): Promise<void> => {
     setLoading(true);
     setError(null);
+    console.log({url: `${SERVER_URL}/login`});
     try {
       await delay(1500);
-      //   const response = await fetch('/api/login', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({ email, password }),
-      //   });
-
-      //   if (!response.ok) {
-      //     throw new Error('Login failed, please check your credentials.');
-      //   }
-
-      //   const data = await response.json();
-
       const payload = {email, password};
-      console.log({payload});
+      // const response = await fetch(`${SERVER_URL}/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(payload),
+      // });
+
+      // const data = await response.json();
+      // console.log(data);
 
       if (true) {
         const user: UserType = {
           id: "exampleId",
           name: "User Name",
-          email: "testyMctester@gmail.com",
+          email: email,
           role: "admin",
           jwt: "exampleJWTToken",
           position: "printing",
         };
 
-        // Update global state and save session
         setGlobalState("user", user);
 
         toast.success("Logged In");
-        router.push("/jobs");
-        return {success: true};
+        router.push("/analytics");
+        return;
       } else {
-        // 403 -> wrong cred
-        // 409 -> cred does not exist
-        // 500 -> server
-        setError("Error logging in");
-        toast.error("Error logging in");
-        return {success: false};
+        handleHttpError(500, "error", setError);
+        return;
       }
     } catch (error: any) {
-      setError(error.message);
-      return {success: false, error: error.message};
+      handleHttpError(500, "Server Error.", setError);
+      return;
     } finally {
       setLoading(false);
     }
