@@ -3,6 +3,7 @@ import Image from "next/image";
 import {Icon} from "../shared/Icon";
 import {StoreDocument} from "@/lib/types/settings";
 import {getInitials, truncateString} from "@/lib/utils/converter.tsx/text";
+import {formatTimestamp} from "@/lib/utils/time";
 
 type StoreListProps = {
   headers: string[];
@@ -57,7 +58,7 @@ export const StoreList = ({headers, items, selectItem}: StoreListProps) => {
                 </td>
                 <td>{item.name}</td>
                 <td>{truncateString(item.sphat, 20)}</td>
-                <td>{item.created_at}</td>
+                <td>{formatTimestamp(item.created_at || 0)}</td>
               </tr>
             ))}
         </tbody>

@@ -1,6 +1,7 @@
 import styles from "./Users.module.css";
 import {Staff} from "@/lib/types/shared";
 import {getInitials} from "@/lib/utils/converter.tsx/text";
+import {formatTimestamp} from "@/lib/utils/time";
 
 type UserListProps = {
   headers: string[];
@@ -56,7 +57,7 @@ export const UserList = ({headers, items, selectItem}: UserListProps) => {
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.role}</td>
-                <td>{item.created_at}</td>
+                <td>{formatTimestamp(item.created_at || 0)}</td>
               </tr>
             ))}
         </tbody>

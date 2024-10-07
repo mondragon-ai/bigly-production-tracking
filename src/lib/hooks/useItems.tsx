@@ -1,9 +1,10 @@
 "use client";
 import {useState, useEffect, useCallback} from "react";
+import {biglyRequest} from "../networking/biglyServer";
+import {handleHttpError} from "../utils/shared";
 import {LoadingTypes} from "../types/shared";
 import {Items} from "../types/jobs";
-import {item_list} from "../data/jobs";
-import {delay} from "../utils/shared";
+import toast from "react-hot-toast";
 
 interface ItemReturn {
   items: Items[];
@@ -20,20 +21,34 @@ const useItems = (): ItemReturn => {
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
-  const fetchJobs = async () => {
+  // const seconds = createCurrentSeconds();
+  const fetchItems = async () => {
     setLoading("loading");
+    setError(null);
     try {
-      await delay(1500);
-      setItems(item_list);
+      const {status, data, message} = await biglyRequest(
+        "/app/items",
+        "GET",
+        null,
+      );
+
+      if (status < 300 && data) {
+        toast.success("Fetched Data");
+        setItems(data.items);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }
   };
 
   useEffect(() => {
-    fetchJobs();
+    fetchItems();
   }, []);
 
   const handleSelectItem = useCallback(

@@ -32,7 +32,7 @@ export const useSettings = (): SettingsReturn => {
   const [error, setError] = useState<string | null>(null);
 
   const seconds = createCurrentSeconds();
-  const fetchImages = async () => {
+  const fetchSettings = async () => {
     setLoading("loading");
     setError(null);
     try {
@@ -54,7 +54,7 @@ export const useSettings = (): SettingsReturn => {
   };
 
   useEffect(() => {
-    fetchImages();
+    fetchSettings();
   }, []);
 
   const selectItem = (id: string, type: "store" | "staff") => {

@@ -30,7 +30,21 @@ export default function Settings() {
     store: false,
   });
 
+  const handleSelectItem = (id: string, type: "store" | "staff") => {
+    console.log(type);
+    if (type == "staff") {
+      setStaff(initialStaff);
+      setCreate((prev) => ({...prev, staff: false}));
+    }
+    if (type == "store") {
+      setStore(initialStore);
+      setCreate((prev) => ({...prev, store: false}));
+    }
+    selectItem(id, type);
+  };
+
   const addItem = (type: "store" | "staff") => {
+    console.log(type);
     if (type == "staff") {
       setStaff(initialStaff);
       setCreate((prev) => ({...prev, staff: true}));
@@ -91,12 +105,12 @@ export default function Settings() {
               <UserList
                 headers={users_headers}
                 items={data.staff || []}
-                selectItem={selectItem}
+                selectItem={handleSelectItem}
               />
             )}
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
-            {create.staff ? (
+            {create.staff && loading !== "posting" ? (
               <CreateUser
                 staff={staff}
                 setStaff={setStaff}
@@ -104,7 +118,7 @@ export default function Settings() {
               />
             ) : staff && staff.id !== "" ? (
               <UserCard staff={staff} deleteItem={handleDelete} />
-            ) : loading == "requesting" || loading == "loading" ? (
+            ) : loading == "posting" || loading == "loading" ? (
               <SkeletonDetail width={100} />
             ) : (
               <StartingState type={"user"} />
@@ -119,12 +133,12 @@ export default function Settings() {
               <StoreList
                 headers={store_header}
                 items={data.store || []}
-                selectItem={selectItem}
+                selectItem={handleSelectItem}
               />
             )}
           </section>
           <section style={{width: "45%", paddingLeft: "10px"}}>
-            {create.store ? (
+            {create.store && loading !== "posting" ? (
               <CreateStore
                 store={store}
                 setStore={setStore}
@@ -132,7 +146,7 @@ export default function Settings() {
               />
             ) : store && store.id !== "" ? (
               <StoreCard store={store} deleteItem={handleDelete} />
-            ) : loading == "requesting" || loading == "loading" ? (
+            ) : loading == "posting" || loading == "loading" ? (
               <SkeletonDetail width={100} />
             ) : (
               <StartingState type={"store"} />
