@@ -540,3 +540,110 @@
 .storeModal td {
   padding: 7px 0;
 }
+
+/* =============================================================== */
+/*  8. APPROVE MODAL                                               */
+/* =============================================================== */
+
+.modalBkg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+  position: absolute !important;
+  height: 100% !important;
+  width: 100% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 2 !important;
+  background: #38383806 !important;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  height: auto;
+  width: 400px;
+  padding: 0rem;
+  cursor: pointer;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  z-index: 5;
+  overflow: hidden; /* Prevent overflow */
+}
+
+.modal > span,
+.modal > footer,
+.modal > header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+.modal > header > h5 {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--secondary-text);
+}
+
+.modal > span {
+  border-top: 0.5px solid rgb(221, 221, 221);
+  border-bottom: 0.5px solid rgb(221, 221, 221);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--secondary-text);
+}
+
+.modal > footer {
+  justify-content: flex-end;
+}
+
+.modal > footer > button {
+  margin-left: 10px;
+}
+
+/* =============================================================== */
+/*  9. ERROR CARD                                                  */
+/* =============================================================== */
+.errorCard {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  position: relative;
+  height: auto;
+  width: 100%;
+  padding: 1rem !important;
+  cursor: pointer;
+  background-color: var(--tertary-background);
+  border: 2px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: var(--drop-shadow);
+  z-index: 5;
+  overflow: hidden;
+}
+
+.errorCard > div {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  position: relative;
+  height: auto;
+  width: auto;
+}

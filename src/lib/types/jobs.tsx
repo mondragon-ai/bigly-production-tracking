@@ -13,6 +13,7 @@ export type JobDocument = {
   items: Items[];
   created_at: string;
   updated_at: string;
+  qr_code: string;
 };
 
 export type ErrorRate = {[key in Stages]: number};

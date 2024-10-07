@@ -47,7 +47,6 @@ export const useSettings = (): SettingsReturn => {
   }, []);
 
   const selectItem = (id: string, type: "store" | "staff") => {
-    setLoading("requesting");
     if (type == "staff") {
       const selected = data.staff.find((s) => s.id === id);
       if (selected) setStaff(selected);

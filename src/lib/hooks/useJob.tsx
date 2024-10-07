@@ -1,5 +1,5 @@
 "use client";
-import {useState, useEffect} from "react";
+import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import {LoadingTypes} from "../types/shared";
 import {Items, JobDocument} from "../types/jobs";
 import {job_list} from "../data/jobs";
@@ -9,11 +9,12 @@ interface JobReturn {
   job: JobDocument;
   loading: LoadingTypes;
   error: string | null;
+  item: Items | null;
   selectItem: (id: string) => void;
   deleteJob: (id: string) => Promise<void>;
   removeItem: (id: string) => Promise<void>;
   approveJob: (id: string) => Promise<void>;
-  item: Items | null;
+  setError: Dispatch<SetStateAction<string | null>>;
 }
 
 const useJob = (id: string): JobReturn => {
@@ -109,8 +110,9 @@ const useJob = (id: string): JobReturn => {
     loading,
     error,
     job,
-    selectItem,
     item,
+    selectItem,
+    setError,
     deleteJob,
     approveJob,
     removeItem,

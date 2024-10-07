@@ -11,13 +11,23 @@ import {StartingState} from "@/components/images/StartingState";
 import {useState} from "react";
 import {AddStaff} from "@/components/shared/AddStaff";
 import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
+import {ErrorIcon} from "@/components/shared/ErrorIcon";
 
 export default function Confirm() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [modal, openModal] = useState<boolean>(false);
   const params = useParams<{id: string}>();
-  const {job, selectItem, item, loading, deleteJob, removeItem, approveJob} =
-    useJob(params.id);
+  const {
+    job,
+    selectItem,
+    item,
+    loading,
+    deleteJob,
+    removeItem,
+    approveJob,
+    error,
+    setError,
+  } = useJob(params.id);
 
   const handleDeleteJob = async () => {
     console.log({delete: params.id});
@@ -26,6 +36,7 @@ export default function Confirm() {
 
   const handleRemoveItem = async (id: string) => {
     console.log({remove: id});
+    setError("Couldn't remove");
     await removeItem(id);
   };
 
@@ -63,6 +74,7 @@ export default function Confirm() {
 
   return (
     <div className={styles.page}>
+      {error && <ErrorIcon text={error} closeError={() => setError(null)} />}
       <PageHeader
         title="Job #1234"
         set_loaders={true}

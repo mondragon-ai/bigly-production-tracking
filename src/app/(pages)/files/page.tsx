@@ -1,13 +1,13 @@
 "use client";
-import styles from "../../../components/Shared.module.css";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
+import {StartingState} from "@/components/images/StartingState";
 import {FileDetailCard} from "@/components/files/FileDetail";
+import styles from "../../../components/Shared.module.css";
 import PageHeader from "@/components/shared/PageHeader";
 import {FileList} from "@/components/shared/FileList";
-import useFiles from "@/lib/hooks/useFiles";
-import {StartingState} from "@/components/images/StartingState";
 import {AddStaff} from "@/components/shared/AddStaff";
+import useFiles from "@/lib/hooks/useFiles";
 import {useState} from "react";
-import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Files() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);

@@ -44,8 +44,6 @@ export const StageBoard = ({title, jobs, stage, loading}: StageBoardProps) => {
   );
 };
 
-const loading = ["", "", ""];
-
 export const Job = ({job}: {job: JobDocument}) => {
   const href = job.stage == "pending" ? `/new/${job.id}` : `/job/${job.id}`;
   return (

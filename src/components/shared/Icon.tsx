@@ -3,9 +3,11 @@ import {IconTypes} from "@/lib/types/shared";
 export const Icon = ({
   icon,
   tone,
+  size = 14,
 }: {
   icon: IconTypes;
   tone: "critical" | "success" | "info" | "magic";
+  size?: number;
 }) => {
   const color = fontColor(tone);
   switch (icon) {
@@ -14,8 +16,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -34,8 +36,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -54,8 +56,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -74,8 +76,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -94,8 +96,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -114,8 +116,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -134,8 +136,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -154,8 +156,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -174,8 +176,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -193,8 +195,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -213,8 +215,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -233,8 +235,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -253,8 +255,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -273,8 +275,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -293,8 +295,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -313,8 +315,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -333,8 +335,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -360,8 +362,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -383,8 +385,8 @@ export const Icon = ({
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
+          width={size}
+          height={size}
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -394,6 +396,46 @@ export const Icon = ({
             strokeLinejoin="round"
             strokeWidth="1.0"
             d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+        </svg>
+      );
+    }
+    case "close": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width={size}
+          height={size}
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.0"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      );
+    }
+    case "info": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width={size}
+          height={size}
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.0"
+            d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
           />
         </svg>
       );

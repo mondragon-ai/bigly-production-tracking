@@ -48,7 +48,6 @@ export default function Settings() {
   };
 
   const deleteItem = (type: "store" | "staff") => {
-    console.log(type);
     if (type == "staff") {
       setStaff(initialStaff);
       setCreate((prev) => ({...prev, staff: false}));
@@ -57,6 +56,7 @@ export default function Settings() {
       setStore(initialStore);
       setCreate((prev) => ({...prev, store: false}));
     }
+    console.log({type, create, loading});
   };
 
   return (

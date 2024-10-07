@@ -133,6 +133,8 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-01T12:00:00Z",
     updated_at: "2024-10-02T08:00:00Z",
+    qr_code:
+      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
   },
   {
     id: "job_002",
@@ -234,6 +236,8 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-02T08:00:00Z",
     updated_at: "2024-10-02T10:00:00Z",
+    qr_code:
+      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
   },
   {
     id: "job_003",
@@ -333,6 +337,8 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-03T07:00:00Z",
     updated_at: "2024-10-03T10:00:00Z",
+    qr_code:
+      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
   },
   {
     id: "job_004",
@@ -411,6 +417,8 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-04T07:00:00Z",
     updated_at: "2024-10-04T12:00:00Z",
+    qr_code:
+      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
   },
   {
     id: "job_005",
@@ -489,6 +497,8 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-05T07:00:00Z",
     updated_at: "2024-10-05T13:00:00Z",
+    qr_code:
+      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
   },
   {
     id: "job_006",
@@ -567,6 +577,8 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-06T07:00:00Z",
     updated_at: "2024-10-06T14:00:00Z",
+    qr_code:
+      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
   },
   {
     id: "job_007",
@@ -645,6 +657,8 @@ export const job_list: JobDocument[] = [
     ],
     created_at: "2024-10-07T07:00:00Z",
     updated_at: "2024-10-07T15:00:00Z",
+    qr_code:
+      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
   },
 ];
 

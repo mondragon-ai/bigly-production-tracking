@@ -1,17 +1,21 @@
 "use client";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
+import {StartingState} from "@/components/images/StartingState";
 import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
+import {ApproveModal} from "@/components/shared/ApproveModal";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
 import {JobDocument} from "@/lib/types/jobs";
 import {BadgeType} from "@/lib/types/shared";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
-import {StartingState} from "@/components/images/StartingState";
-import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
+import {useState} from "react";
 
 export default function JobDetail() {
   const params = useParams<{id: string}>();
+  const [itemID, setItemID] = useState("");
+  const [confirm, setConfirm] = useState("");
   const {job, loading, selectItem, item, deleteJob} = useJob(params.id);
 
   const handleDelete = async () => {
@@ -19,8 +23,15 @@ export default function JobDetail() {
     await deleteJob(params.id);
   };
 
-  const handleReportError = (id: string) => {
+  const openErrorModal = (id: string) => {
     console.log({error: id});
+    setConfirm("CONFIRM_ERROR");
+    setItemID(id);
+  };
+
+  const handleReportError = () => {
+    console.log({error: itemID});
+    setConfirm("");
   };
 
   const handleSelectItem = (id: string) => {
@@ -28,30 +39,21 @@ export default function JobDetail() {
     selectItem(id);
   };
 
-  const badges = (job: JobDocument) => {
-    const badge_list: BadgeType[] = [
-      {
-        icon: "delivery",
-        text: job.stage,
-        tone: "info",
-      },
-    ];
-    if (job.is_priority) {
-      badge_list.push({
-        icon: "fire",
-        text: "Priority",
-        tone: "critical",
-      });
-    }
-    return badge_list;
-  };
-
   return (
     <div className={styles.page}>
+      {confirm == "CONFIRM_ERROR" && (
+        <ApproveModal
+          title={"Confirm Error"}
+          info={"Report error for this item"}
+          action={"Report Error"}
+          tone={"descructive"}
+          icon={"rejected"}
+          closeModal={() => setConfirm("")}
+          onClick={() => handleReportError()}
+        />
+      )}
       <PageHeader
-        has_qr_code={
-          "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca"
-        }
+        has_qr_code={job.qr_code}
         title={`Job #${job.job_name}`}
         buttons={[
           {
@@ -83,11 +85,17 @@ export default function JobDetail() {
           {item ? (
             <ItemDisplay
               is_create={false}
-              onClick={handleReportError}
+              onClick={openErrorModal}
               item={item}
             />
           ) : loading == "requesting" || loading == "loading" ? (
             <SkeletonDetail width={100} />
+          ) : job.items.length !== 0 && !item ? (
+            <ItemDisplay
+              is_create={false}
+              onClick={openErrorModal}
+              item={job.items[0]}
+            />
           ) : (
             <StartingState type="item" />
           )}
@@ -98,3 +106,21 @@ export default function JobDetail() {
 }
 
 const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
+
+const badges = (job: JobDocument) => {
+  const badge_list: BadgeType[] = [
+    {
+      icon: "delivery",
+      text: job.stage,
+      tone: "info",
+    },
+  ];
+  if (job.is_priority) {
+    badge_list.push({
+      icon: "fire",
+      text: "Priority",
+      tone: "critical",
+    });
+  }
+  return badge_list;
+};
