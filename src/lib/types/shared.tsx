@@ -46,3 +46,11 @@ export type BadgeType = {
   text: string;
   tone: "critical" | "success" | "info" | "magic";
 };
+
+export type ServerResponse = {message: string; data: any};
+
+export type BiglyServerResponse = {
+  status: number;
+  data: any | null;
+  message: string;
+};

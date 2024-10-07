@@ -52,32 +52,33 @@ export const FileList = ({
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => (
-            <tr key={item.id} onClick={() => handleFileSelect(item.id)}>
-              <td
-                style={{
-                  textAlign: "center",
-                  padding: "0 10px",
-                  verticalAlign: "middle",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(item.id)}
-                  onChange={() => toggleSelection(item.id)}
-                />
-              </td>
-              <td>{item.name}</td>
-              <td>
-                <Badge
-                  icon={item.status == "generated" ? "badge-check" : "clock"}
-                  text={item.status}
-                  tone={item.status == "generated" ? "success" : "magic"}
-                />
-              </td>
-              <td>{item.added}</td>
-            </tr>
-          ))}
+          {items &&
+            items.map((item, index) => (
+              <tr key={item.id} onClick={() => handleFileSelect(item.id)}>
+                <td
+                  style={{
+                    textAlign: "center",
+                    padding: "0 10px",
+                    verticalAlign: "middle",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(item.id)}
+                    onChange={() => toggleSelection(item.id)}
+                  />
+                </td>
+                <td>{item.name}</td>
+                <td>
+                  <Badge
+                    icon={item.status == "generated" ? "badge-check" : "clock"}
+                    text={item.status}
+                    tone={item.status == "generated" ? "success" : "magic"}
+                  />
+                </td>
+                <td>{item.added}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {!items || items.length == 0 ? <EmptyState /> : null}

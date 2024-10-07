@@ -5,7 +5,8 @@ export const initialStore = (): StoreDocument => {
     id: "",
     name: "",
     sphat: "",
-    created_at: "",
-    updated_at: "",
+    domain: "",
+    created_at: 0,
+    updated_at: 0,
   };
 };

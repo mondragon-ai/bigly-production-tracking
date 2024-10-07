@@ -4,11 +4,12 @@ export type StoreDocument = {
   id: string;
   name: string;
   sphat: string;
-  created_at: string;
-  updated_at: string;
+  domain: string;
+  created_at: number;
+  updated_at: number;
 };
 
 export type SettingsPage = {
-  staff: Staff[];
-  store: StoreDocument[];
+  staff: Staff[] | null;
+  store: StoreDocument[] | null;
 };

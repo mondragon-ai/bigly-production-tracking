@@ -2,6 +2,7 @@ import {StoreDocument} from "@/lib/types/settings";
 import {Button} from "../shared/Button";
 import styles from "./Users.module.css";
 import {Dispatch, SetStateAction} from "react";
+import {truncateString} from "@/lib/utils/converter.tsx/text";
 
 export const CreateStore = ({
   store,
@@ -14,11 +15,12 @@ export const CreateStore = ({
 }) => {
   return (
     <div className={styles.detailWrapper}>
-      <main>
+      <main style={{marginTop: "0.5rem"}}>
         <div className={styles.inputWrapper}>
-          <label htmlFor="first_name">Shopify Store</label>
+          <label htmlFor="name">Shopify Store</label>
           <input
             type="text"
+            name="name"
             value={store?.name}
             onChange={(e) =>
               setStore((prev) => prev && {...prev, name: e.target.value})
@@ -26,9 +28,21 @@ export const CreateStore = ({
           />
         </div>
         <div className={styles.inputWrapper}>
-          <label htmlFor="first_name">API Key</label>
+          <label htmlFor="domain">Shopify URL</label>
           <input
             type="text"
+            name="domain"
+            value={store?.domain}
+            onChange={(e) =>
+              setStore((prev) => prev && {...prev, domain: e.target.value})
+            }
+          />
+        </div>
+        <div className={styles.inputWrapper}>
+          <label htmlFor="shpat">API Key</label>
+          <input
+            type="text"
+            name="shpat"
             value={store?.sphat}
             onChange={(e) =>
               setStore((prev) => prev && {...prev, sphat: e.target.value})
@@ -80,6 +94,25 @@ export const StoreCard = ({
           </div>
         </div>
         <div className={styles.inputWrapper}>
+          <label htmlFor="first_name">My Shopify URL</label>
+          <div
+            className={styles.box}
+            style={{
+              width: "100%",
+              padding: "12px 20px",
+              margin: "0px 0",
+              display: "inline-block",
+              border: " 2px solid var(--foreground)",
+              borderRadius: "4px",
+              color: " var(--primary-text)",
+              boxSizing: "border-box",
+              backgroundColor: "var(--background)",
+            }}
+          >
+            <span>{store?.domain || "-"}</span>
+          </div>
+        </div>
+        <div className={styles.inputWrapper}>
           <label htmlFor="first_name">API Key</label>
           <div
             className={styles.box}
@@ -95,7 +128,7 @@ export const StoreCard = ({
               backgroundColor: "var(--background)",
             }}
           >
-            <span>{store?.sphat}</span>
+            <span>{truncateString(`${store?.sphat}`, 35)}</span>
           </div>
         </div>
       </main>

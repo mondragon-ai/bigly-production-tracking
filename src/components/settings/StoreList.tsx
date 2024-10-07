@@ -2,7 +2,7 @@ import styles from "./Users.module.css";
 import Image from "next/image";
 import {Icon} from "../shared/Icon";
 import {StoreDocument} from "@/lib/types/settings";
-import {getInitials} from "@/lib/utils/converter.tsx/text";
+import {getInitials, truncateString} from "@/lib/utils/converter.tsx/text";
 
 type StoreListProps = {
   headers: string[];
@@ -34,31 +34,32 @@ export const StoreList = ({headers, items, selectItem}: StoreListProps) => {
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => (
-            <tr key={item.id} onClick={() => selectItem(item.id, "store")}>
-              <td
-                style={{
-                  textAlign: "center",
-                  padding: "7px 10px",
-                  verticalAlign: "middle",
-                  alignContent: "center",
-                  justifyContent: "center",
-                  alignSelf: "center",
-                  display: "flex",
-                }}
-              >
-                <div
-                  className={styles.box}
-                  style={{width: "20px", height: "20px"}}
+          {items &&
+            items.map((item, index) => (
+              <tr key={item.id} onClick={() => selectItem(item.id, "store")}>
+                <td
+                  style={{
+                    textAlign: "center",
+                    padding: "7px 10px",
+                    verticalAlign: "middle",
+                    alignContent: "center",
+                    justifyContent: "center",
+                    alignSelf: "center",
+                    display: "flex",
+                  }}
                 >
-                  {getInitials(item.name)}
-                </div>
-              </td>
-              <td>{item.name}</td>
-              <td>{item.sphat}</td>
-              <td>{item.created_at}</td>
-            </tr>
-          ))}
+                  <div
+                    className={styles.box}
+                    style={{width: "20px", height: "20px"}}
+                  >
+                    {getInitials(item.name)}
+                  </div>
+                </td>
+                <td>{item.name}</td>
+                <td>{truncateString(item.sphat, 20)}</td>
+                <td>{item.created_at}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

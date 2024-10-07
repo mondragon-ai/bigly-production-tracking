@@ -8,3 +8,7 @@ export function getInitials(name: string) {
 
   return initials;
 }
+
+export const truncateString = (str: string, n: number): string => {
+  return str.length > n ? str.substring(0, n) + "..." : str;
+};

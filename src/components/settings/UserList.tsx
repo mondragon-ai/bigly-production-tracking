@@ -32,32 +32,33 @@ export const UserList = ({headers, items, selectItem}: UserListProps) => {
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => (
-            <tr key={item.id} onClick={() => selectItem(item.id, "staff")}>
-              <td
-                style={{
-                  textAlign: "center",
-                  padding: "7px 10px",
-                  verticalAlign: "middle",
-                  alignContent: "center",
-                  justifyContent: "center",
-                  alignSelf: "center",
-                  display: "flex",
-                }}
-              >
-                <div
-                  className={styles.box}
-                  style={{width: "20px", height: "20px"}}
+          {items &&
+            items.map((item, index) => (
+              <tr key={item.id} onClick={() => selectItem(item.id, "staff")}>
+                <td
+                  style={{
+                    textAlign: "center",
+                    padding: "7px 10px",
+                    verticalAlign: "middle",
+                    alignContent: "center",
+                    justifyContent: "center",
+                    alignSelf: "center",
+                    display: "flex",
+                  }}
                 >
-                  {getInitials(item.name)}
-                </div>
-              </td>
-              <td>{item.name}</td>
-              <td>{item.email}</td>
-              <td>{item.role}</td>
-              <td>{item.created_at}</td>
-            </tr>
-          ))}
+                  <div
+                    className={styles.box}
+                    style={{width: "20px", height: "20px"}}
+                  >
+                    {getInitials(item.name)}
+                  </div>
+                </td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>{item.role}</td>
+                <td>{item.created_at}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

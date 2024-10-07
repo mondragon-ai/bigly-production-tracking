@@ -6,6 +6,8 @@ import {UserType} from "../types/store";
 import toast from "react-hot-toast";
 import {useState} from "react";
 import {SERVER_URL} from "../constants";
+import {ServerResponse} from "../types/shared";
+import {biglyRequest} from "../networking/biglyServer";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -16,29 +18,14 @@ const useLogin = () => {
   const login = async (email: string, password: string): Promise<void> => {
     setLoading(true);
     setError(null);
-    console.log({url: `${SERVER_URL}/login`});
     try {
-      await delay(1500);
       const payload = {email, password};
-      // const response = await fetch(`${SERVER_URL}/login`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(payload),
-      // });
+      const {status, data} = await biglyRequest("/auth/login", "POST", payload);
 
-      // const data = await response.json();
-      // console.log(data);
-
-      if (true) {
+      if (data && status < 300) {
         const user: UserType = {
-          id: "exampleId",
-          name: "User Name",
-          email: email,
-          role: "admin",
-          jwt: "exampleJWTToken",
-          position: "printing",
+          ...data.data.user,
+          jwt: data.data.jwt || "",
         };
 
         setGlobalState("user", user);

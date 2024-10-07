@@ -40,36 +40,37 @@ export const ItemsList = ({
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => {
-            return (
-              <tr key={item.id} onClick={() => handleSelectItem(item.id)}>
-                <td
-                  style={{
-                    textAlign: "center",
-                    padding: "0 10px",
-                    verticalAlign: "middle",
-                  }}
-                ></td>
-                <td>{item.sku}</td>
-                <td>{item.size}</td>
-                <td>{item.color}</td>
-                <td>
-                  <Badge
-                    icon={badgeIcon(item.status)}
-                    text={item.status}
-                    tone={badgeColor(item.status)}
-                  />
-                </td>
-                <td>{item.type}</td>
-                <td>{item.store}</td>
-                {is_inventory ? (
-                  <td style={{textAlign: "left"}}>
-                    {Number((item as any).inventory_levl)}
+          {items &&
+            items.map((item, index) => {
+              return (
+                <tr key={item.id} onClick={() => handleSelectItem(item.id)}>
+                  <td
+                    style={{
+                      textAlign: "center",
+                      padding: "0 10px",
+                      verticalAlign: "middle",
+                    }}
+                  ></td>
+                  <td>{item.sku}</td>
+                  <td>{item.size}</td>
+                  <td>{item.color}</td>
+                  <td>
+                    <Badge
+                      icon={badgeIcon(item.status)}
+                      text={item.status}
+                      tone={badgeColor(item.status)}
+                    />
                   </td>
-                ) : null}
-              </tr>
-            );
-          })}
+                  <td>{item.type}</td>
+                  <td>{item.store}</td>
+                  {is_inventory ? (
+                    <td style={{textAlign: "left"}}>
+                      {Number((item as any).inventory_levl)}
+                    </td>
+                  ) : null}
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>

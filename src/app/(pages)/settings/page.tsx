@@ -21,16 +21,14 @@ export default function Settings() {
     selectItem,
     setStaff,
     setStore,
+    deleteItem,
     createStaff,
+    createStore,
   } = useSettings();
   const [create, setCreate] = useState<{staff: boolean; store: boolean}>({
     staff: false,
     store: false,
   });
-
-  const handleSelect = (id: string, type: "store" | "staff") => {
-    selectItem(id, type);
-  };
 
   const addItem = (type: "store" | "staff") => {
     if (type == "staff") {
@@ -48,22 +46,18 @@ export default function Settings() {
     if (type == "staff" && staff) {
       createStaff(staff);
     }
-    if (type == "store") {
-      setStore(initialStore);
-      setCreate((prev) => ({...prev, store: false}));
+    if (type == "store" && store) {
+      createStore(store);
     }
   };
 
-  const deleteItem = (type: "store" | "staff") => {
-    if (type == "staff") {
-      setStaff(initialStaff);
-      setCreate((prev) => ({...prev, staff: false}));
+  const handleDelete = async (type: "store" | "staff") => {
+    if (staff && type == "staff") {
+      await deleteItem(staff?.id, type);
+    } else if (store && type == "store") {
+      await deleteItem(store?.domain, type);
+      console.log({type, create, loading});
     }
-    if (type == "store") {
-      setStore(initialStore);
-      setCreate((prev) => ({...prev, store: false}));
-    }
-    console.log({type, create, loading});
   };
 
   return (
@@ -96,8 +90,8 @@ export default function Settings() {
             ) : (
               <UserList
                 headers={users_headers}
-                items={data.staff}
-                selectItem={handleSelect}
+                items={data.staff || []}
+                selectItem={selectItem}
               />
             )}
           </section>
@@ -109,7 +103,7 @@ export default function Settings() {
                 createItem={createItem}
               />
             ) : staff && staff.id !== "" ? (
-              <UserCard staff={staff} deleteItem={deleteItem} />
+              <UserCard staff={staff} deleteItem={handleDelete} />
             ) : loading == "requesting" || loading == "loading" ? (
               <SkeletonDetail width={100} />
             ) : (
@@ -124,8 +118,8 @@ export default function Settings() {
             ) : (
               <StoreList
                 headers={store_header}
-                items={data.store}
-                selectItem={handleSelect}
+                items={data.store || []}
+                selectItem={selectItem}
               />
             )}
           </section>
@@ -137,7 +131,7 @@ export default function Settings() {
                 createItem={createItem}
               />
             ) : store && store.id !== "" ? (
-              <StoreCard store={store} deleteItem={deleteItem} />
+              <StoreCard store={store} deleteItem={handleDelete} />
             ) : loading == "requesting" || loading == "loading" ? (
               <SkeletonDetail width={100} />
             ) : (

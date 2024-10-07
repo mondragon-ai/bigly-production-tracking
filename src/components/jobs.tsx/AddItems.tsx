@@ -113,28 +113,29 @@ export const AddItems = ({
             </tr>
           </thead>
           <tbody>
-            {items.map((item, index) => (
-              <tr key={item.id} onClick={() => handleItemSelect(item.id)}>
-                <td
-                  style={{
-                    textAlign: "center",
-                    padding: "7px 10px",
-                    verticalAlign: "bottom",
-                  }}
-                >
-                  <Image
-                    src={item.images.front_mockup || item.images.back_mockup}
-                    alt={""}
-                    width={100}
-                    height={100}
-                  />
-                </td>
-                <td>{item.sku}</td>
-                <td>{item.type}</td>
-                <td>{item.size}</td>
-                <td>{item.color}</td>
-              </tr>
-            ))}
+            {items &&
+              items.map((item, index) => (
+                <tr key={item.id} onClick={() => handleItemSelect(item.id)}>
+                  <td
+                    style={{
+                      textAlign: "center",
+                      padding: "7px 10px",
+                      verticalAlign: "bottom",
+                    }}
+                  >
+                    <Image
+                      src={item.images.front_mockup || item.images.back_mockup}
+                      alt={""}
+                      width={100}
+                      height={100}
+                    />
+                  </td>
+                  <td>{item.sku}</td>
+                  <td>{item.type}</td>
+                  <td>{item.size}</td>
+                  <td>{item.color}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
         {items.length == 0 && (
