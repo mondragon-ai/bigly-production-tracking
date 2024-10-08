@@ -6,6 +6,7 @@ export const biglyRequest = async (
   method: "GET" | "POST" | "DELETE",
   payload: null | any,
 ): Promise<BiglyServerResponse> => {
+  const url = `${SERVER_URL}${resource}`;
   const options: RequestInit = {
     method: method,
     headers: {
@@ -17,11 +18,15 @@ export const biglyRequest = async (
     options.body = JSON.stringify(payload);
   }
 
-  const response = await fetch(`${SERVER_URL}${resource}`, options);
+  console.log({url, options});
+
+  const response = await fetch(url, options);
+  console.log(response);
   if (response.status == 204) {
     return {status: response.status, data: null, message: "Created"};
   }
   const data = (await response.json()) as ServerResponse;
+  console.log(data);
 
   return {status: response.status, message: data.message, data: data.data};
 };

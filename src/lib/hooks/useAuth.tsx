@@ -20,12 +20,16 @@ const useLogin = () => {
     setError(null);
     try {
       const payload = {email, password};
-      const {status, data} = await biglyRequest("/auth/login", "POST", payload);
+      const {status, data, message} = await biglyRequest(
+        "/auth/login",
+        "POST",
+        payload,
+      );
 
       if (data && status < 300) {
         const user: UserType = {
-          ...data.data.user,
-          jwt: data.data.jwt || "",
+          ...data.user,
+          jwt: data.jwt || "",
         };
 
         setGlobalState("user", user);
@@ -34,7 +38,7 @@ const useLogin = () => {
         router.push("/analytics");
         return;
       } else {
-        handleHttpError(500, "error", setError);
+        handleHttpError(status, message, setError);
         return;
       }
     } catch (error: any) {
