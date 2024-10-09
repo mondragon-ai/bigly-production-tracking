@@ -11,12 +11,22 @@ import {BadgeType} from "@/lib/types/shared";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 
 export default function JobDetail() {
   const params = useParams<{id: string}>();
   const [itemID, setItemID] = useState("");
   const [confirm, setConfirm] = useState("");
-  const {job, loading, selectItem, item, deleteJob} = useJob(params.id);
+  const {
+    job,
+    loading,
+    item,
+    selectItem,
+    deleteJob,
+    assignStaff,
+    rejectItem,
+    completeStation,
+  } = useJob(params.id);
 
   const handleDelete = async () => {
     console.log({delete: params.id});
@@ -31,6 +41,7 @@ export default function JobDetail() {
 
   const handleReportError = () => {
     console.log({error: itemID});
+    rejectItem(itemID);
     setConfirm("");
   };
 
@@ -38,6 +49,8 @@ export default function JobDetail() {
     console.log({select: id});
     selectItem(id);
   };
+
+  const qr_code = `http://api.qrserver.com/v1/create-qr-code/?data=${job?.qr_code}&size=100x100`;
 
   return (
     <div className={styles.page}>
@@ -53,9 +66,21 @@ export default function JobDetail() {
         />
       )}
       <PageHeader
-        has_qr_code={job?.qr_code || ""}
+        has_qr_code={qr_code}
         title={`Job #${job?.job_name || ""}`}
         buttons={[
+          {
+            text: "LINK STATION",
+            tone: "success",
+            onClick: assignStaff,
+            icon: "add-user",
+          },
+          {
+            text: "COMPLETE STATION",
+            tone: "success",
+            onClick: completeStation,
+            icon: "badge-check",
+          },
           {
             text: "DELETE",
             tone: "descructive",
@@ -65,7 +90,7 @@ export default function JobDetail() {
         ]}
         loading={loading}
         set_loaders={true}
-        date={job?.created_at || ""}
+        date={formatTimestamp(job?.created_at || 0)}
         badges={badges(job)}
         staff={job?.staff || []}
       />

@@ -155,7 +155,7 @@ const PageHeader = ({
             {staff &&
               staff.map((s, i) => {
                 if (i <= 4) {
-                  return <Avatar staff={null} key={i} />;
+                  return <Avatar staff={s} key={i} />;
                 }
               })}
           </div>

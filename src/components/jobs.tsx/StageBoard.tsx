@@ -1,4 +1,4 @@
-import {JobDocument, Stages} from "@/lib/types/jobs";
+import {JobDocument, Stages, StateTimes} from "@/lib/types/jobs";
 import {Avatar} from "../shared/Avatar";
 import {Badge} from "../shared/Badge";
 import styles from "./Jobs.module.css";
@@ -69,7 +69,9 @@ export const Job = ({job}: {job: JobDocument}) => {
       <footer>
         <Badge
           icon={"hour_glass"}
-          text={`${getHoursDifference(job.time_started.pending)}h`}
+          text={`${getHoursDifference(
+            job.time_started[job.stage as keyof StateTimes],
+          )}h`}
           tone={"magic"}
         />
         <Badge

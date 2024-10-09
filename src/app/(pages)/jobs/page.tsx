@@ -57,6 +57,10 @@ const stages = [
     stage: "cutting",
   },
   {
+    title: "Staging",
+    stage: "staging",
+  },
+  {
     title: "Pressing",
     stage: "pressing",
   },

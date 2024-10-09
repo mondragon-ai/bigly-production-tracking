@@ -14,7 +14,7 @@ import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
 import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 
-export default function Confirm() {
+export default function JobDetail() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [modal, openModal] = useState<boolean>(false);
   const params = useParams<{id: string}>();
@@ -78,7 +78,7 @@ export default function Confirm() {
     <div className={styles.page}>
       {error && <ErrorIcon text={error} closeError={() => setError(null)} />}
       <PageHeader
-        has_qr_code={job?.qr_code || ""}
+        has_qr_code={""}
         title={`Job #${job?.job_name || ""}`}
         set_loaders={true}
         loading={loading}

@@ -3,7 +3,7 @@ import {BiglyServerResponse, ServerResponse} from "../types/shared";
 
 export const biglyRequest = async (
   resource: string,
-  method: "GET" | "POST" | "DELETE",
+  method: "GET" | "POST" | "DELETE" | "PUT",
   payload: null | any,
 ): Promise<BiglyServerResponse> => {
   const url = `${SERVER_URL}${resource}`;
