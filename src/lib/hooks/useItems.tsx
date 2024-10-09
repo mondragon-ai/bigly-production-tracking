@@ -18,10 +18,9 @@ interface ItemReturn {
 const useItems = (): ItemReturn => {
   const [items, setItems] = useState<Items[]>([]);
   const [item, setItem] = useState<Items | null>(null);
-  const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<LoadingTypes>("loading");
 
-  // const seconds = createCurrentSeconds();
   const fetchItems = async () => {
     setLoading("loading");
     setError(null);
@@ -60,10 +59,30 @@ const useItems = (): ItemReturn => {
   );
 
   const deleteItem = useCallback(
-    (id: string) => {
-      const new_items = items.filter((i) => i.id !== id);
-      if (new_items) setItems(new_items);
-      setItem(null);
+    async (id: string) => {
+      setError(null);
+      try {
+        const {status, message} = await biglyRequest(
+          `/app/items/${id}`,
+          "DELETE",
+          null,
+        );
+
+        if (status < 300) {
+          toast.success("Deleted Item");
+          const new_items = items.filter((i) => i.id !== id);
+          if (new_items) setItems(new_items);
+          setItem(null);
+          return;
+        } else {
+          handleHttpError(status, `${message}`, setError);
+        }
+        return;
+      } catch (err) {
+        handleHttpError(500, "Server Error", setError);
+      } finally {
+        setLoading(null);
+      }
     },
     [items],
   );

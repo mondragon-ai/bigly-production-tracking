@@ -6,6 +6,7 @@ import {copyToClipBoard} from "@/lib/utils/shared";
 import {ImageDocument} from "@/lib/types/images";
 import toast from "react-hot-toast";
 import {EmptyState} from "./EmptyState";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 
 type CustomTableProps = {
   headers: string[];
@@ -63,7 +64,7 @@ export const ImageList = ({
                   />
                 </td>
                 <td>{item.name}</td>
-                <td>{item.added}</td>
+                <td>{formatTimestamp(item.created_at)}</td>
                 <td>
                   <button
                     className={styles.btn}

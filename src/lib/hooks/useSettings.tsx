@@ -1,27 +1,26 @@
 "use client";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {LoadingTypes, Staff} from "../types/shared";
+import {createCurrentSeconds} from "../utils/converter.tsx/time";
 import {SettingsPage, StoreDocument} from "../types/settings";
-import {settings_data} from "../data/settings";
-import {delay, handleHttpError} from "../utils/shared";
-import toast from "react-hot-toast";
-import {SERVER_URL} from "../constants";
-import {createCurrentSeconds} from "../utils/time";
 import {biglyRequest} from "../networking/biglyServer";
+import {LoadingTypes, Staff} from "../types/shared";
+import {handleHttpError} from "../utils/shared";
+import {settings_data} from "../data/settings";
 import {initialStaff} from "../payloads/staff";
+import toast from "react-hot-toast";
 
 interface SettingsReturn {
-  loading: LoadingTypes;
-  error: string | null;
-  selectItem: (id: string, type: "store" | "staff") => void;
-  deleteItem: (id: string, type: "store" | "staff") => Promise<void>;
-  createStaff: (staff: Staff) => Promise<void>;
-  createStore: (store: StoreDocument) => Promise<void>;
   data: SettingsPage;
   staff: Staff | null;
+  error: string | null;
+  loading: LoadingTypes;
   store: StoreDocument | null;
+  createStaff: (staff: Staff) => Promise<void>;
   setStaff: Dispatch<SetStateAction<Staff | null>>;
+  createStore: (store: StoreDocument) => Promise<void>;
   setStore: Dispatch<SetStateAction<StoreDocument | null>>;
+  selectItem: (id: string, type: "store" | "staff") => void;
+  deleteItem: (id: string, type: "store" | "staff") => Promise<void>;
 }
 
 export const useSettings = (): SettingsReturn => {
@@ -36,7 +35,11 @@ export const useSettings = (): SettingsReturn => {
     setLoading("loading");
     setError(null);
     try {
-      const {status, data} = await biglyRequest("/app/settings", "GET", null);
+      const {status, data, message} = await biglyRequest(
+        "/app/settings",
+        "GET",
+        null,
+      );
       console.log({settings: data});
       if (status < 300 && data) {
         toast.success("Fetched Data");
@@ -45,9 +48,13 @@ export const useSettings = (): SettingsReturn => {
           staff: data.staff,
           store: data.stores,
         }));
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
       }
+      return;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }
@@ -162,15 +169,15 @@ export const useSettings = (): SettingsReturn => {
 
   return {
     data,
-    loading,
     error,
+    staff,
+    store,
+    loading,
     selectItem,
     deleteItem,
     createStaff,
     createStore,
     setStaff,
     setStore,
-    staff,
-    store,
   };
 };

@@ -1,12 +1,13 @@
 "use client";
-import {useState, useEffect} from "react";
-import {uploadToServer} from "../utils/storage";
-import {image_list} from "../data/images";
-import {ImageDocument} from "../types/images";
-import {LoadingTypes} from "../types/shared";
-import {delay, handleHttpError} from "../utils/shared";
-import {biglyRequest} from "../networking/biglyServer";
 import toast from "react-hot-toast";
+import {useState, useEffect} from "react";
+import {LoadingTypes} from "../types/shared";
+import {ImageDocument} from "../types/images";
+import {uploadToServer} from "../utils/storage";
+import {handleHttpError} from "../utils/shared";
+import {biglyRequest} from "../networking/biglyServer";
+import {toUrlHandle} from "../utils/converter.tsx/text";
+import {createCurrentSeconds} from "../utils/converter.tsx/time";
 
 interface UseImageUploadReturn {
   images: ImageDocument[];
@@ -55,20 +56,40 @@ const useImageUpload = (): UseImageUploadReturn => {
 
   const uploadImage = async (file: File) => {
     setLoading("posting");
-    console.log("uploading");
+    setError(null);
+    console.log("[uploading]");
     try {
-      const downloadURL = await uploadToServer(file, "images");
-      console.log(downloadURL);
-      //   const response = await fetch("/api/images", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({name: file.name, link: downloadURL}),
-      //   });
-      //   if (!response.ok) throw new Error("Failed to save image URL");
+      const name = `${toUrlHandle(file.name, "images")}.${
+        file.type.split("/")[1]
+      }`;
+      const seconds = createCurrentSeconds();
+      const url = await uploadToServer(file, "images");
+      const {status, message} = await biglyRequest("/app/images", "POST", {
+        image: {
+          url: url,
+          name: name,
+        },
+      });
+
+      const image = {
+        id: name,
+        name: name,
+        added: seconds,
+        created_at: seconds,
+        url: url,
+      } as ImageDocument;
+
+      if (status < 300) {
+        toast.success("Image Added");
+        setImages((p) => p && [...p, image]);
+        setImgDetail(image);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }
@@ -93,20 +114,27 @@ const useImageUpload = (): UseImageUploadReturn => {
 
   const deleteImage = async (id: string) => {
     setLoading("deleting");
+    setError(null);
+
     try {
-      //   const response = await fetch("/api/images", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({name: file.name, link: downloadURL}),
-      //   });
-      //   if (!response.ok) throw new Error("Failed to save image URL");
-      const new_list = images.filter((i) => i.id !== id);
-      setImages(new_list);
-      setImgDetail(null);
+      const {status, message} = await biglyRequest(
+        `/app/images/${id}`,
+        "DELETE",
+        null,
+      );
+
+      if (status < 300) {
+        toast.success("Deleted Image");
+        const new_list = images.filter((i) => i.id !== id);
+        setImages(new_list);
+        setImgDetail(null);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }

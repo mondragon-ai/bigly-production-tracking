@@ -1,31 +1,28 @@
-import {
-  useState,
-  useCallback,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from "react";
-import {ImageFiles, Items, JobDocument, Stages} from "@/lib/types/jobs";
-import {initialJobs} from "../payloads/jobs";
+import {useState, useCallback, useEffect} from "react";
+import {ImageFiles, Items, JobDocument} from "@/lib/types/jobs";
+import {biglyRequest} from "../networking/biglyServer";
 import {LoadingTypes, Staff} from "../types/shared";
 import {StoreDocument} from "../types/settings";
-import {staff_list, store_list} from "../data/settings";
+import {handleHttpError} from "../utils/shared";
+import {initialJobs} from "../payloads/jobs";
+import toast from "react-hot-toast";
 
 type UseJobCreateProps = () => {
-  job: JobDocument;
   staff: Staff[];
-  stores: StoreDocument[];
+  job: JobDocument;
   loading: LoadingTypes;
+  stores: StoreDocument[];
   handleApproveJob: () => void;
   removeItem: (id: string) => void;
-  handleCreateItem: (item: Items, images: ImageFiles) => void;
   handleSelectItem: (item: Items) => void;
+  handleCreateItem: (item: Items, images: ImageFiles) => void;
 };
 
 export const useJobCreate: UseJobCreateProps = () => {
   const [staff, setStaff] = useState<Staff[]>([]);
-  const [job, setJob] = useState<JobDocument>(initialJobs());
+  const [error, setError] = useState<string | null>(null);
   const [stores, setStores] = useState<StoreDocument[]>([]);
+  const [job, setJob] = useState<JobDocument>(initialJobs());
   const [loading, setLoading] = useState<LoadingTypes>(null);
 
   const handleApproveJob = useCallback(() => {
@@ -64,13 +61,29 @@ export const useJobCreate: UseJobCreateProps = () => {
     setLoading(null);
   };
 
-  const fetchStores = () => {
+  const fetchStores = async () => {
     setLoading("loading");
+    setError(null);
+
     try {
-      setStores(store_list);
-      setStaff(staff_list);
-    } catch (error) {
-      console.error("Error fetching stores: ", error);
+      const {status, data, message} = await biglyRequest(
+        "/app/settings",
+        "GET",
+        null,
+      );
+      console.log({settings: data});
+
+      if (status < 300 && data) {
+        toast.success("Fetched Data");
+        setStores(data.stores);
+        setStaff(data.staff);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
+    } catch (err) {
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }
@@ -82,11 +95,11 @@ export const useJobCreate: UseJobCreateProps = () => {
 
   return {
     job,
-    loading,
     staff,
     stores,
-    removeItem,
+    loading,
     setJob,
+    removeItem,
     handleApproveJob,
     handleCreateItem,
     handleSelectItem,
