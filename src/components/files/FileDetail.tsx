@@ -1,20 +1,25 @@
-import {FileDetail} from "@/lib/types/files";
+import {FetchAndParsedCleanCSV} from "@/lib/types/files";
 import {Button} from "../shared/Button";
 import styles from "./Files.module.css";
+import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
+import {truncateString} from "@/lib/utils/converter.tsx/text";
 
 export const FileDetailCard = ({
   file_detail,
   handleDeleteFile,
   handleGenerate,
 }: {
-  file_detail: FileDetail;
+  file_detail: FetchAndParsedCleanCSV;
   handleDeleteFile: (id: string) => void;
   handleGenerate: (id: string) => void;
 }) => {
   return (
     <div className={styles.fileDetailWrapper}>
       <header>
-        <h5>{file_detail.name}</h5>
+        <h5>
+          {truncateString(file_detail.name, 20)} -{" "}
+          {formatWithCommas(file_detail.cleaned.length) || 0} items
+        </h5>
         <div>
           {file_detail.status == "pending" && (
             <Button
@@ -48,7 +53,10 @@ export const FileDetailCard = ({
                       key={index}
                       style={{
                         textAlign: "left",
-                        padding: index == 0 ? "0 1rem" : "7px 0",
+                        padding:
+                          index == 0 || index == headers.length - 1
+                            ? "0 1rem"
+                            : "7px 0",
                         verticalAlign: "middle",
                       }}
                     >
@@ -59,21 +67,32 @@ export const FileDetailCard = ({
             </tr>
           </thead>
           <tbody>
-            {file_detail.csv_data.map((item, index) => (
-              <tr key={index}>
-                <td
-                  style={{
-                    textAlign: "left",
-                    padding: "0 1rem",
-                    verticalAlign: "middle",
-                  }}
-                >
-                  {item.print_sku}
-                </td>
-                <td>{item.store_sku}</td>
-                <td>{item.type}</td>
-              </tr>
-            ))}
+            {file_detail &&
+              file_detail.cleaned.map((item, index) => (
+                <tr key={index}>
+                  <td
+                    style={{
+                      textAlign: "left",
+                      padding: "0 1rem",
+                      verticalAlign: "middle",
+                    }}
+                  >
+                    {item.base_sku}
+                  </td>
+                  <td>{item.item_sku}</td>
+                  <td>{item.type}</td>
+                  <td>{item.color}</td>
+                  <td
+                    style={{
+                      textAlign: "left",
+                      padding: "0 1rem",
+                      verticalAlign: "middle",
+                    }}
+                  >
+                    {item.size}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -81,4 +100,4 @@ export const FileDetailCard = ({
   );
 };
 
-const headers = ["Print SKU", "Item SKU", "Type"];
+const headers = ["Print SKU", "Item SKU", "Type", "Color", "Size"];

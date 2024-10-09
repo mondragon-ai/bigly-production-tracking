@@ -1,7 +1,7 @@
 import styles from "./Users.module.css";
 import {Staff} from "@/lib/types/shared";
 import {getInitials} from "@/lib/utils/converter.tsx/text";
-import {formatTimestamp} from "@/lib/utils/time";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 
 type UserListProps = {
   headers: string[];

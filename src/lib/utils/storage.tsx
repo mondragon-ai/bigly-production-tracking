@@ -1,5 +1,6 @@
 import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import {storage} from "../configs/firebase";
+import {toUrlHandle} from "./converter.tsx/text";
 
 export const uploadToServer = async (
   file: File | null,
@@ -9,7 +10,7 @@ export const uploadToServer = async (
     alert("Please choose a file first!");
     throw new Error("File not present");
   }
-  const name = `${new Date().getTime()}_${file.name}`;
+  const name = `${new Date().getTime()}_${toUrlHandle(file.name, type)}`;
 
   const storageRef = ref(storage, `/${type}/uploads/${name}`);
 

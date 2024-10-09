@@ -1,9 +1,7 @@
 import styles from "./Users.module.css";
-import Image from "next/image";
-import {Icon} from "../shared/Icon";
 import {StoreDocument} from "@/lib/types/settings";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 import {getInitials, truncateString} from "@/lib/utils/converter.tsx/text";
-import {formatTimestamp} from "@/lib/utils/time";
 
 type StoreListProps = {
   headers: string[];

@@ -4,6 +4,8 @@ import {useState} from "react";
 import styles from "./Shared.module.css";
 import {FileDocument} from "@/lib/types/files";
 import {EmptyState} from "../images/EmptyState";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
+import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
 
 type CustomTableProps = {
   headers: string[];
@@ -16,21 +18,6 @@ export const FileList = ({
   items,
   handleFileSelect,
 }: CustomTableProps) => {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
-  const toggleSelection = (id: string) => {
-    setSelectedIds((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((selectedId) => selectedId !== id)
-        : [...prevSelected, id],
-    );
-  };
-
-  const deleteSelected = () => {
-    //   handleDelete(selectedIds);
-    setSelectedIds([]); // Clear selection after delete
-  };
-
   return (
     <div className={styles.tableWrapper}>
       <table>
@@ -43,7 +30,7 @@ export const FileList = ({
                 verticalAlign: "middle",
               }}
             >
-              <input type="checkbox" />
+              {/* <input type="checkbox" /> */}
             </th>
             {headers &&
               headers.map((title, index) => {
@@ -62,11 +49,11 @@ export const FileList = ({
                     verticalAlign: "middle",
                   }}
                 >
-                  <input
+                  {/* <input
                     type="checkbox"
-                    checked={selectedIds.includes(item.id)}
-                    onChange={() => toggleSelection(item.id)}
-                  />
+                    checked={false}
+                    onChange={() => {}}
+                  /> */}
                 </td>
                 <td>{item.name}</td>
                 <td>
@@ -76,7 +63,8 @@ export const FileList = ({
                     tone={item.status == "generated" ? "success" : "magic"}
                   />
                 </td>
-                <td>{item.added}</td>
+                <td>{formatWithCommas(item.total_items)}</td>
+                <td>{formatTimestamp(item.created_at)}</td>
               </tr>
             ))}
         </tbody>

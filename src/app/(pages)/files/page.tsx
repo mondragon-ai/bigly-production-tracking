@@ -5,17 +5,12 @@ import {FileDetailCard} from "@/components/files/FileDetail";
 import styles from "../../../components/Shared.module.css";
 import PageHeader from "@/components/shared/PageHeader";
 import {FileList} from "@/components/shared/FileList";
-import {AddStaff} from "@/components/shared/AddStaff";
 import useFiles from "@/lib/hooks/useFiles";
-import {useState} from "react";
 
 export default function Files() {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [modal, openModal] = useState<boolean>(false);
   const {
     files,
     loading,
-    staff,
     error,
     file_detail,
     uploadFiles,
@@ -24,14 +19,8 @@ export default function Files() {
     genreateJobs,
   } = useFiles();
 
-  const handleAddStaff = () => {
-    openModal(!modal);
-    return;
-  };
-
   const handleGenerate = (id: string) => {
-    const added_staff = staff.filter((s) => selectedIds.includes(s.id));
-    genreateJobs(id, added_staff);
+    genreateJobs(id);
   };
 
   return (
@@ -41,12 +30,6 @@ export default function Files() {
         loading={loading}
         title="Pick List Files"
         buttons={[
-          {
-            text: "ADD STAFF",
-            tone: "success",
-            onClick: handleAddStaff,
-            icon: "add-user",
-          },
           {
             text: "UPLOAD FILE",
             tone: "success",
@@ -59,14 +42,6 @@ export default function Files() {
         staff={[]}
       />
       <main>
-        {modal && (
-          <AddStaff
-            can_select={true}
-            setSelectedIds={setSelectedIds}
-            selectedIds={selectedIds}
-            staff={staff}
-          />
-        )}
         <section style={{width: "55%", paddingRight: "10px"}}>
           {loading == "loading" ? (
             <SkeletonList width={100} />
@@ -96,4 +71,4 @@ export default function Files() {
   );
 }
 
-const headers = ["Name", "Status", "Date Added"];
+const headers = ["Name", "Status", "Total Units", "Date Added"];

@@ -18,10 +18,8 @@ export const biglyRequest = async (
     options.body = JSON.stringify(payload);
   }
 
-  console.log({url, options});
-
   const response = await fetch(url, options);
-  console.log(response);
+  console.log({STATUS: response.status});
   if (response.status == 204) {
     return {status: response.status, data: null, message: "Created"};
   }
