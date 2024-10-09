@@ -134,7 +134,7 @@ export const job_list: JobDocument[] = [
     created_at: "2024-10-01T12:00:00Z",
     updated_at: "2024-10-02T08:00:00Z",
     qr_code:
-      "https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca",
+      "http://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/job/job_002&size=100x100",
   },
   {
     id: "job_002",

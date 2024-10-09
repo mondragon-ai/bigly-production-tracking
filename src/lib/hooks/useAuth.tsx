@@ -1,13 +1,11 @@
 "use client";
-import {delay, handleHttpError} from "../utils/shared";
+import {biglyRequest} from "../networking/biglyServer";
 import {useGlobalContext} from "../store/context";
+import {handleHttpError} from "../utils/shared";
 import {useRouter} from "next/navigation";
 import {UserType} from "../types/store";
 import toast from "react-hot-toast";
 import {useState} from "react";
-import {SERVER_URL} from "../constants";
-import {ServerResponse} from "../types/shared";
-import {biglyRequest} from "../networking/biglyServer";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);

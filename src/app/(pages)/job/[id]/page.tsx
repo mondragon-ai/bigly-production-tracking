@@ -53,8 +53,8 @@ export default function JobDetail() {
         />
       )}
       <PageHeader
-        has_qr_code={job.qr_code}
-        title={`Job #${job.job_name}`}
+        has_qr_code={job?.qr_code || ""}
+        title={`Job #${job?.job_name || ""}`}
         buttons={[
           {
             text: "DELETE",
@@ -65,9 +65,9 @@ export default function JobDetail() {
         ]}
         loading={loading}
         set_loaders={true}
-        date={job.created_at}
+        date={job?.created_at || ""}
         badges={badges(job)}
-        staff={job.staff}
+        staff={job?.staff || []}
       />
       <main>
         <section style={{width: "55%", paddingRight: "10px"}}>
@@ -76,7 +76,7 @@ export default function JobDetail() {
           ) : (
             <ItemsList
               headers={headers}
-              items={job.items}
+              items={job?.items || []}
               handleSelectItem={handleSelectItem}
             />
           )}
@@ -90,7 +90,7 @@ export default function JobDetail() {
             />
           ) : loading == "requesting" || loading == "loading" ? (
             <SkeletonDetail width={100} />
-          ) : job.items.length !== 0 && !item ? (
+          ) : job && job.items.length !== 0 && !item ? (
             <ItemDisplay
               is_create={false}
               onClick={openErrorModal}
@@ -107,7 +107,8 @@ export default function JobDetail() {
 
 const headers = ["SKU", "Size", "Color", "Status", "Type", "Store"];
 
-const badges = (job: JobDocument) => {
+const badges = (job: JobDocument | null) => {
+  if (!job) return [];
   const badge_list: BadgeType[] = [
     {
       icon: "delivery",

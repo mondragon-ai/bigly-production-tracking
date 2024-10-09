@@ -5,12 +5,13 @@ import {FileDetail, FileDocument} from "../types/files";
 import {files_list, file_details} from "@/lib/data/files";
 import {LoadingTypes, Staff} from "../types/shared";
 import {staff_list} from "../data/settings";
-import {delay} from "../utils/shared";
+import {delay, handleHttpError} from "../utils/shared";
+import {biglyRequest} from "../networking/biglyServer";
+import toast from "react-hot-toast";
 
 interface UseFilesUploadReturn {
   files: FileDocument[];
   loading: LoadingTypes;
-  staff: Staff[];
   error: string | null;
   uploadFiles: (file: File) => Promise<void>;
   fetchAndParseFile: (id: string) => Promise<void>;
@@ -21,22 +22,30 @@ interface UseFilesUploadReturn {
 
 const useFiles = (): UseFilesUploadReturn => {
   const [files, setFiles] = useState<FileDocument[]>([]);
-  const [staff, setStaff] = useState<Staff[]>([]);
   const [file_detail, setFileDetail] = useState<FileDetail | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchFiles = async () => {
     setLoading("loading");
+    setError(null);
     try {
-      await delay(1500);
-      //   const response = await fetch("/api/files");
-      //   if (!response.ok) throw new Error("Failed to fetch files");
-      //   const data: Image[] = await response.json();
-      setFiles(files_list);
-      setStaff(staff_list);
+      const {status, data, message} = await biglyRequest(
+        "/app/files",
+        "GET",
+        null,
+      );
+
+      if (status < 300 && data) {
+        toast.success("Fetched files");
+        setFiles(data.files);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }
@@ -129,7 +138,6 @@ const useFiles = (): UseFilesUploadReturn => {
   return {
     files,
     loading,
-    staff,
     error,
     uploadFiles,
     fetchAndParseFile,

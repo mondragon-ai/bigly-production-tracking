@@ -54,7 +54,8 @@ export default function Confirm() {
     openModal(!modal);
   };
 
-  const badges = (job: JobDocument) => {
+  const badges = (job: JobDocument | null) => {
+    if (!job) return [];
     const badge_list: BadgeType[] = [
       {
         icon: "delivery",
@@ -76,7 +77,8 @@ export default function Confirm() {
     <div className={styles.page}>
       {error && <ErrorIcon text={error} closeError={() => setError(null)} />}
       <PageHeader
-        title="Job #1234"
+        has_qr_code={job?.qr_code || ""}
+        title={`Job #${job?.job_name || ""}`}
         set_loaders={true}
         loading={loading}
         buttons={[
@@ -94,9 +96,9 @@ export default function Confirm() {
           },
         ]}
         openStaff={openStaff}
-        date={job.created_at}
+        date={job?.created_at || ""}
         badges={badges(job)}
-        staff={job.staff}
+        staff={job?.staff || []}
       />
       <main>
         {modal && (
@@ -104,7 +106,7 @@ export default function Confirm() {
             can_select={false}
             setSelectedIds={setSelectedIds}
             selectedIds={selectedIds}
-            staff={job.staff}
+            staff={job?.staff || []}
           />
         )}
         <section style={{width: "55%", paddingRight: "10px"}}>
@@ -113,7 +115,7 @@ export default function Confirm() {
           ) : (
             <ItemsList
               headers={headers}
-              items={job.items}
+              items={job?.items || []}
               handleSelectItem={handleSelectItem}
             />
           )}

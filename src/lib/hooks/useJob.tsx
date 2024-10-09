@@ -1,12 +1,13 @@
 "use client";
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
-import {LoadingTypes} from "../types/shared";
+import {biglyRequest} from "../networking/biglyServer";
 import {Items, JobDocument} from "../types/jobs";
-import {job_list} from "../data/jobs";
-import {delay} from "../utils/shared";
+import {handleHttpError} from "../utils/shared";
+import {LoadingTypes} from "../types/shared";
+import toast from "react-hot-toast";
 
 interface JobReturn {
-  job: JobDocument;
+  job: JobDocument | null;
   loading: LoadingTypes;
   error: string | null;
   item: Items | null;
@@ -18,23 +19,31 @@ interface JobReturn {
 }
 
 const useJob = (id: string): JobReturn => {
-  const [job, setJob] = useState<JobDocument>(
-    job_list.find((j) => j.id == id) || job_list[0],
-  );
+  const [job, setJob] = useState<JobDocument | null>(null);
   const [item, setItem] = useState<Items | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchJobs = async () => {
     setLoading("loading");
+    setError(null);
     try {
-      await delay(1500);
-      //   const response = await fetch("/api/images");
-      //   if (!response.ok) throw new Error("Failed to fetch images");
-      //   const data: Image[] = await response.json();
-      //   setImages(data);
+      const {status, data, message} = await biglyRequest(
+        "/app/jobs",
+        "GET",
+        null,
+      );
+
+      if (status < 300 && data) {
+        toast.success("Fetched Data");
+        setJob(data.jobs);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }
@@ -47,7 +56,7 @@ const useJob = (id: string): JobReturn => {
   const selectItem = (id: string) => {
     setLoading("requesting");
     setItem(null);
-    const item = job.items.find((i) => i.id == id);
+    const item = job?.items.find((i) => i.id == id);
     if (item) setItem(item);
     setLoading(null);
   };
