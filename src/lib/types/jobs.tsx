@@ -11,8 +11,8 @@ export type JobDocument = {
   time_ended: StateTimes;
   error_rate: ErrorRate;
   items: Items[];
-  created_at: string;
-  updated_at: string;
+  created_at: number;
+  updated_at: number;
   qr_code: string;
 };
 
@@ -49,13 +49,13 @@ export type Items = {
 };
 
 export type StateTimes = {
-  pending: string;
-  printing: string;
-  cutting: string;
-  staging: string;
-  pressing: string;
-  double: string;
-  folding: string;
+  pending: number;
+  printing: number;
+  cutting: number;
+  staging: number;
+  pressing: number;
+  double: number;
+  folding: number;
 };
 
 export type Stages =

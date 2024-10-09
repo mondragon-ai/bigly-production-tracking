@@ -17,10 +17,7 @@ export const toUrlHandle = (
   fileName: string,
   type: "files" | "images",
 ): string => {
-  let name = fileName;
-  if (type !== "files") {
-    name = fileName.split(".").slice(0, -1).join(".");
-  }
+  let name = fileName.split(".").slice(0, -1).join(".");
   return name
     .trim()
     .toLowerCase()

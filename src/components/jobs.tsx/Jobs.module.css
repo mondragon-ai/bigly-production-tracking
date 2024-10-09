@@ -545,6 +545,7 @@
   box-shadow: var(--drop-shadow);
   margin-bottom: 2rem;
   margin-right: 1.5rem;
+  overflow: scroll;
 }
 .kanbanBoard:last-of-type {
   margin-right: 0rem;

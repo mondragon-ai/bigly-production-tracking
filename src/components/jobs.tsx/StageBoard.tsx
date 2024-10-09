@@ -1,4 +1,4 @@
-import {JobDocument} from "@/lib/types/jobs";
+import {JobDocument, Stages} from "@/lib/types/jobs";
 import {Avatar} from "../shared/Avatar";
 import {Badge} from "../shared/Badge";
 import styles from "./Jobs.module.css";
@@ -8,8 +8,8 @@ import {SkeletonBadge, SkeletonText} from "../skeleton/SkeletonText";
 
 type StageBoardProps = {
   title: string;
-  jobs: any[];
-  stage: string;
+  jobs: JobDocument[];
+  stage: Stages;
   loading: boolean;
 };
 
@@ -64,6 +64,7 @@ export const Job = ({job}: {job: JobDocument}) => {
             }
           })}
         {job.staff.length > 4 && <p>{`+${job.staff.length - 4}`}</p>}
+        {job.stage == "pending" && <Avatar staff={null} />}
       </div>
       <footer>
         <Badge

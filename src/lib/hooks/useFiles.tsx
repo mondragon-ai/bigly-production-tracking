@@ -69,7 +69,7 @@ const useFiles = (): UseFilesUploadReturn => {
         {
           file: {
             csv_url: csv_url,
-            name: toUrlHandle(file.name, "files"),
+            name: `${toUrlHandle(file.name, "files")}.csv`,
           },
         },
       );

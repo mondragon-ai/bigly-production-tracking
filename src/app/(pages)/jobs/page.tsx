@@ -3,6 +3,7 @@ import {StageBoard} from "@/components/jobs.tsx/StageBoard";
 import styles from "../../../components/Shared.module.css";
 import PageHeader from "@/components/shared/PageHeader";
 import useJobs from "@/lib/hooks/useJobs";
+import {Stages} from "@/lib/types/jobs";
 
 export default function Jobs() {
   const {jobs, loading} = useJobs();
@@ -31,7 +32,7 @@ export default function Jobs() {
                 key={i}
                 title={s.title}
                 jobs={jobs}
-                stage={s.stage}
+                stage={s.stage as Stages}
               />
             );
           })}

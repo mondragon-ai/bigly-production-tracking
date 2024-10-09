@@ -1,5 +1,5 @@
-export function getHoursDifference(timeString: string): string {
-  const inputTime = new Date(timeString);
+export function getHoursDifference(timeString: number): string {
+  const inputTime = new Date(timeString * 1000);
   if (isNaN(inputTime.getTime())) {
     throw new Error("Invalid date format");
   }

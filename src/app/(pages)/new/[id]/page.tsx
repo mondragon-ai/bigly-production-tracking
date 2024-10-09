@@ -1,17 +1,18 @@
 "use client";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
+import {StartingState} from "@/components/images/StartingState";
 import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
+import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import PageHeader from "@/components/shared/PageHeader";
-import {useParams} from "next/navigation";
-import useJob from "@/lib/hooks/useJob";
+import {AddStaff} from "@/components/shared/AddStaff";
 import {JobDocument} from "@/lib/types/jobs";
 import {BadgeType} from "@/lib/types/shared";
-import {StartingState} from "@/components/images/StartingState";
+import {useParams} from "next/navigation";
+import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
-import {AddStaff} from "@/components/shared/AddStaff";
-import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
-import {ErrorIcon} from "@/components/shared/ErrorIcon";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 
 export default function Confirm() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -96,7 +97,7 @@ export default function Confirm() {
           },
         ]}
         openStaff={openStaff}
-        date={job?.created_at || ""}
+        date={formatTimestamp(job?.created_at || 0)}
         badges={badges(job)}
         staff={job?.staff || []}
       />

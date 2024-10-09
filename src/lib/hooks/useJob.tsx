@@ -29,14 +29,14 @@ const useJob = (id: string): JobReturn => {
     setError(null);
     try {
       const {status, data, message} = await biglyRequest(
-        "/app/jobs",
+        `/app/jobs/${id}`,
         "GET",
         null,
       );
 
       if (status < 300 && data) {
         toast.success("Fetched Data");
-        setJob(data.jobs);
+        setJob(data.job);
         return;
       } else {
         handleHttpError(status, `${message}`, setError);
