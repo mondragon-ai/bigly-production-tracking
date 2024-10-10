@@ -8,30 +8,34 @@ import PageHeader from "@/components/shared/PageHeader";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
 import {useJobCreate} from "@/lib/hooks/useJobCreate";
 import {AddStaff} from "@/components/shared/AddStaff";
+import {BadgeType} from "@/lib/types/shared";
 import {Items} from "@/lib/types/jobs";
 import {useState} from "react";
-import {BadgeType} from "@/lib/types/shared";
 
 export default function Create() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [modal, openModal] = useState<boolean>(false);
-  const [priority, setPriority] = useState<boolean>(false);
-  const [createItem, openItem] = useState(true);
   const [item, setItem] = useState<null | Items>(null);
+  const [modal, openModal] = useState<boolean>(false);
+  const [createItem, openItem] = useState(true);
   const {
     stores,
     job,
     staff,
     loading,
+    setJob,
+    removeItem,
     handleApproveJob,
     handleCreateItem,
-    removeItem,
     handleSelectItem,
   } = useJobCreate();
 
   const handleAddStaff = () => {
     openModal(!modal);
     return;
+  };
+
+  const handleSetPriority = () => {
+    setJob((p) => p && {...p, is_priority: !p.is_priority});
   };
 
   const openAddItem = () => {
@@ -54,7 +58,7 @@ export default function Create() {
 
   const approveJob = () => {
     if (job.items.length !== 0) {
-      handleApproveJob();
+      handleApproveJob(selectedIds);
     }
   };
 
@@ -71,10 +75,10 @@ export default function Create() {
   return (
     <div className={styles.page}>
       <PageHeader
-        setPriority={setPriority}
+        setPriority={handleSetPriority}
         title={"Create Job"}
         date={"Today"}
-        badges={priority ? Priority() : []}
+        badges={job.is_priority ? Priority() : []}
         staff={[]}
         buttons={[
           {
@@ -90,7 +94,7 @@ export default function Create() {
             icon: "wand",
           },
           {
-            text: "APPROVE",
+            text: "GENERATE",
             tone: "success",
             onClick: approveJob,
             icon: "badge-check",

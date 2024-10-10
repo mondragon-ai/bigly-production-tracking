@@ -6,6 +6,10 @@ import {StoreDocument} from "@/lib/types/settings";
 import {Items} from "@/lib/types/jobs";
 import {EmptyState} from "../images/EmptyState";
 import {item_list} from "@/lib/data/jobs";
+import {shopifyGraphQlRequest} from "@/lib/networking/shopify";
+import {ProductsResponse} from "@/lib/types/shopify";
+import {searchProductPayload} from "@/lib/payloads/shopify";
+import {convertShopifyToItem} from "@/lib/payloads/jobs";
 
 export const AddItems = ({
   handleSelectItem,
@@ -28,22 +32,23 @@ export const AddItems = ({
     setOpen(!isOpen);
   };
 
-  const handleSearch = () => {
-    console.log({query, store});
-    const curr_store = stores.map((s) => s.name == store);
+  const handleSearch = async () => {
+    const curr_store = stores.find((s) => s.name == store);
     if (store.toLocaleUpperCase() == "BIGLY") {
       // TODO: search algolia with query
       // TODO: set items
     } else {
-      const item = item_list.filter(
-        (i) => i.sku.includes(query) || i.id.includes(query),
-      );
-      console.log({item});
-      if (item) {
-        setItems(item || []);
-      } else {
-        setItems([]);
-      }
+      if (!curr_store) return;
+      const {shop, payload} = searchProductPayload(curr_store, query);
+      const res = (await shopifyGraphQlRequest(
+        shop,
+        curr_store.sphat,
+        payload,
+      )) as ProductsResponse;
+      const list = convertShopifyToItem(res);
+
+      if (!list) return;
+      setItems(list || []);
     }
     if (query == "") {
       setItems([]);
@@ -51,8 +56,8 @@ export const AddItems = ({
   };
 
   const handleItemSelect = async (id: string) => {
-    const item = item_list.find((i) => i.id == id);
-    if (item) await handleSelectItem(item);
+    const item = items.find((i) => i.id == id);
+    if (item) handleSelectItem(item);
   };
 
   return (
@@ -150,22 +155,3 @@ export const AddItems = ({
 };
 
 const headers = ["SKU", "Type", "Size", "Color"];
-
-const items = [
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    type: "shirt",
-    name: "1776 Star",
-  },
-  {
-    id: "1",
-    sku: "SKU-DESIGN-CLR-SIZE",
-    size: "M",
-    color: "Black",
-    type: "shirt",
-    name: "1776 Star",
-  },
-];

@@ -212,7 +212,7 @@ const useJob = (id: string): JobReturn => {
     try {
       const {status, data, message} = await biglyRequest(
         `/app/jobs/${id}`,
-        "POST",
+        "PUT",
         null,
       );
 

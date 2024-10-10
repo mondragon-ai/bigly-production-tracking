@@ -135,7 +135,7 @@ export const ItemDisplay = ({
 };
 
 export const MockupDesign = ({item}: {item: Items | InventoryDocument}) => {
-  const [isFront, setFront] = useState(false);
+  const [isFront, setFront] = useState(true);
   return (
     <div className={styles.box}>
       <button className={styles.toggle} onClick={() => setFront(!isFront)}>

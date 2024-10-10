@@ -8,6 +8,7 @@ import {handleHttpError} from "../utils/shared";
 import {biglyRequest} from "../networking/biglyServer";
 import {toUrlHandle} from "../utils/converter.tsx/text";
 import {createCurrentSeconds} from "../utils/converter.tsx/time";
+import {uploadAndSaveImage} from "../networking/bigly/images";
 
 interface UseImageUploadReturn {
   images: ImageDocument[];
@@ -63,13 +64,7 @@ const useImageUpload = (): UseImageUploadReturn => {
         file.type.split("/")[1]
       }`;
       const seconds = createCurrentSeconds();
-      const url = await uploadToServer(file, "images");
-      const {status, message} = await biglyRequest("/app/images", "POST", {
-        image: {
-          url: url,
-          name: name,
-        },
-      });
+      const {status, message, url} = await uploadAndSaveImage(file);
 
       const image = {
         id: name,
