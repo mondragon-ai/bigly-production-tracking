@@ -5,12 +5,22 @@ import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
 import {BarChartStats, LineChartStats} from "@/components/analytics/charts";
 import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
 import {useAnalytics} from "@/lib/hooks/useAnalytics";
+import {parseAnalytics} from "@/lib/payloads/analytics";
 
 export default function Analytics() {
-  const {loading} = useAnalytics();
+  const {loading, analytics} = useAnalytics();
+  const {
+    header,
+    average_job,
+    average_error,
+    average_time,
+    top_errors,
+    top_sellers,
+    top_types,
+  } = parseAnalytics(analytics);
   return (
     <div className={styles.page}>
-      <AnalyticsHeader loading={loading} />
+      <AnalyticsHeader header={header} loading={loading} />
       <div>
         <section
           className={styles.rowSection}
@@ -22,21 +32,10 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Avg. Job Completion"}
               width={32}
-              main_value={"2.3"}
+              main_value={`${average_job.avg}`}
               metric="h"
             >
-              <LineChartStats
-                suffix={"h"}
-                data={[
-                  {date: "mon", value: 5.5},
-                  {date: "tue", value: 5.8},
-                  {date: "wed", value: 5.3},
-                  {date: "thu", value: 5.0},
-                  {date: "fri", value: 5.7},
-                  {date: "sat", value: 5.9},
-                  {date: "sun", value: 0},
-                ]}
-              />
+              <LineChartStats suffix={"h"} data={average_job.line_chart} />
             </AnalyticsCard>
           )}
 
@@ -46,18 +45,12 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Avg. Error Rate"}
               width={32}
-              main_value={"0.3"}
+              main_value={`${average_error.avg}`}
               metric="%"
             >
               <BarChartStats
                 color={"#e85f5c"}
-                data={[
-                  {name: "printing", value: 1},
-                  {name: "cutting", value: 0.2},
-                  {name: "pressing", value: 3},
-                  {name: "double", value: 0.3},
-                  {name: "folding", value: 0.2},
-                ]}
+                data={average_error.bar_chart}
                 suffix={"%"}
               />
             </AnalyticsCard>
@@ -68,19 +61,10 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Avg. Time per Station"}
               width={32}
-              main_value={"1.9"}
+              main_value={`${average_time.avg}`}
               metric="h"
             >
-              <BarChartStats
-                suffix={"h"}
-                data={[
-                  {name: "printing", value: 1.9},
-                  {name: "cutting", value: 1.2},
-                  {name: "pressing", value: 1.9},
-                  {name: "double", value: 1.3},
-                  {name: "folding", value: 1.1},
-                ]}
-              />
+              <BarChartStats suffix={"h"} data={average_time.bar_chart} />
             </AnalyticsCard>
           )}
         </section>
@@ -95,19 +79,13 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Individual Errors"}
               width={32}
-              main_value={"Saul"}
+              main_value={`${top_errors.top}`}
               metric=""
             >
               <BarChartStats
                 fixed={0}
                 color={"#e85f5c"}
-                data={[
-                  {name: "Walter", value: 5},
-                  {name: "Jesse", value: 18},
-                  {name: "Saul", value: 25},
-                  {name: "Hank", value: 2},
-                  {name: "Gus", value: 11},
-                ]}
+                data={top_errors.bar_chart}
                 suffix={""}
               />
             </AnalyticsCard>
@@ -119,40 +97,27 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Top Designs"}
               width={32}
-              main_value={"Trust God Not Government Hoodie"}
+              main_value={`${top_sellers.top}`}
               metric=""
             >
               <BarChartStats
                 fixed={0}
-                data={[
-                  {name: "Disobey Hoodie", value: 749},
-                  {name: "Trust God Not Government Hoodie", value: 1200},
-                  {name: "1776", value: 556},
-                  {name: "Turn In Your Guns Hoodie", value: 852},
-                  {name: "Still Standing Hoodie", value: 904},
-                ]}
+                data={top_sellers.bar_chart}
                 suffix={""}
               />
             </AnalyticsCard>
           )}
+
           {loading == "loading" || loading == "posting" ? (
             <SkeletonAnalytic width={32} />
           ) : (
             <AnalyticsCard
               title={"Top Type"}
               width={32}
-              main_value={"Shirt"}
+              main_value={`${top_types.top}`}
               metric=""
             >
-              <BarChartStats
-                suffix={""}
-                fixed={0}
-                data={[
-                  {name: "Hoodie", value: 1200},
-                  {name: "Shirt", value: 1802},
-                  {name: "Hat", value: 908},
-                ]}
-              />
+              <BarChartStats suffix={""} fixed={0} data={top_types.bar_chart} />
             </AnalyticsCard>
           )}
         </section>

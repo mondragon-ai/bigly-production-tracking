@@ -6,13 +6,20 @@ import localFont from "next/font/local";
 import {useState} from "react";
 import {LoadingTypes} from "@/lib/types/shared";
 import {SkeletonText} from "../skeleton/SkeletonText";
+import {HeaderAnalytics} from "@/lib/types/analytics";
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 
-export const AnalyticsHeader = ({loading}: {loading: LoadingTypes}) => {
+export const AnalyticsHeader = ({
+  loading,
+  header,
+}: {
+  loading: LoadingTypes;
+  header: HeaderAnalytics;
+}) => {
   const [modal, openModal] = useState(false);
   const handleSelectModal = (
     type:
@@ -70,31 +77,31 @@ export const AnalyticsHeader = ({loading}: {loading: LoadingTypes}) => {
           </div>
         )}
       </div>
-      {loading == "loading" ? (
+      {loading == "loading" || header.total_units == 0 ? (
         <SkeletonHeader />
       ) : (
         <div className={styles.right}>
           <div className={styles.aTxt}>
-            <h1 className={geistSans.className}>3.3k</h1>
+            <h1 className={geistSans.className}>{header.total_units}</h1>
             <span>total units</span>
           </div>
           <div className={styles.chartContainer}>
             <HalfCircleStats
               data={[
-                {name: "completed", value: 120},
-                {name: "needed", value: 20},
+                {name: "completed", value: header.completed_units},
+                {name: "needed", value: header.total_units},
               ]}
             />
           </div>
           <div className={styles.aTxt}>
-            <h1 className={geistSans.className}>140</h1>
+            <h1 className={geistSans.className}>{header.total_jobs}</h1>
             <span>total jobs</span>
           </div>
           <div className={styles.chartContainer}>
             <HalfCircleStats
               data={[
-                {name: "completed", value: 120},
-                {name: "needed", value: 18},
+                {name: "completed", value: header.completed_jobs},
+                {name: "needed", value: header.total_jobs},
               ]}
             />
           </div>

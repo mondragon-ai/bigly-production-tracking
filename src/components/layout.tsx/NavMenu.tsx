@@ -82,7 +82,7 @@ export const NavMenu = () => {
                 href={"/jobs"}
                 style={{
                   backgroundColor:
-                    slug === "jobs"
+                    slug === "jobs" || slug === "job" || slug === "new"
                       ? "var(--tertary-background)"
                       : "transparent",
                 }}
@@ -106,7 +106,10 @@ export const NavMenu = () => {
                   </svg>
                   <h5
                     style={{
-                      fontWeight: slug === "jobs" ? 450 : 100,
+                      fontWeight:
+                        slug === "jobs" || slug === "job" || slug === "new"
+                          ? 450
+                          : 100,
                       color:
                         slug === "jobs"
                           ? "var(--primary-text)"
@@ -120,7 +123,7 @@ export const NavMenu = () => {
                   className={styles.numbers}
                   style={{
                     backgroundColor:
-                      slug !== "jobs"
+                      slug === "jobs" || slug === "job" || slug === "new"
                         ? "var(--tertary-background)"
                         : "transparent",
                   }}
