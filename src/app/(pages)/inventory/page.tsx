@@ -15,7 +15,7 @@ export default function Inventory() {
     <div className={styles.page}>
       <PageHeader
         title="Bigly Inventory"
-        loading={false}
+        loading={loading}
         buttons={[]}
         date={""}
         badges={[]}

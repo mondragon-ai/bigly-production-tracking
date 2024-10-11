@@ -10,6 +10,7 @@ import {shopifyGraphQlRequest} from "@/lib/networking/shopify";
 import {ProductsResponse} from "@/lib/types/shopify";
 import {searchProductPayload} from "@/lib/payloads/shopify";
 import {convertShopifyToItem} from "@/lib/payloads/jobs";
+import {fetchSearchResults} from "@/lib/configs/algolia";
 
 export const AddItems = ({
   handleSelectItem,
@@ -35,8 +36,10 @@ export const AddItems = ({
   const handleSearch = async () => {
     const curr_store = stores.find((s) => s.name == store);
     if (store.toLocaleUpperCase() == "BIGLY") {
-      // TODO: search algolia with query
-      // TODO: set items
+      const items = await fetchSearchResults(query, "items_index");
+
+      if (!items) return;
+      setItems(items || []);
     } else {
       if (!curr_store) return;
       const {shop, payload} = searchProductPayload(curr_store, query);
@@ -95,6 +98,7 @@ export const AddItems = ({
                   </div>
                 );
               })}
+            <div onClick={() => closeModal("BIGLY")}>Bigly</div>
           </div>
         )}
       </header>

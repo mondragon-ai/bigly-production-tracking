@@ -6,10 +6,13 @@ import {ImageFiles, Items} from "@/lib/types/jobs";
 import {initalImageFiles, initialItem} from "@/lib/payloads/jobs";
 import Image from "next/image";
 import {Icon} from "../shared/Icon";
+import {LoadingTypes} from "@/lib/types/shared";
 
 export const AddItem = ({
   handleCreateItem,
+  loading,
 }: {
+  loading: LoadingTypes;
   handleCreateItem: (item: Items, images: ImageFiles) => void;
 }) => {
   const [isFront, setFront] = useState(false);
@@ -293,6 +296,7 @@ export const AddItem = ({
 
       <footer>
         <Button
+          loading={loading == "posting"}
           onClick={createitem}
           tone="success"
           icon="floppy"

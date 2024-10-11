@@ -3,7 +3,9 @@ import {useState, useEffect, useCallback} from "react";
 import {InventoryDocument} from "../types/inventory";
 import {invenroy_list} from "../data/inventory";
 import {LoadingTypes} from "../types/shared";
-import {delay} from "../utils/shared";
+import {delay, handleHttpError} from "../utils/shared";
+import {biglyRequest} from "../networking/biglyServer";
+import toast from "react-hot-toast";
 
 interface InventoryReturn {
   inventory: InventoryDocument[];
@@ -20,20 +22,33 @@ const useInventory = (): InventoryReturn => {
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
-  const fetchInventory = async () => {
+  const fetchItems = async () => {
     setLoading("loading");
+    setError(null);
     try {
-      await delay(1500);
-      setInventory(invenroy_list);
+      const {status, data, message} = await biglyRequest(
+        "/app/inventory",
+        "GET",
+        null,
+      );
+
+      if (status < 300 && data) {
+        toast.success("Fetched Inventory");
+        setInventory(data.inventory);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
     }
   };
 
   useEffect(() => {
-    fetchInventory();
+    fetchItems();
   }, []);
 
   const handleSelectItem = useCallback(

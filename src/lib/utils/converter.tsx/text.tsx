@@ -9,6 +9,17 @@ export function getInitials(name: string) {
   return initials;
 }
 
+export function capitalizeWords(name: string) {
+  const words = name.replaceAll("_", " ").split(" ");
+
+  let word = "";
+  for (const w of words) {
+    word += w.charAt(0).toLocaleUpperCase() + w.substring(1) + " ";
+  }
+
+  return word;
+}
+
 export const truncateString = (str: string, n: number): string => {
   return str.length > n ? str.substring(0, n) + "..." : str;
 };

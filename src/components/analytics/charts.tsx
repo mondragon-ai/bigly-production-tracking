@@ -109,7 +109,7 @@ export const LineChartStats = ({
           axisLine={false}
           padding={{top: 0, bottom: 40}}
           tickSize={0}
-          tick={<CustomYAxisTick suffix={suffix} />}
+          tick={<CustomYAxisTick suffix={suffix} fixed={2} />}
         />
         <Tooltip content={<CustomTooltip suffix={suffix} />} />
         <Area

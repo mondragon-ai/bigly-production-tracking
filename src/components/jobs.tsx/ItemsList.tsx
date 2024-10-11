@@ -5,6 +5,7 @@ import {Badge} from "../shared/Badge";
 import {Items} from "@/lib/types/jobs";
 import {InventoryDocument} from "@/lib/types/inventory";
 import {badgeColor, badgeIcon} from "@/lib/utils/shared";
+import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 
 type CustomTableProps = {
   headers: string[];
@@ -57,7 +58,7 @@ export const ItemsList = ({
                   <td>
                     <Badge
                       icon={badgeIcon(item.status)}
-                      text={item.status}
+                      text={capitalizeWords(item.status)}
                       tone={badgeColor(item.status)}
                     />
                   </td>

@@ -68,6 +68,7 @@ export const useJobCreate: UseJobCreateProps = () => {
 
   const handleCreateItem = useCallback(
     async (item: Items, images: ImageFiles) => {
+      setLoading("posting");
       setError(null);
       try {
         const new_item = await createItemPayload(item, images);
@@ -128,7 +129,7 @@ export const useJobCreate: UseJobCreateProps = () => {
       console.log({settings: data});
 
       if (status < 300 && data) {
-        toast.success("Fetched Data");
+        toast.success("Fetched Stores");
         setStores(data.stores);
         setStaff(data.staff);
         return;

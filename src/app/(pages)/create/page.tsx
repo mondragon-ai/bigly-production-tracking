@@ -75,6 +75,7 @@ export default function Create() {
   return (
     <div className={styles.page}>
       <PageHeader
+        loading={loading}
         setPriority={handleSetPriority}
         title={"Create Job"}
         date={"Today"}
@@ -120,7 +121,7 @@ export default function Create() {
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {createItem ? (
-            <AddItem handleCreateItem={handleCreateItem} />
+            <AddItem handleCreateItem={handleCreateItem} loading={loading} />
           ) : item ? (
             <ItemDisplay
               is_create={true}
