@@ -83,13 +83,19 @@ export const AnalyticsHeader = ({
         <div className={styles.right}>
           <div className={styles.aTxt}>
             <h1 className={geistSans.className}>{header.total_units}</h1>
-            <span>total units</span>
+            <span>total units {header.completed_units}</span>
           </div>
           <div className={styles.chartContainer}>
             <HalfCircleStats
               data={[
-                {name: "completed", value: header.completed_units},
-                {name: "needed", value: header.total_units},
+                {
+                  name: "completed",
+                  value: header.completed_units / header.total_units,
+                },
+                {
+                  name: "needed",
+                  value: 1 - header.completed_units / header.total_units,
+                },
               ]}
             />
           </div>
@@ -100,8 +106,14 @@ export const AnalyticsHeader = ({
           <div className={styles.chartContainer}>
             <HalfCircleStats
               data={[
-                {name: "completed", value: header.completed_jobs},
-                {name: "needed", value: header.total_jobs},
+                {
+                  name: "needed",
+                  value: header.completed_jobs / header.total_jobs,
+                },
+                {
+                  name: "completed",
+                  value: 1 - header.completed_jobs / header.total_jobs,
+                },
               ]}
             />
           </div>

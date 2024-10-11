@@ -6,18 +6,20 @@ export const AnalyticsCard = ({
   metric,
   children,
   width,
+  fixed,
 }: {
   title: string;
   width: number;
   main_value?: string;
   metric?: string;
   children: React.ReactNode;
+  fixed?: number;
 }) => (
   <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
     <header>
       <h5>{title}</h5>
       <h2>
-        {main_value}
+        {fixed ? Number(main_value).toFixed(fixed) : main_value}
         <span>{metric}</span>
       </h2>
     </header>

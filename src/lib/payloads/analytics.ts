@@ -3,7 +3,6 @@ import {
   ParsedAnalyticsReturn,
   ProductionAnalyticsType,
 } from "../types/analytics";
-import {ErrorRate, Stages} from "../types/jobs";
 import {formatTimestamp} from "../utils/converter.tsx/time";
 
 export const parseAnalytics = (
@@ -29,11 +28,19 @@ export const parseAnalytics = (
 
 const parseAvgTime = (analytics: ProductionAnalyticsType[]) => {
   console.log(analytics);
-  const total = analytics.reduce((p, c) => p + c.averate_job_time, 0);
+  const total = analytics.reduce(
+    (p, c) =>
+      p +
+      c.averate_job_time.reduce((pr, cr) => pr + cr, 0) /
+        (c.averate_job_time.length || 1),
+    0,
+  );
   const avg = Number(total / analytics.length).toFixed(1);
   const line_chart = analytics.map((item) => ({
     date: formatTimestamp(item.id),
-    value: item.total_units,
+    value:
+      item.averate_job_time.reduce((p, c) => p + c, 0) /
+      (item.averate_job_time.length || 1),
   }));
 
   return {
@@ -71,7 +78,8 @@ const parseErrorRate = (analytics: ProductionAnalyticsType[]) => {
   const data = [
     {name: "printing", value: total.printing},
     {name: "cutting", value: total.cutting},
-    {name: "pressing", value: total.pressing},
+    {name: "staging", value: total.staging},
+    {name: "press", value: total.pressing},
     {name: "double", value: total.double},
     {name: "folding", value: total.folding},
   ];
@@ -89,7 +97,7 @@ const parseStationAvgTime = (analytics: ProductionAnalyticsType[]) => {
         const typedKey =
           key as keyof ProductionAnalyticsType["averate_station_time"];
         if (p[typedKey] !== undefined) {
-          p[typedKey] += value;
+          p[typedKey] += value.reduce((p, c) => p + c, 0);
         }
       });
       return p;
@@ -112,7 +120,8 @@ const parseStationAvgTime = (analytics: ProductionAnalyticsType[]) => {
   const data = [
     {name: "printing", value: total.printing},
     {name: "cutting", value: total.cutting},
-    {name: "pressing", value: total.pressing},
+    {name: "staging", value: total.staging},
+    {name: "press", value: total.pressing},
     {name: "double", value: total.double},
     {name: "folding", value: total.folding},
   ];
@@ -176,7 +185,7 @@ const parseTopSellers = (analytics: ProductionAnalyticsType[]) => {
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5);
 
-  const top = sortedSellers.length > 0 ? sortedSellers[0][0] : "";
+  const top = sortedSellers.length > 0 ? sortedSellers[0][0] : "-";
 
   const total = sortedSellers.map(([ts, amount]) => ({
     name: ts,
@@ -236,6 +245,7 @@ export const getAnalyticsData = (): ParsedAnalyticsReturn => {
       bar_chart: [
         {name: "printing", value: 0},
         {name: "cutting", value: 0},
+        {name: "staging", value: 0},
         {name: "pressing", value: 0},
         {name: "double", value: 0},
         {name: "folding", value: 0},
@@ -246,6 +256,7 @@ export const getAnalyticsData = (): ParsedAnalyticsReturn => {
       bar_chart: [
         {name: "printing", value: 0},
         {name: "cutting", value: 0},
+        {name: "staging", value: 0},
         {name: "pressing", value: 0},
         {name: "double", value: 0},
         {name: "folding", value: 0},

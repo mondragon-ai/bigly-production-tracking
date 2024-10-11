@@ -47,14 +47,17 @@ export default function Analytics() {
               width={32}
               main_value={`${average_error.avg}`}
               metric="%"
+              fixed={1}
             >
               <BarChartStats
                 color={"#e85f5c"}
                 data={average_error.bar_chart}
                 suffix={"%"}
+                fixed={1}
               />
             </AnalyticsCard>
           )}
+
           {loading == "loading" || loading == "posting" ? (
             <SkeletonAnalytic width={32} />
           ) : (
@@ -63,6 +66,7 @@ export default function Analytics() {
               width={32}
               main_value={`${average_time.avg}`}
               metric="h"
+              fixed={2}
             >
               <BarChartStats suffix={"h"} data={average_time.bar_chart} />
             </AnalyticsCard>

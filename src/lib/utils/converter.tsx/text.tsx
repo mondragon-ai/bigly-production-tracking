@@ -1,5 +1,5 @@
 export function getInitials(name: string) {
-  const words = name.split(" ");
+  const words = name.replaceAll("_", " ").split(" ");
 
   let initials = "";
   for (const w of words) {
