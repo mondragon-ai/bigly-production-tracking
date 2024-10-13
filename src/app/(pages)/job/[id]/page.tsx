@@ -7,7 +7,7 @@ import {ApproveModal} from "@/components/shared/ApproveModal";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
 import {JobDocument} from "@/lib/types/jobs";
-import {BadgeType} from "@/lib/types/shared";
+import {BadgeType, IconTypes} from "@/lib/types/shared";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
@@ -52,6 +52,45 @@ export default function JobDetail() {
 
   const qr_code = `http://api.qrserver.com/v1/create-qr-code/?data=${job?.qr_code}&size=100x100`;
 
+  const buttons = () => {
+    let buttons: {
+      onClick: ((e: any) => void) | undefined;
+      text: string;
+      tone: "" | "success" | "descructive";
+      icon: IconTypes;
+    }[] = [
+      {
+        text: "LINK STATION",
+        tone: "success",
+        onClick: assignStaff,
+        icon: "add-user",
+      },
+      {
+        text: "COMPLETE STATION",
+        tone: "success",
+        onClick: completeStation,
+        icon: "badge-check",
+      },
+      {
+        text: "DELETE",
+        tone: "descructive",
+        onClick: handleDelete,
+        icon: "trash",
+      },
+    ];
+
+    if (job?.stage == "completed") {
+      buttons = [
+        {
+          text: "DELETE",
+          tone: "descructive",
+          onClick: handleDelete,
+          icon: "trash",
+        },
+      ];
+    }
+    return buttons;
+  };
   return (
     <div className={styles.page}>
       {confirm == "CONFIRM_ERROR" && (
@@ -68,26 +107,7 @@ export default function JobDetail() {
       <PageHeader
         has_qr_code={qr_code}
         title={`Job #${job?.job_name || ""}`}
-        buttons={[
-          {
-            text: "LINK STATION",
-            tone: "success",
-            onClick: assignStaff,
-            icon: "add-user",
-          },
-          {
-            text: "COMPLETE STATION",
-            tone: "success",
-            onClick: completeStation,
-            icon: "badge-check",
-          },
-          {
-            text: "DELETE",
-            tone: "descructive",
-            onClick: handleDelete,
-            icon: "trash",
-          },
-        ]}
+        buttons={buttons()}
         loading={loading}
         set_loaders={true}
         date={formatTimestamp(job?.created_at || 0)}
@@ -110,6 +130,7 @@ export default function JobDetail() {
           {item ? (
             <ItemDisplay
               is_create={false}
+              loading={loading}
               onClick={openErrorModal}
               item={item}
             />
@@ -118,6 +139,7 @@ export default function JobDetail() {
           ) : job && job.items.length !== 0 && !item ? (
             <ItemDisplay
               is_create={false}
+              loading={loading}
               onClick={openErrorModal}
               item={job.items[0]}
             />

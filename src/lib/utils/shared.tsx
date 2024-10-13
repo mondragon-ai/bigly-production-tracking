@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import {IconTypes} from "../types/shared";
 import {Dispatch, SetStateAction} from "react";
+import {Stages} from "../types/jobs";
 
 export const copyToClipBoard = (value: string) => {
   if (navigator) {
@@ -100,5 +101,36 @@ export const handleHttpError = (
       toast.error(message);
       setError(message);
       return;
+  }
+};
+
+export const findNextStage = (stage: Stages): Stages => {
+  switch (stage) {
+    case "pending":
+      return "printing";
+
+    case "printing":
+      return "cutting";
+
+    case "cutting":
+      return "staging";
+
+    case "staging":
+      return "pressing";
+
+    case "pressing":
+      return "double";
+
+    case "double":
+      return "folding";
+
+    case "folding":
+      return "completed";
+
+    case "completed":
+      return "completed";
+
+    default:
+      return "pending";
   }
 };

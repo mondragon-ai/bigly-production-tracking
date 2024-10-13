@@ -6,9 +6,12 @@ import {BarChartStats, LineChartStats} from "@/components/analytics/charts";
 import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
 import {useAnalytics} from "@/lib/hooks/useAnalytics";
 import {parseAnalytics} from "@/lib/payloads/analytics";
+import {useState} from "react";
+import {TimeFrameTypes} from "@/lib/types/analytics";
 
 export default function Analytics() {
-  const {loading, analytics} = useAnalytics();
+  const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");
+  const {loading, analytics, fetchTimeframe} = useAnalytics();
   const {
     header,
     average_job,
@@ -18,9 +21,19 @@ export default function Analytics() {
     top_sellers,
     top_types,
   } = parseAnalytics(analytics);
+
+  const handleFetchingAnalytics = (tf: TimeFrameTypes) => {
+    setTimeFrame(tf);
+    fetchTimeframe(tf);
+  };
   return (
     <div className={styles.page}>
-      <AnalyticsHeader header={header} loading={loading} />
+      <AnalyticsHeader
+        header={header}
+        loading={loading}
+        fetchAnalytics={handleFetchingAnalytics}
+        timeframe={tf}
+      />
       <div>
         <section
           className={styles.rowSection}

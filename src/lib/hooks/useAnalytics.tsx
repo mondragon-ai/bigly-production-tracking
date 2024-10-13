@@ -6,12 +6,13 @@ import {settings_data} from "../data/settings";
 import {delay, handleHttpError} from "../utils/shared";
 import {biglyRequest} from "../networking/biglyServer";
 import toast from "react-hot-toast";
-import {ProductionAnalyticsType} from "../types/analytics";
+import {ProductionAnalyticsType, TimeFrameTypes} from "../types/analytics";
 
 interface AnalyticsReturn {
   loading: LoadingTypes;
   error: string | null;
   analytics: ProductionAnalyticsType[] | null;
+  fetchTimeframe: (t: TimeFrameTypes) => Promise<void>;
 }
 
 export const useAnalytics = (): AnalyticsReturn => {
@@ -51,9 +52,36 @@ export const useAnalytics = (): AnalyticsReturn => {
     fetchAnalytics();
   }, []);
 
+  const fetchTimeframe = async (tf: TimeFrameTypes) => {
+    setLoading("loading");
+    setError(null);
+    try {
+      const {status, data, message} = await biglyRequest(
+        `/app/analytics/${tf}`,
+        "GET",
+        null,
+      );
+
+      if (status < 300 && data) {
+        console.log({data});
+        toast.success(message);
+        setAnalytics(data.analytics);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
+    } catch (err) {
+      handleHttpError(500, "Server Error", setError);
+    } finally {
+      setLoading(null);
+    }
+  };
+
   return {
     analytics,
     loading,
     error,
+    fetchTimeframe,
   };
 };

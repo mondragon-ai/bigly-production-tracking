@@ -55,7 +55,7 @@ const parseErrorRate = (analytics: ProductionAnalyticsType[]) => {
       Object.entries(c.error_rate).forEach(([key, value]) => {
         const typedKey = key as keyof ProductionAnalyticsType["error_rate"];
         if (p[typedKey] !== undefined) {
-          p[typedKey] += value;
+          p[typedKey] += value / c.total_units;
         }
       });
       return p;
@@ -76,12 +76,12 @@ const parseErrorRate = (analytics: ProductionAnalyticsType[]) => {
     Object.values(total).length;
 
   const data = [
-    {name: "printing", value: total.printing},
-    {name: "cutting", value: total.cutting},
-    {name: "staging", value: total.staging},
-    {name: "press", value: total.pressing},
-    {name: "double", value: total.double},
-    {name: "folding", value: total.folding},
+    {name: "printing", value: Number(total.printing.toFixed(2))},
+    {name: "cutting", value: Number(total.cutting.toFixed(2))},
+    {name: "staging", value: Number(total.staging.toFixed(2))},
+    {name: "press", value: Number(total.pressing.toFixed(2))},
+    {name: "double", value: Number(total.double.toFixed(2))},
+    {name: "folding", value: Number(total.folding.toFixed(2))},
   ];
 
   return {
@@ -97,7 +97,7 @@ const parseStationAvgTime = (analytics: ProductionAnalyticsType[]) => {
         const typedKey =
           key as keyof ProductionAnalyticsType["averate_station_time"];
         if (p[typedKey] !== undefined) {
-          p[typedKey] += value.reduce((p, c) => p + c, 0);
+          p[typedKey] += value.reduce((p, c) => p + c, 0) / value.length;
         }
       });
       return p;
@@ -118,12 +118,12 @@ const parseStationAvgTime = (analytics: ProductionAnalyticsType[]) => {
     Object.values(total).length;
 
   const data = [
-    {name: "printing", value: total.printing},
-    {name: "cutting", value: total.cutting},
-    {name: "staging", value: total.staging},
-    {name: "press", value: total.pressing},
-    {name: "double", value: total.double},
-    {name: "folding", value: total.folding},
+    {name: "printing", value: Number(total.printing.toFixed(1))},
+    {name: "cutting", value: Number(total.cutting.toFixed(1))},
+    {name: "staging", value: Number(total.staging.toFixed(1))},
+    {name: "press", value: Number(total.pressing.toFixed(1))},
+    {name: "double", value: Number(total.double.toFixed(1))},
+    {name: "folding", value: Number(total.folding.toFixed(1))},
   ];
 
   return {

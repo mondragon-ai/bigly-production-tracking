@@ -3,10 +3,11 @@ import styles from "../Shared.module.css";
 import {HalfCircleStats} from "./charts";
 
 import localFont from "next/font/local";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import {LoadingTypes} from "@/lib/types/shared";
 import {SkeletonText} from "../skeleton/SkeletonText";
-import {HeaderAnalytics} from "@/lib/types/analytics";
+import {HeaderAnalytics, TimeFrameTypes} from "@/lib/types/analytics";
+import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
   variable: "--font-geist-sans",
@@ -16,21 +17,18 @@ const geistSans = localFont({
 export const AnalyticsHeader = ({
   loading,
   header,
+  timeframe,
+  fetchAnalytics,
 }: {
   loading: LoadingTypes;
   header: HeaderAnalytics;
+  fetchAnalytics: (t: TimeFrameTypes) => void;
+  timeframe: TimeFrameTypes;
 }) => {
   const [modal, openModal] = useState(false);
-  const handleSelectModal = (
-    type:
-      | "today"
-      | "yesterday"
-      | "seven_days"
-      | "thirty_days"
-      | "ninety_days"
-      | "twelve_months",
-  ) => {
+  const handleSelectModal = (type: TimeFrameTypes) => {
     openModal((p) => !p);
+    fetchAnalytics(type);
   };
   return (
     <header
@@ -47,7 +45,7 @@ export const AnalyticsHeader = ({
         <Button
           loading={false}
           thin={true}
-          text={"TODAY"}
+          text={capitalizeWords(timeframe).toLocaleUpperCase() || "TODAY"}
           tone={"success"}
           align={"center"}
           icon={"calendar"}
@@ -58,9 +56,6 @@ export const AnalyticsHeader = ({
           <div className={styles.timeFramWrapper}>
             <div onClick={() => handleSelectModal("today")}>
               <span>Today</span>
-            </div>
-            <div onClick={() => handleSelectModal("yesterday")}>
-              <span>Yesterday</span>
             </div>
             <div onClick={() => handleSelectModal("seven_days")}>
               <span>7 Days</span>
@@ -87,6 +82,7 @@ export const AnalyticsHeader = ({
           </div>
           <div className={styles.chartContainer}>
             <HalfCircleStats
+              completed={header.completed_units / header.total_units}
               data={[
                 {
                   name: "completed",
@@ -105,6 +101,7 @@ export const AnalyticsHeader = ({
           </div>
           <div className={styles.chartContainer}>
             <HalfCircleStats
+              completed={header.completed_jobs / header.total_jobs}
               data={[
                 {
                   name: "needed",

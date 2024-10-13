@@ -2,7 +2,7 @@
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import {biglyRequest} from "../networking/biglyServer";
 import {Items, JobDocument} from "../types/jobs";
-import {handleHttpError} from "../utils/shared";
+import {findNextStage, handleHttpError} from "../utils/shared";
 import {LoadingTypes} from "../types/shared";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
@@ -244,6 +244,7 @@ const useJob = (id: string): JobReturn => {
       if (status < 300) {
         toast.success(message);
         router.refresh();
+        setJob((p) => p && {...p, stage: findNextStage(p.stage)});
         return;
       } else {
         handleHttpError(status, `${message}`, setError);

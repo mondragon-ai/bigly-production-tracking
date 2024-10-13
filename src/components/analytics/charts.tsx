@@ -249,7 +249,13 @@ const renderActiveShape = (props: any) => {
   );
 };
 
-export const HalfCircleStats = ({data}: {data: NameValueProps[]}) => {
+export const HalfCircleStats = ({
+  data,
+  completed,
+}: {
+  data: NameValueProps[];
+  completed: number;
+}) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_: any, index: number) => {
@@ -269,7 +275,7 @@ export const HalfCircleStats = ({data}: {data: NameValueProps[]}) => {
           dataKey="value"
           activeIndex={activeIndex}
           onMouseEnter={onPieEnter}
-          activeShape={renderHalfShape}
+          activeShape={(p: any) => renderHalfShape(p, completed)}
           startAngle={180}
           endAngle={0}
           paddingAngle={5}
@@ -285,7 +291,7 @@ export const HalfCircleStats = ({data}: {data: NameValueProps[]}) => {
 
 const HALF_CIRCLE = ["#a1a5f4", "#39393a"];
 
-const renderHalfShape = (props: any) => {
+const renderHalfShape = (props: any, completed: number) => {
   const {
     cx,
     cy,
@@ -311,7 +317,7 @@ const renderHalfShape = (props: any) => {
         className={geistSans.className}
         letterSpacing="0px"
       >
-        {`${(percent * 100).toFixed(0)}%`}
+        {`${(completed * 100).toFixed(0)}%`}
       </text>
       <text
         x={"50%"}

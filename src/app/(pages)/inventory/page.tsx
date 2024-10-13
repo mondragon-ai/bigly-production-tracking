@@ -11,6 +11,8 @@ export default function Inventory() {
   const {inventory, item, loading, handleSelectItem, deleteItem} =
     useInventory();
 
+  const qr_code = `http://api.qrserver.com/v1/create-qr-code/?data=${item?.qr_code}&size=100x100`;
+
   return (
     <div className={styles.page}>
       <PageHeader
@@ -40,7 +42,8 @@ export default function Inventory() {
               is_create={true}
               onClick={deleteItem}
               item={item}
-              has_qr_code="https://firebasestorage.googleapis.com/v0/b/bigly-server.appspot.com/o/images%2Fuploads%2F1727879269134_Aundrel%20PAST%20Winner%20Banner%20Email.png?alt=media&token=68373442-084a-4418-95d8-9e9096cac4ca"
+              has_qr_code={qr_code}
+              loading={null}
             />
           ) : loading == "requesting" || loading == "loading" ? (
             <SkeletonDetail width={100} />

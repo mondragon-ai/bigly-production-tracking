@@ -8,13 +8,16 @@ import {useState} from "react";
 import {InventoryDocument} from "@/lib/types/inventory";
 import {badgeColor, badgeIcon} from "@/lib/utils/shared";
 import {Icon} from "../shared/Icon";
+import {LoadingTypes} from "@/lib/types/shared";
 
 export const ItemDisplay = ({
   is_create,
   item,
   onClick,
   has_qr_code,
+  loading,
 }: {
+  loading: LoadingTypes;
   is_create: boolean;
   onClick: (id: string) => void;
   item: Items | InventoryDocument;
@@ -112,6 +115,7 @@ export const ItemDisplay = ({
       <footer>
         {is_create ? (
           <Button
+            loading={loading == "posting"}
             onClick={() => onClick(item.id)}
             tone="descructive"
             icon="trash"
@@ -121,6 +125,7 @@ export const ItemDisplay = ({
           />
         ) : !is_create && !(item as any).has_error ? (
           <Button
+            loading={loading == "posting"}
             onClick={() => onClick(item.id)}
             tone="descructive"
             icon="rejected"
