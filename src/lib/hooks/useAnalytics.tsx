@@ -42,12 +42,10 @@ export const useAnalytics = (): AnalyticsReturn => {
       }
 
       if (status < 300 && data) {
-        console.log(status, data, message);
         toast.success(message);
         setAnalytics(data.analytics);
         return;
       } else {
-        console.log(status, message);
         return handleHttpError(status, `${message || ""}`, setError);
       }
     } catch (err) {
@@ -71,6 +69,13 @@ export const useAnalytics = (): AnalyticsReturn => {
         "GET",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && data) {
         console.log({data});

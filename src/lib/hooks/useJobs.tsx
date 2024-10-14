@@ -5,6 +5,7 @@ import {JobDocument} from "../types/jobs";
 import {biglyRequest} from "../networking/biglyServer";
 import toast from "react-hot-toast";
 import {handleHttpError} from "@/app/shared";
+import {useRouter} from "next/navigation";
 
 interface JobReturn {
   jobs: JobDocument[];
@@ -13,6 +14,7 @@ interface JobReturn {
 }
 
 const useJobs = (): JobReturn => {
+  const router = useRouter();
   const [jobs, setJobs] = useState<JobDocument[]>([]);
   const [loading, setLoading] = useState<LoadingTypes>(null);
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +28,13 @@ const useJobs = (): JobReturn => {
         "GET",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && data) {
         toast.success("Fetched Data");

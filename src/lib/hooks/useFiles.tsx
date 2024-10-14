@@ -8,6 +8,7 @@ import {biglyRequest} from "../networking/biglyServer";
 import {FetchAndParsedCleanCSV, FileDocument} from "../types/files";
 import {toUrlHandle} from "../utils/converter.tsx/text";
 import {useGlobalContext} from "../store/context";
+import {useRouter} from "next/navigation";
 
 interface UseFilesUploadReturn {
   files: FileDocument[];
@@ -21,6 +22,7 @@ interface UseFilesUploadReturn {
 }
 
 const useFiles = (): UseFilesUploadReturn => {
+  const router = useRouter();
   const {globalState} = useGlobalContext();
   const [files, setFiles] = useState<FileDocument[]>([]);
   const [file_detail, setFileDetail] = useState<FetchAndParsedCleanCSV | null>(
@@ -38,6 +40,13 @@ const useFiles = (): UseFilesUploadReturn => {
         "GET",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && data) {
         toast.success("Fetched files");
@@ -76,6 +85,13 @@ const useFiles = (): UseFilesUploadReturn => {
         },
       );
 
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300 && data) {
         toast.success("Uploaded File");
         console.log(data);
@@ -103,6 +119,13 @@ const useFiles = (): UseFilesUploadReturn => {
         null,
       );
 
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300 && data) {
         toast.success("Fetched files");
         setFileDetail(data.file);
@@ -128,6 +151,13 @@ const useFiles = (): UseFilesUploadReturn => {
         "DELETE",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success("Deleted files");
@@ -156,6 +186,13 @@ const useFiles = (): UseFilesUploadReturn => {
         "POST",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && file_detail) {
         toast.success("Generated Jobs");

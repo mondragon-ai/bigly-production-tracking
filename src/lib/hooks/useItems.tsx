@@ -5,6 +5,7 @@ import {handleHttpError} from "@/app/shared";
 import {LoadingTypes} from "../types/shared";
 import {Items} from "../types/jobs";
 import toast from "react-hot-toast";
+import {useRouter} from "next/navigation";
 
 interface ItemReturn {
   items: Items[];
@@ -16,6 +17,7 @@ interface ItemReturn {
 }
 
 const useItems = (): ItemReturn => {
+  const router = useRouter();
   const [items, setItems] = useState<Items[]>([]);
   const [item, setItem] = useState<Items | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -30,6 +32,13 @@ const useItems = (): ItemReturn => {
         "GET",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && data) {
         toast.success("Fetched Data");
@@ -67,6 +76,13 @@ const useItems = (): ItemReturn => {
           "DELETE",
           null,
         );
+
+        if (status == 401) {
+          return router.push("/");
+        }
+        if (status == 403) {
+          return router.push("/jobs");
+        }
 
         if (status < 300) {
           toast.success("Deleted Item");

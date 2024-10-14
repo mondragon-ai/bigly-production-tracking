@@ -41,6 +41,13 @@ const useJob = (id: string): JobReturn => {
         null,
       );
 
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300 && data) {
         toast.success("Fetched Data");
         setJob(data.job);
@@ -79,6 +86,13 @@ const useJob = (id: string): JobReturn => {
         null,
       );
 
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300) {
         toast.success("Deleted Job");
         router.push("/jobs");
@@ -104,6 +118,13 @@ const useJob = (id: string): JobReturn => {
         "PUT",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success("Removed Jobs");
@@ -132,6 +153,13 @@ const useJob = (id: string): JobReturn => {
         "POST",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success(message);
@@ -167,6 +195,13 @@ const useJob = (id: string): JobReturn => {
         "PUT",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success("Rejected Item");
@@ -216,6 +251,13 @@ const useJob = (id: string): JobReturn => {
         null,
       );
 
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300) {
         toast.success("Approved Job");
         router.push(`/job/${id}`);
@@ -240,6 +282,13 @@ const useJob = (id: string): JobReturn => {
         "POST",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success(message);

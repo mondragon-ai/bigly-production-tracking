@@ -8,6 +8,7 @@ import {handleHttpError} from "@/app/shared";
 import {settings_data} from "../data/settings";
 import {initialStaff} from "../payloads/staff";
 import toast from "react-hot-toast";
+import {useRouter} from "next/navigation";
 
 interface SettingsReturn {
   data: SettingsPage;
@@ -24,6 +25,7 @@ interface SettingsReturn {
 }
 
 export const useSettings = (): SettingsReturn => {
+  const router = useRouter();
   const [data, setData] = useState<SettingsPage>(settings_data);
   const [staff, setStaff] = useState<Staff | null>(null);
   const [store, setStore] = useState<StoreDocument | null>(null);
@@ -40,7 +42,14 @@ export const useSettings = (): SettingsReturn => {
         "GET",
         null,
       );
-      console.log({settings: data});
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300 && data) {
         toast.success("Fetched Data");
         setData((p) => ({
@@ -83,6 +92,13 @@ export const useSettings = (): SettingsReturn => {
     try {
       const {status, data: res} = await biglyRequest(url, "DELETE", null);
 
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300) {
         toast.success("Deleted " + type);
         const new_list = data[type]?.filter((i) => i.id !== id);
@@ -108,11 +124,18 @@ export const useSettings = (): SettingsReturn => {
   const createStaff = async (staff: Staff) => {
     setLoading("posting");
     setError(null);
-    console.log(staff);
+
     try {
       const {status, message} = await biglyRequest("/auth/create", "POST", {
         user: staff,
       });
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success("Created Staff");
@@ -139,11 +162,18 @@ export const useSettings = (): SettingsReturn => {
   const createStore = async (store: StoreDocument) => {
     setLoading("posting");
     setError(null);
-    console.log(store);
+
     try {
       const {status, message} = await biglyRequest("/app/store", "POST", {
         store: store,
       });
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success("Created Store");

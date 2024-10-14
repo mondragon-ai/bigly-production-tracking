@@ -38,9 +38,7 @@ export const useJobCreate: UseJobCreateProps = () => {
   const handleApproveJob = useCallback(
     async (ids: string[]) => {
       const users = staff.filter((s) => ids.includes(s.id));
-      console.log("STAFF: ", users);
       job.staff = users;
-      console.log("READY TO APPROVE JOB with state", job);
       setError(null);
       try {
         const {status, message} = await biglyRequest(
@@ -48,6 +46,13 @@ export const useJobCreate: UseJobCreateProps = () => {
           "POST",
           {job},
         );
+
+        if (status == 401) {
+          return router.push("/");
+        }
+        if (status == 403) {
+          return router.push("/jobs");
+        }
 
         if (status < 300) {
           toast.success(message);
@@ -78,6 +83,13 @@ export const useJobCreate: UseJobCreateProps = () => {
           "POST",
           {item: new_item},
         );
+
+        if (status == 401) {
+          return router.push("/");
+        }
+        if (status == 403) {
+          return router.push("/jobs");
+        }
 
         if (status < 300 && data) {
           toast.success(message);
@@ -126,7 +138,13 @@ export const useJobCreate: UseJobCreateProps = () => {
         "GET",
         null,
       );
-      console.log({settings: data});
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && data) {
         toast.success("Fetched Stores");

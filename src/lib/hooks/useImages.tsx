@@ -8,6 +8,7 @@ import {biglyRequest} from "../networking/biglyServer";
 import {toUrlHandle} from "../utils/converter.tsx/text";
 import {createCurrentSeconds} from "../utils/converter.tsx/time";
 import {uploadAndSaveImage} from "../networking/bigly/images";
+import {useRouter} from "next/navigation";
 
 interface UseImageUploadReturn {
   images: ImageDocument[];
@@ -20,6 +21,7 @@ interface UseImageUploadReturn {
 }
 
 const useImageUpload = (): UseImageUploadReturn => {
+  const router = useRouter();
   const [images, setImages] = useState<ImageDocument[]>([]);
   const [img_detail, setImgDetail] = useState<ImageDocument | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>("loading");
@@ -34,6 +36,13 @@ const useImageUpload = (): UseImageUploadReturn => {
         "GET",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && data) {
         toast.success("Fetched Data");
@@ -72,6 +81,13 @@ const useImageUpload = (): UseImageUploadReturn => {
         created_at: seconds,
         url: url,
       } as ImageDocument;
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success("Image Added");
@@ -116,6 +132,13 @@ const useImageUpload = (): UseImageUploadReturn => {
         "DELETE",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300) {
         toast.success("Deleted Image");

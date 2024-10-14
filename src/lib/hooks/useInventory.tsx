@@ -5,6 +5,7 @@ import {LoadingTypes} from "../types/shared";
 import {handleHttpError} from "@/app/shared";
 import {biglyRequest} from "../networking/biglyServer";
 import toast from "react-hot-toast";
+import {useRouter} from "next/navigation";
 
 interface InventoryReturn {
   inventory: InventoryDocument[];
@@ -16,6 +17,7 @@ interface InventoryReturn {
 }
 
 const useInventory = (): InventoryReturn => {
+  const router = useRouter();
   const [inventory, setInventory] = useState<InventoryDocument[]>([]);
   const [item, setItem] = useState<InventoryDocument | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>("loading");
@@ -30,6 +32,13 @@ const useInventory = (): InventoryReturn => {
         "GET",
         null,
       );
+
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
 
       if (status < 300 && data) {
         toast.success("Fetched Inventory");
