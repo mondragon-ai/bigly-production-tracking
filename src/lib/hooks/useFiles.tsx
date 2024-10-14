@@ -7,6 +7,7 @@ import {handleHttpError} from "../utils/shared";
 import {biglyRequest} from "../networking/biglyServer";
 import {FetchAndParsedCleanCSV, FileDocument} from "../types/files";
 import {toUrlHandle} from "../utils/converter.tsx/text";
+import {useGlobalContext} from "../store/context";
 
 interface UseFilesUploadReturn {
   files: FileDocument[];
@@ -20,6 +21,7 @@ interface UseFilesUploadReturn {
 }
 
 const useFiles = (): UseFilesUploadReturn => {
+  const {globalState} = useGlobalContext();
   const [files, setFiles] = useState<FileDocument[]>([]);
   const [file_detail, setFileDetail] = useState<FetchAndParsedCleanCSV | null>(
     null,
@@ -31,20 +33,23 @@ const useFiles = (): UseFilesUploadReturn => {
     setLoading("loading");
     setError(null);
     try {
-      const {status, data, message} = await biglyRequest(
-        "/app/files",
-        "GET",
-        null,
-      );
+      if (globalState?.user?.jwt) {
+        const {status, data, message} = await biglyRequest(
+          "/app/files",
+          "GET",
+          null,
+          globalState.user.jwt,
+        );
 
-      if (status < 300 && data) {
-        toast.success("Fetched files");
-        setFiles(data.files);
+        if (status < 300 && data) {
+          toast.success("Fetched files");
+          setFiles(data.files);
+          return;
+        } else {
+          handleHttpError(status, `${message}`, setError);
+        }
         return;
-      } else {
-        handleHttpError(status, `${message}`, setError);
       }
-      return;
     } catch (err) {
       handleHttpError(500, "Server Error", setError);
     } finally {
@@ -54,7 +59,7 @@ const useFiles = (): UseFilesUploadReturn => {
 
   useEffect(() => {
     fetchFiles();
-  }, []);
+  }, [globalState.user.jwt]);
 
   const uploadFiles = async (file: File) => {
     setLoading("posting");
@@ -72,6 +77,7 @@ const useFiles = (): UseFilesUploadReturn => {
             name: `${toUrlHandle(file.name, "files")}.csv`,
           },
         },
+        globalState?.user?.jwt,
       );
 
       if (status < 300 && data) {
@@ -99,6 +105,7 @@ const useFiles = (): UseFilesUploadReturn => {
         `/app/files/${id}`,
         "GET",
         null,
+        globalState?.user?.jwt,
       );
 
       if (status < 300 && data) {
@@ -125,6 +132,7 @@ const useFiles = (): UseFilesUploadReturn => {
         `/app/files/${id}`,
         "DELETE",
         null,
+        globalState?.user?.jwt,
       );
 
       if (status < 300) {
@@ -153,6 +161,7 @@ const useFiles = (): UseFilesUploadReturn => {
         `/app/files/${id}/generate`,
         "POST",
         null,
+        globalState?.user?.jwt,
       );
 
       if (status < 300 && file_detail) {

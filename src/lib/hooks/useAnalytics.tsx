@@ -1,11 +1,11 @@
 "use client";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {LoadingTypes, Staff} from "../types/shared";
-import {SettingsPage, StoreDocument} from "../types/settings";
-import {settings_data} from "../data/settings";
-import {delay, handleHttpError} from "../utils/shared";
-import {biglyRequest} from "../networking/biglyServer";
 import toast from "react-hot-toast";
+import {cookies} from "next/headers";
+import {useEffect, useState} from "react";
+import {handleHttpError} from "../utils/shared";
+import {useGlobalContext} from "../store/context";
+import {LoadingTypes, Staff} from "../types/shared";
+import {biglyRequest} from "../networking/biglyServer";
 import {ProductionAnalyticsType, TimeFrameTypes} from "../types/analytics";
 
 interface AnalyticsReturn {
@@ -16,31 +16,36 @@ interface AnalyticsReturn {
 }
 
 export const useAnalytics = (): AnalyticsReturn => {
+  const {globalState} = useGlobalContext();
   const [analytics, setAnalytics] = useState<ProductionAnalyticsType[] | null>(
     null,
   );
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
+  console.log(globalState);
   const fetchAnalytics = async () => {
     setLoading("loading");
     setError(null);
     try {
-      const {status, data, message} = await biglyRequest(
-        "/app/analytics/today",
-        "GET",
-        null,
-      );
+      if (globalState?.user?.jwt) {
+        const {status, data, message} = await biglyRequest(
+          "/app/analytics/today",
+          "GET",
+          null,
+          globalState.user.jwt,
+        );
 
-      if (status < 300 && data) {
-        console.log({data});
-        toast.success(message);
-        setAnalytics(data.analytics);
-        return;
+        if (status < 300 && data) {
+          toast.success(message);
+          setAnalytics(data.analytics);
+          return;
+        } else {
+          handleHttpError(status, `${message}`, setError);
+        }
       } else {
-        handleHttpError(status, `${message}`, setError);
+        // handleHttpError("JWT token is not available.");
       }
-      return;
     } catch (err) {
       handleHttpError(500, "Server Error", setError);
     } finally {
@@ -50,27 +55,32 @@ export const useAnalytics = (): AnalyticsReturn => {
 
   useEffect(() => {
     fetchAnalytics();
-  }, []);
+  }, [globalState.user.jwt]);
 
   const fetchTimeframe = async (tf: TimeFrameTypes) => {
     setLoading("loading");
     setError(null);
     try {
-      const {status, data, message} = await biglyRequest(
-        `/app/analytics/${tf}`,
-        "GET",
-        null,
-      );
+      if (globalState?.user?.jwt) {
+        const {status, data, message} = await biglyRequest(
+          `/app/analytics/${tf}`,
+          "GET",
+          null,
+          globalState.user.jwt,
+        );
 
-      if (status < 300 && data) {
-        console.log({data});
-        toast.success(message);
-        setAnalytics(data.analytics);
+        if (status < 300 && data) {
+          console.log({data});
+          toast.success(message);
+          setAnalytics(data.analytics);
+          return;
+        } else {
+          handleHttpError(status, `${message}`, setError);
+        }
         return;
       } else {
-        handleHttpError(status, `${message}`, setError);
+        // handleHttpError("JWT token is not available.");
       }
-      return;
     } catch (err) {
       handleHttpError(500, "Server Error", setError);
     } finally {
