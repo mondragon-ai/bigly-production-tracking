@@ -14,7 +14,7 @@ export default function Items() {
     <div className={styles.page}>
       <PageHeader
         title="Custom Items"
-        loading={false}
+        loading={loading}
         buttons={[]}
         date={""}
         badges={[]}
@@ -34,7 +34,12 @@ export default function Items() {
         </section>
         <section style={{width: "45%", paddingLeft: "10px"}}>
           {item ? (
-            <ItemDisplay is_create={true} onClick={deleteItem} item={item} />
+            <ItemDisplay
+              is_create={true}
+              onClick={deleteItem}
+              item={item}
+              loading={loading}
+            />
           ) : loading == "requesting" || loading == "loading" ? (
             <SkeletonDetail width={100} />
           ) : (

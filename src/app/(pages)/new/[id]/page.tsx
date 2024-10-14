@@ -127,6 +127,7 @@ export default function JobDetail() {
               is_create={true}
               onClick={handleRemoveItem}
               item={item}
+              loading={loading}
             />
           ) : loading == "requesting" || loading == "loading" ? (
             <SkeletonDetail width={100} />
