@@ -127,6 +127,7 @@ export default function Create() {
               is_create={true}
               onClick={handleRemoveItem}
               item={item}
+              loading={loading}
             />
           ) : (
             <StartingState type="item" />
