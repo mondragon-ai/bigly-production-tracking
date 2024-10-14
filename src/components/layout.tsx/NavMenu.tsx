@@ -26,6 +26,7 @@ export const NavMenu = () => {
     setGlobalState("user", initialUser);
   };
 
+  const is_admin = globalState.user.role == "admin";
   return (
     <header className={styles.sidebar}>
       <div className={styles.logo}>
@@ -38,7 +39,8 @@ export const NavMenu = () => {
           <ul>
             <li>
               <Link
-                href={"/analytics"}
+                className={`${is_admin ? null : styles.isStaff}`}
+                href={is_admin ? "/analytics" : "#"}
                 style={{
                   backgroundColor:
                     slug === "analytics"
@@ -134,7 +136,8 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"/create"}
+                className={`${is_admin ? null : styles.isStaff}`}
+                href={is_admin ? "/create" : "#"}
                 style={{
                   backgroundColor:
                     slug === "create"
@@ -175,7 +178,8 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"/files"}
+                className={`${is_admin ? null : styles.isStaff}`}
+                href={is_admin ? "/files" : "#"}
                 style={{
                   backgroundColor:
                     slug === "files"
@@ -216,7 +220,8 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"/images"}
+                className={`${is_admin ? null : styles.isStaff}`}
+                href={is_admin ? "/images" : "#"}
                 style={{
                   backgroundColor:
                     slug === "images"
@@ -261,7 +266,8 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"/items"}
+                className={`${is_admin ? null : styles.isStaff}`}
+                href={is_admin ? "/items" : "#"}
                 style={{
                   backgroundColor:
                     slug === "items"
@@ -303,7 +309,7 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"/inventory"}
+                href={is_admin ? "/inventory" : "#"}
                 style={{
                   backgroundColor:
                     slug === "inventory"
@@ -350,7 +356,8 @@ export const NavMenu = () => {
           <ul>
             <li>
               <Link
-                href={"/settings"}
+                className={`${is_admin ? null : styles.isStaff}`}
+                href={is_admin ? "/settings" : "#"}
                 style={{
                   backgroundColor:
                     slug === "settings"
@@ -391,7 +398,7 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"/"}
+                href={"#"}
                 onClick={handleLogout}
                 style={{
                   backgroundColor:

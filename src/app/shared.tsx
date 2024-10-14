@@ -86,6 +86,7 @@ export const handleHttpError = (
   message: string,
   setError: Dispatch<SetStateAction<string | null>>,
 ): void => {
+  console.log({status});
   const router = useRouter();
   switch (status) {
     case 400:
