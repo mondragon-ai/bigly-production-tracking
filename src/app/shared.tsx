@@ -86,7 +86,6 @@ export const handleHttpError = (
   message: string,
   setError: Dispatch<SetStateAction<string | null>>,
 ): void => {
-  console.log({status});
   const router = useRouter();
   switch (status) {
     case 400:
@@ -94,13 +93,15 @@ export const handleHttpError = (
       setError(message);
       return;
     case 401:
-      toast.error(message);
-      setError(message);
+      console.log({401: message});
+      // toast.error(message);
+      // setError(message);
       router.push("/");
       return;
     case 403:
-      toast.error(message);
-      setError(message);
+      console.log({403: message});
+      // toast.error(message);
+      // setError(message);
       router.push("/jobs");
       return;
     case 409:
@@ -112,8 +113,8 @@ export const handleHttpError = (
       setError(message);
       return;
     default:
-      toast.error(message);
-      setError(message);
+      toast.error("Uncaught Error");
+      setError("Uncaught Error");
       return;
   }
 };

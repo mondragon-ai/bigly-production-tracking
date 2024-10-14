@@ -7,5 +7,5 @@ export function getStateErrorRate(job: JobDocument, stage: Stages) {
 
   const err_rate = error_rate[stage] / total_items;
 
-  return (err_rate * 100).toFixed(1);
+  return (err_rate * 100).toFixed(2);
 }

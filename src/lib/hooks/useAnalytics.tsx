@@ -49,7 +49,7 @@ export const useAnalytics = (): AnalyticsReturn => {
         return handleHttpError(status, `${message || ""}`, setError);
       }
     } catch (err) {
-      console.log(err, "message");
+      console.log(err);
       handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);

@@ -96,7 +96,7 @@ const parseStationAvgTime = (analytics: ProductionAnalyticsType[]) => {
       Object.entries(c.averate_station_time).forEach(([key, value]) => {
         const typedKey =
           key as keyof ProductionAnalyticsType["averate_station_time"];
-        if (p[typedKey] !== undefined) {
+        if (p[typedKey] !== undefined && value.length > 0) {
           p[typedKey] += value.reduce((p, c) => p + c, 0) / value.length;
         }
       });

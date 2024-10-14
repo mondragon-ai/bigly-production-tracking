@@ -8,13 +8,15 @@ import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import PageHeader from "@/components/shared/PageHeader";
 import {AddStaff} from "@/components/shared/AddStaff";
 import {JobDocument} from "@/lib/types/jobs";
-import {BadgeType} from "@/lib/types/shared";
+import {BadgeType, IconTypes} from "@/lib/types/shared";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
 import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
+import {useGlobalContext} from "@/lib/store/context";
 
 export default function JobDetail() {
+  const {globalState} = useGlobalContext();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [modal, openModal] = useState<boolean>(false);
   const params = useParams<{id: string}>();
@@ -74,6 +76,33 @@ export default function JobDetail() {
     return badge_list;
   };
 
+  const buttons = () => {
+    let buttons: {
+      onClick: ((e: any) => void) | undefined;
+      text: string;
+      tone: "" | "success" | "descructive";
+      icon: IconTypes;
+    }[] = [
+      {
+        text: "DELETE",
+        tone: "descructive",
+        onClick: handleDeleteJob,
+        icon: "trash",
+      },
+      {
+        text: "APPROVE",
+        tone: "success",
+        onClick: handleApprove,
+        icon: "badge-check",
+      },
+    ];
+
+    if (globalState.user.role == "staff") {
+      buttons = [];
+    }
+    return buttons;
+  };
+
   return (
     <div className={styles.page}>
       {error && <ErrorIcon text={error} closeError={() => setError(null)} />}
@@ -82,20 +111,7 @@ export default function JobDetail() {
         title={`Job #${job?.job_name || ""}`}
         set_loaders={true}
         loading={loading}
-        buttons={[
-          {
-            text: "DELETE",
-            tone: "descructive",
-            onClick: handleDeleteJob,
-            icon: "trash",
-          },
-          {
-            text: "APPROVE",
-            tone: "success",
-            onClick: handleApprove,
-            icon: "badge-check",
-          },
-        ]}
+        buttons={buttons()}
         openStaff={openStaff}
         date={formatTimestamp(job?.created_at || 0)}
         badges={badges(job)}

@@ -12,8 +12,10 @@ import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
 import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
+import {useGlobalContext} from "@/lib/store/context";
 
 export default function JobDetail() {
+  const {globalState} = useGlobalContext();
   const params = useParams<{id: string}>();
   const [itemID, setItemID] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -79,13 +81,30 @@ export default function JobDetail() {
       },
     ];
 
-    if (job?.stage == "completed") {
+    if (job?.stage == "completed" && globalState.user.role == "admin") {
       buttons = [
         {
           text: "DELETE",
           tone: "descructive",
           onClick: handleDelete,
           icon: "trash",
+        },
+      ];
+    }
+
+    if (job?.stage != "completed" && globalState.user.role == "staff") {
+      buttons = [
+        {
+          text: "LINK STATION",
+          tone: "success",
+          onClick: assignStaff,
+          icon: "add-user",
+        },
+        {
+          text: "COMPLETE STATION",
+          tone: "success",
+          onClick: completeStation,
+          icon: "badge-check",
         },
       ];
     }

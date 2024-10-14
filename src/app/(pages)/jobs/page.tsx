@@ -10,7 +10,7 @@ export default function Jobs() {
   return (
     <div className={styles.page}>
       <PageHeader
-        title="Job List"
+        title={"Job List - " + jobs.length}
         buttons={[]}
         date={""}
         badges={[]}
