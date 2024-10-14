@@ -6,6 +6,7 @@ import {useGlobalContext} from "../store/context";
 import {biglyRequest} from "../networking/biglyServer";
 import {ProductionAnalyticsType, TimeFrameTypes} from "../types/analytics";
 import {handleHttpError} from "@/app/shared";
+import {useRouter} from "next/navigation";
 
 interface AnalyticsReturn {
   loading: LoadingTypes;
@@ -15,6 +16,7 @@ interface AnalyticsReturn {
 }
 
 export const useAnalytics = (): AnalyticsReturn => {
+  const router = useRouter();
   const {globalState} = useGlobalContext();
   const [analytics, setAnalytics] = useState<ProductionAnalyticsType[] | null>(
     null,
@@ -32,6 +34,13 @@ export const useAnalytics = (): AnalyticsReturn => {
         null,
       );
 
+      if (status == 401) {
+        return router.push("/");
+      }
+      if (status == 403) {
+        return router.push("/jobs");
+      }
+
       if (status < 300 && data) {
         console.log(status, data, message);
         toast.success(message);
@@ -39,7 +48,7 @@ export const useAnalytics = (): AnalyticsReturn => {
         return;
       } else {
         console.log(status, message);
-        handleHttpError(status, `${message || ""}`, setError);
+        return handleHttpError(status, `${message || ""}`, setError);
       }
     } catch (err) {
       console.log(err, "message");
