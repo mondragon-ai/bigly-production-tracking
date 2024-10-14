@@ -8,7 +8,8 @@ export const staff_list: Staff[] = [
     email: "bobwilliams@example.com",
     role: "staff",
     position: "cutting",
-    created_at: "2024-10-02T10:00:00Z",
+    created_at: 0,
+    updated_at: 0,
   },
   {
     id: "staff_001",
@@ -16,7 +17,8 @@ export const staff_list: Staff[] = [
     email: "johndoe@example.com",
     role: "staff",
     position: "cutting",
-    created_at: "2024-10-02T10:00:00Z",
+    created_at: 0,
+    updated_at: 0,
   },
 ];
 
@@ -25,15 +27,17 @@ export const store_list: StoreDocument[] = [
     id: "1",
     name: "Alex Jones",
     sphat: "shpat_12345",
-    created_at: "2024-10-02T10:00:00Z",
-    updated_at: "2024-10-02T10:00:00Z",
+    created_at: 0,
+    updated_at: 0,
+    domain: "",
   },
   {
     id: "2",
     name: "Hodge Twins",
     sphat: "shpat_12345",
-    created_at: "2024-10-02T10:00:00Z",
-    updated_at: "2024-10-02T10:00:00Z",
+    created_at: 0,
+    updated_at: 0,
+    domain: "",
   },
 ];
 
