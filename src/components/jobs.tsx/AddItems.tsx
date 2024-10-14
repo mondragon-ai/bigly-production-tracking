@@ -5,7 +5,6 @@ import {useState} from "react";
 import {StoreDocument} from "@/lib/types/settings";
 import {Items} from "@/lib/types/jobs";
 import {EmptyState} from "../images/EmptyState";
-import {item_list} from "@/lib/data/jobs";
 import {shopifyGraphQlRequest} from "@/lib/networking/shopify";
 import {ProductsResponse} from "@/lib/types/shopify";
 import {searchProductPayload} from "@/lib/payloads/shopify";
