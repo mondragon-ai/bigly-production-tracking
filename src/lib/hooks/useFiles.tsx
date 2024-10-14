@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import {useState, useEffect} from "react";
 import {LoadingTypes} from "../types/shared";
 import {uploadToServer} from "../utils/storage";
-import {handleHttpError} from "../../app/shared";
+import {handleHttpError} from "@/app/shared";
 import {biglyRequest} from "../networking/biglyServer";
 import {FetchAndParsedCleanCSV, FileDocument} from "../types/files";
 import {toUrlHandle} from "../utils/converter.tsx/text";

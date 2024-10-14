@@ -4,7 +4,7 @@ import {createCurrentSeconds} from "../utils/converter.tsx/time";
 import {SettingsPage, StoreDocument} from "../types/settings";
 import {biglyRequest} from "../networking/biglyServer";
 import {LoadingTypes, Staff} from "../types/shared";
-import {handleHttpError} from "../../app/shared";
+import {handleHttpError} from "@/app/shared";
 import {settings_data} from "../data/settings";
 import {initialStaff} from "../payloads/staff";
 import toast from "react-hot-toast";

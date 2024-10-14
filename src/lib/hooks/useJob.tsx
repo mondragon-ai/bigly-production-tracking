@@ -2,7 +2,7 @@
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import {biglyRequest} from "../networking/biglyServer";
 import {Items, JobDocument} from "../types/jobs";
-import {findNextStage, handleHttpError} from "../../app/shared";
+import {handleHttpError, findNextStage} from "@/app/shared";
 import {LoadingTypes} from "../types/shared";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";

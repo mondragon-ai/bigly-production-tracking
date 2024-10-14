@@ -1,7 +1,7 @@
 "use client";
 import {biglyRequest} from "../networking/biglyServer";
 import {useGlobalContext} from "../store/context";
-import {handleHttpError} from "../../app/shared";
+import {handleHttpError} from "@/app/shared";
 import {useRouter} from "next/navigation";
 import {UserType} from "../types/store";
 import toast from "react-hot-toast";

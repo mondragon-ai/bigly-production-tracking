@@ -2,10 +2,9 @@
 import {useState, useEffect} from "react";
 import {LoadingTypes} from "../types/shared";
 import {JobDocument} from "../types/jobs";
-import {job_list} from "../data/jobs";
 import {biglyRequest} from "../networking/biglyServer";
 import toast from "react-hot-toast";
-import {handleHttpError} from "../../app/shared";
+import {handleHttpError} from "@/app/shared";
 
 interface JobReturn {
   jobs: JobDocument[];
