@@ -398,7 +398,7 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={"#"}
+                href={"/"}
                 onClick={handleLogout}
                 style={{
                   backgroundColor:

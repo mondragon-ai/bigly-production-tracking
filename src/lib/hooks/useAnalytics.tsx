@@ -32,16 +32,17 @@ export const useAnalytics = (): AnalyticsReturn => {
         null,
       );
 
-      console.log(status, data, message);
-
       if (status < 300 && data) {
+        console.log(status, data, message);
         toast.success(message);
         setAnalytics(data.analytics);
         return;
       } else {
+        console.log(status, message);
         handleHttpError(status, `${message || ""}`, setError);
       }
     } catch (err) {
+      console.log(err, "message");
       handleHttpError(500, "Server Error", setError);
     } finally {
       setLoading(null);
