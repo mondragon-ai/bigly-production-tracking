@@ -18,7 +18,7 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
   useEffect(() => {
     const fetchData = () => {
       const auth = (getItem("user") as UserType) || state;
-      console.log({auth});
+      console.log("GLOBAL_STATE");
 
       if (!auth.jwt) {
         router.push("/");
@@ -32,8 +32,6 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
   const setGlobalState = useCallback(
     (type: GlobalStateType, data: any) => {
       const sessionState = (getItem(type) as UserType) || state[type];
-
-      console.log({sessionState, data});
 
       setState((p) => ({
         ...p,

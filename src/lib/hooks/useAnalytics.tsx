@@ -23,28 +23,22 @@ export const useAnalytics = (): AnalyticsReturn => {
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
-  console.log(globalState);
   const fetchAnalytics = async () => {
     setLoading("loading");
     setError(null);
     try {
-      if (globalState?.user?.jwt) {
-        const {status, data, message} = await biglyRequest(
-          "/app/analytics/today",
-          "GET",
-          null,
-          globalState.user.jwt,
-        );
+      const {status, data, message} = await biglyRequest(
+        "/app/analytics/today",
+        "GET",
+        null,
+      );
 
-        if (status < 300 && data) {
-          toast.success(message);
-          setAnalytics(data.analytics);
-          return;
-        } else {
-          handleHttpError(status, `${message}`, setError);
-        }
+      if (status < 300 && data) {
+        toast.success(message);
+        setAnalytics(data.analytics);
+        return;
       } else {
-        // handleHttpError("JWT token is not available.");
+        handleHttpError(status, `${message}`, setError);
       }
     } catch (err) {
       handleHttpError(500, "Server Error", setError);
@@ -61,26 +55,21 @@ export const useAnalytics = (): AnalyticsReturn => {
     setLoading("loading");
     setError(null);
     try {
-      if (globalState?.user?.jwt) {
-        const {status, data, message} = await biglyRequest(
-          `/app/analytics/${tf}`,
-          "GET",
-          null,
-          globalState.user.jwt,
-        );
+      const {status, data, message} = await biglyRequest(
+        `/app/analytics/${tf}`,
+        "GET",
+        null,
+      );
 
-        if (status < 300 && data) {
-          console.log({data});
-          toast.success(message);
-          setAnalytics(data.analytics);
-          return;
-        } else {
-          handleHttpError(status, `${message}`, setError);
-        }
+      if (status < 300 && data) {
+        console.log({data});
+        toast.success(message);
+        setAnalytics(data.analytics);
         return;
       } else {
-        // handleHttpError("JWT token is not available.");
+        handleHttpError(status, `${message}`, setError);
       }
+      return;
     } catch (err) {
       handleHttpError(500, "Server Error", setError);
     } finally {

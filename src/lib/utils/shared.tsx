@@ -1,7 +1,9 @@
+"use client";
 import toast from "react-hot-toast";
 import {IconTypes} from "../types/shared";
 import {Dispatch, SetStateAction} from "react";
 import {Stages} from "../types/jobs";
+import {useRouter} from "next/navigation";
 
 export const copyToClipBoard = (value: string) => {
   if (navigator) {
@@ -84,10 +86,21 @@ export const handleHttpError = (
   message: string,
   setError: Dispatch<SetStateAction<string | null>>,
 ): void => {
+  const router = useRouter();
   switch (status) {
+    case 400:
+      toast.error(message);
+      setError(message);
+      return;
+    case 401:
+      toast.error(message);
+      setError(message);
+      router.push("/");
+      return;
     case 403:
       toast.error(message);
       setError(message);
+      router.push("/jobs");
       return;
     case 409:
       toast.error(message);
