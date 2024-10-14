@@ -309,7 +309,7 @@ export const NavMenu = () => {
             </li>
             <li>
               <Link
-                href={is_admin ? "/inventory" : "#"}
+                href={"/inventory"}
                 style={{
                   backgroundColor:
                     slug === "inventory"

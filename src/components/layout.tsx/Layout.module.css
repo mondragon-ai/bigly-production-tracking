@@ -230,6 +230,10 @@
   .isStaff:hover h5,
   .isStaff h5 {
     color: rgba(109, 113, 117, 1) !important;
+    font-weight: 100 !important;
+  }
+  .isStaff:hover {
+    cursor: not-allowed;
   }
 
   .sidebar nav .topNav ul li a .numbers {
