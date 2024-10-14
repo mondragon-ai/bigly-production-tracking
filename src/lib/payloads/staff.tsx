@@ -7,6 +7,6 @@ export const initialStaff = (): Staff => {
     email: "",
     role: "staff",
     position: "double",
-    created_at: "",
+    created_at: 0,
   };
 };
