@@ -9,7 +9,7 @@ import {ImageFiles, Items, JobDocument} from "@/lib/types/jobs";
 import {biglyRequest} from "../networking/biglyServer";
 import {LoadingTypes, Staff} from "../types/shared";
 import {StoreDocument} from "../types/settings";
-import {handleHttpError} from "../utils/shared";
+import {handleHttpError} from "../../app/shared";
 import {initialJobs} from "../payloads/jobs";
 import toast from "react-hot-toast";
 import {createItemPayload} from "../payloads/items";

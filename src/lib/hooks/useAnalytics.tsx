@@ -2,7 +2,7 @@
 import toast from "react-hot-toast";
 import {cookies} from "next/headers";
 import {useEffect, useState} from "react";
-import {handleHttpError} from "../utils/shared";
+import {handleHttpError} from "../../app/shared";
 import {useGlobalContext} from "../store/context";
 import {LoadingTypes, Staff} from "../types/shared";
 import {biglyRequest} from "../networking/biglyServer";

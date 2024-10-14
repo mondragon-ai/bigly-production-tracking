@@ -4,7 +4,7 @@ import {useState, useEffect} from "react";
 import {LoadingTypes} from "../types/shared";
 import {ImageDocument} from "../types/images";
 import {uploadToServer} from "../utils/storage";
-import {handleHttpError} from "../utils/shared";
+import {handleHttpError} from "../../app/shared";
 import {biglyRequest} from "../networking/biglyServer";
 import {toUrlHandle} from "../utils/converter.tsx/text";
 import {createCurrentSeconds} from "../utils/converter.tsx/time";

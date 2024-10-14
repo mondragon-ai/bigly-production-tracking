@@ -1,7 +1,7 @@
 "use client";
 import {useState, useEffect, useCallback} from "react";
 import {biglyRequest} from "../networking/biglyServer";
-import {handleHttpError} from "../utils/shared";
+import {handleHttpError} from "../../app/shared";
 import {LoadingTypes} from "../types/shared";
 import {Items} from "../types/jobs";
 import toast from "react-hot-toast";

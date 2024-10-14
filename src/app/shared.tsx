@@ -1,8 +1,8 @@
 "use client";
 import toast from "react-hot-toast";
-import {IconTypes} from "../types/shared";
+import {IconTypes} from "../lib/types/shared";
 import {Dispatch, SetStateAction} from "react";
-import {Stages} from "../types/jobs";
+import {Stages} from "../lib/types/jobs";
 import {useRouter} from "next/navigation";
 
 export const copyToClipBoard = (value: string) => {

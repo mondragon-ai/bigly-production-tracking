@@ -3,7 +3,7 @@ import {useState, useEffect, useCallback} from "react";
 import {InventoryDocument} from "../types/inventory";
 import {invenroy_list} from "../data/inventory";
 import {LoadingTypes} from "../types/shared";
-import {delay, handleHttpError} from "../utils/shared";
+import {delay, handleHttpError} from "../../app/shared";
 import {biglyRequest} from "../networking/biglyServer";
 import toast from "react-hot-toast";
 

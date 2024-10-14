@@ -24,6 +24,7 @@ export const biglyRequest = async (
   if (response.status == 204) {
     return {status: response.status, data: null, message: "Created"};
   }
+  console.log({STATUS: response.status});
   const data = (await response.json()) as ServerResponse;
 
   return {status: response.status, message: data.message, data: data.data};
