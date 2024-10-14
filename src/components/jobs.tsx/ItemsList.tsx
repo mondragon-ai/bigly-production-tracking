@@ -1,10 +1,9 @@
 "use client";
-import {useState} from "react";
-import styles from "../shared/Shared.module.css";
 import {Badge} from "../shared/Badge";
 import {Items} from "@/lib/types/jobs";
+import styles from "../shared/Shared.module.css";
+import {badgeColor, badgeIcon} from "@/app/shared";
 import {InventoryDocument} from "@/lib/types/inventory";
-import {badgeColor, badgeIcon} from "@/lib/utils/shared";
 import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 
 type CustomTableProps = {

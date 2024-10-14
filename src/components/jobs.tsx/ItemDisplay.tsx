@@ -6,7 +6,7 @@ import {Button} from "../shared/Button";
 import {Items} from "@/lib/types/jobs";
 import {useState} from "react";
 import {InventoryDocument} from "@/lib/types/inventory";
-import {badgeColor, badgeIcon} from "@/lib/utils/shared";
+import {badgeColor, badgeIcon} from "@/app/shared";
 import {Icon} from "../shared/Icon";
 import {LoadingTypes} from "@/lib/types/shared";
 
