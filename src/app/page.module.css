@@ -402,7 +402,7 @@
 }
 
 .logoWrapper {
-  display: none;
+  display: none !important;
 }
 
 /* Computer (Mac 13-inch to Mac 16-inch) */
@@ -441,7 +441,7 @@
   }
 
   .logoWrapper {
-    display: flex;
+    display: flex !important;
     width: 100%;
     flex-direction: column;
     justify-content: center;
