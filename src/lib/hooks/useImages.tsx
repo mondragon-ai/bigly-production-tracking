@@ -1,6 +1,6 @@
 "use client";
 import toast from "react-hot-toast";
-import {useState, useEffect} from "react";
+import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import {LoadingTypes} from "../types/shared";
 import {ImageDocument} from "../types/images";
 import {handleHttpError} from "@/app/shared";
@@ -14,10 +14,11 @@ interface UseImageUploadReturn {
   images: ImageDocument[];
   loading: LoadingTypes;
   error: string | null;
-  uploadImage: (file: File) => Promise<void>;
   img_detail: ImageDocument | null;
+  uploadImage: (file: File) => Promise<void>;
   setImageCard: (id: string) => Promise<void>;
   deleteImage: (id: string) => Promise<void>;
+  setError: Dispatch<SetStateAction<string | null>>;
 }
 
 const useImageUpload = (): UseImageUploadReturn => {
@@ -161,9 +162,10 @@ const useImageUpload = (): UseImageUploadReturn => {
     images,
     loading,
     error,
+    img_detail,
     uploadImage,
     setImageCard,
-    img_detail,
+    setError,
     deleteImage,
   };
 };

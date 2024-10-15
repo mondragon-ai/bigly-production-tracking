@@ -1,13 +1,13 @@
 "use client";
-import {AnalyticsHeader} from "@/components/analytics/AnalyticsHeader";
-import styles from "../../../components/Shared.module.css";
-import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
 import {BarChartStats, LineChartStats} from "@/components/analytics/charts";
 import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
-import {useAnalytics} from "@/lib/hooks/useAnalytics";
+import {AnalyticsHeader} from "@/components/analytics/AnalyticsHeader";
+import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
+import styles from "../../../components/Shared.module.css";
 import {parseAnalytics} from "@/lib/payloads/analytics";
-import {useState} from "react";
+import {useAnalytics} from "@/lib/hooks/useAnalytics";
 import {TimeFrameTypes} from "@/lib/types/analytics";
+import {useState} from "react";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");

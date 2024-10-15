@@ -1,5 +1,5 @@
 "use client";
-import {useState, useEffect} from "react";
+import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import {LoadingTypes} from "../types/shared";
 import {JobDocument} from "../types/jobs";
 import {biglyRequest} from "../networking/biglyServer";
@@ -11,12 +11,13 @@ interface JobReturn {
   jobs: JobDocument[];
   loading: LoadingTypes;
   error: string | null;
+  setError: Dispatch<SetStateAction<string | null>>;
 }
 
 const useJobs = (): JobReturn => {
   const router = useRouter();
   const [jobs, setJobs] = useState<JobDocument[]>([]);
-  const [loading, setLoading] = useState<LoadingTypes>(null);
+  const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
   const fetchJobs = async () => {
@@ -59,6 +60,7 @@ const useJobs = (): JobReturn => {
     loading,
     error,
     jobs,
+    setError,
   };
 };
 

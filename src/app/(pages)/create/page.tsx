@@ -5,6 +5,7 @@ import styles from "../../../components/Shared.module.css";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import {AddItems} from "@/components/jobs.tsx/AddItems";
 import PageHeader from "@/components/shared/PageHeader";
+import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import {AddItem} from "@/components/jobs.tsx/AddItem";
 import {useJobCreate} from "@/lib/hooks/useJobCreate";
 import {AddStaff} from "@/components/shared/AddStaff";
@@ -22,6 +23,8 @@ export default function Create() {
     job,
     staff,
     loading,
+    error,
+    setError,
     setJob,
     removeItem,
     handleApproveJob,
@@ -74,6 +77,9 @@ export default function Create() {
 
   return (
     <div className={styles.page}>
+      {error && (
+        <ErrorIcon text={error || ""} closeError={() => setError(null)} />
+      )}
       <PageHeader
         loading={loading}
         setPriority={handleSetPriority}

@@ -1,6 +1,6 @@
 "use client";
 import toast from "react-hot-toast";
-import {useState, useEffect} from "react";
+import {useState, useEffect, SetStateAction, Dispatch} from "react";
 import {LoadingTypes} from "../types/shared";
 import {uploadToServer} from "../utils/storage";
 import {handleHttpError} from "@/app/shared";
@@ -19,6 +19,7 @@ interface UseFilesUploadReturn {
   deleteFile: (id: string) => Promise<void>;
   file_detail: FetchAndParsedCleanCSV | null;
   genreateJobs: (id: string) => Promise<void>;
+  setError: Dispatch<SetStateAction<string | null>>;
 }
 
 const useFiles = (): UseFilesUploadReturn => {
@@ -222,11 +223,12 @@ const useFiles = (): UseFilesUploadReturn => {
   return {
     files,
     loading,
+    file_detail,
     error,
+    setError,
     uploadFiles,
     fetchAndParseFile,
     genreateJobs,
-    file_detail,
     deleteFile,
   };
 };

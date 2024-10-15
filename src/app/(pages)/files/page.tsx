@@ -6,6 +6,7 @@ import styles from "../../../components/Shared.module.css";
 import PageHeader from "@/components/shared/PageHeader";
 import {FileList} from "@/components/shared/FileList";
 import useFiles from "@/lib/hooks/useFiles";
+import {ErrorIcon, LoadingIndicator} from "@/components/shared/ErrorIcon";
 
 export default function Files() {
   const {
@@ -13,6 +14,7 @@ export default function Files() {
     loading,
     error,
     file_detail,
+    setError,
     uploadFiles,
     fetchAndParseFile,
     deleteFile,
@@ -25,6 +27,10 @@ export default function Files() {
 
   return (
     <div className={styles.page}>
+      {loading == "requesting" && <LoadingIndicator loading={"requesting"} />}
+      {error && (
+        <ErrorIcon text={error || ""} closeError={() => setError(null)} />
+      )}
       <PageHeader
         set_loaders={false}
         loading={loading}

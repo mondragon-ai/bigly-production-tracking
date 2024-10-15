@@ -20,6 +20,8 @@ type UseJobCreateProps = () => {
   job: JobDocument;
   loading: LoadingTypes;
   stores: StoreDocument[];
+  error: string | null;
+  setError: Dispatch<SetStateAction<string | null>>;
   handleApproveJob: (ids: string[]) => void;
   removeItem: (id: string) => void;
   handleSelectItem: (item: Items) => void;
@@ -37,6 +39,7 @@ export const useJobCreate: UseJobCreateProps = () => {
 
   const handleApproveJob = useCallback(
     async (ids: string[]) => {
+      setLoading("posting");
       const users = staff.filter((s) => ids.includes(s.id));
       job.staff = users;
       setError(null);
@@ -171,6 +174,8 @@ export const useJobCreate: UseJobCreateProps = () => {
     staff,
     stores,
     loading,
+    error,
+    setError,
     setJob,
     removeItem,
     handleApproveJob,

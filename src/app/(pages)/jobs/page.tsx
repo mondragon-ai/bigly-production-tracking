@@ -1,14 +1,18 @@
 "use client";
 import {StageBoard} from "@/components/jobs.tsx/StageBoard";
 import styles from "../../../components/Shared.module.css";
+import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import PageHeader from "@/components/shared/PageHeader";
 import useJobs from "@/lib/hooks/useJobs";
 import {Stages} from "@/lib/types/jobs";
 
 export default function Jobs() {
-  const {jobs, loading} = useJobs();
+  const {jobs, loading, error, setError} = useJobs();
   return (
     <div className={styles.page}>
+      {error && (
+        <ErrorIcon text={error || ""} closeError={() => setError(null)} />
+      )}
       <PageHeader
         title={"Job List - " + jobs.length}
         buttons={[]}

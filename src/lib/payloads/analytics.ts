@@ -55,7 +55,7 @@ const parseErrorRate = (analytics: ProductionAnalyticsType[]) => {
       Object.entries(c.error_rate).forEach(([key, value]) => {
         const typedKey = key as keyof ProductionAnalyticsType["error_rate"];
         if (p[typedKey] !== undefined) {
-          p[typedKey] += value / c.total_units;
+          p[typedKey] += value / (c.total_units || 1);
         }
       });
       return p;

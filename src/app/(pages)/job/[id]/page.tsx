@@ -1,18 +1,19 @@
 "use client";
 import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 import {StartingState} from "@/components/images/StartingState";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {ApproveModal} from "@/components/shared/ApproveModal";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import PageHeader from "@/components/shared/PageHeader";
-import {JobDocument} from "@/lib/types/jobs";
+import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import {BadgeType, IconTypes} from "@/lib/types/shared";
+import {useGlobalContext} from "@/lib/store/context";
+import {JobDocument} from "@/lib/types/jobs";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
-import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
-import {useGlobalContext} from "@/lib/store/context";
 
 export default function JobDetail() {
   const {globalState} = useGlobalContext();
@@ -23,6 +24,8 @@ export default function JobDetail() {
     job,
     loading,
     item,
+    error,
+    setError,
     selectItem,
     deleteJob,
     assignStaff,
@@ -112,6 +115,9 @@ export default function JobDetail() {
   };
   return (
     <div className={styles.page}>
+      {error && (
+        <ErrorIcon text={error || ""} closeError={() => setError(null)} />
+      )}
       {confirm == "CONFIRM_ERROR" && (
         <ApproveModal
           title={"Confirm Error"}

@@ -10,7 +10,19 @@ export function getHoursDifference(timeString: number): string {
 
   const diffHours = diffMilliseconds / (1000 * 60 * 60);
 
-  return diffHours.toFixed(1);
+  if (diffHours >= 720) {
+    return `${(diffHours / 720).toFixed(1)}m`;
+  }
+
+  if (diffHours >= 168 && diffHours < 720) {
+    return `${(diffHours / 168).toFixed(1)}w`;
+  }
+
+  if (diffHours > 72 && diffHours < 168) {
+    return `${(diffHours / 24).toFixed(1)}d`;
+  }
+
+  return `${diffHours.toFixed(1)}h`;
 }
 
 export const createCurrentSeconds = () => {

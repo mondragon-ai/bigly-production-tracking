@@ -1,19 +1,19 @@
 "use client";
 import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 import {StartingState} from "@/components/images/StartingState";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 import styles from "../../../../components/Shared.module.css";
 import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
 import {ItemsList} from "@/components/jobs.tsx/ItemsList";
 import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import PageHeader from "@/components/shared/PageHeader";
-import {AddStaff} from "@/components/shared/AddStaff";
-import {JobDocument} from "@/lib/types/jobs";
 import {BadgeType, IconTypes} from "@/lib/types/shared";
+import {AddStaff} from "@/components/shared/AddStaff";
+import {useGlobalContext} from "@/lib/store/context";
+import {JobDocument} from "@/lib/types/jobs";
 import {useParams} from "next/navigation";
 import useJob from "@/lib/hooks/useJob";
 import {useState} from "react";
-import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
-import {useGlobalContext} from "@/lib/store/context";
 
 export default function JobDetail() {
   const {globalState} = useGlobalContext();

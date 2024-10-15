@@ -34,7 +34,7 @@ export const StageBoard = ({title, jobs, stage, loading}: StageBoardProps) => {
                 return <Job key={i} job={job} />;
               }
             })
-          : jobs.map((job, i) => {
+          : skeleton.map((job, i) => {
               if (job.stage == stage) {
                 return <JobSkeleton key={i} />;
               }
@@ -43,6 +43,30 @@ export const StageBoard = ({title, jobs, stage, loading}: StageBoardProps) => {
     </div>
   );
 };
+
+const skeleton: {stage: Stages}[] = [
+  {
+    stage: "pending",
+  },
+  {
+    stage: "printing",
+  },
+  {
+    stage: "cutting",
+  },
+  {
+    stage: "staging",
+  },
+  {
+    stage: "pressing",
+  },
+  {
+    stage: "double",
+  },
+  {
+    stage: "folding",
+  },
+];
 
 export const Job = ({job}: {job: JobDocument}) => {
   const href = job.stage == "pending" ? `/new/${job.id}` : `/job/${job.id}`;
@@ -71,12 +95,12 @@ export const Job = ({job}: {job: JobDocument}) => {
           icon={"hour_glass"}
           text={`${getHoursDifference(
             job.time_started[job.stage as keyof StateTimes],
-          )}h`}
+          )}`}
           tone={"magic"}
         />
         <Badge
           icon={"rejected"}
-          text={`${getStateErrorRate(job, job.stage)}`}
+          text={`${getStateErrorRate(job, job.stage)}%`}
           tone={"critical"}
         />
       </footer>

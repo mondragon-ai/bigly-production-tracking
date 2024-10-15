@@ -1,4 +1,5 @@
 "use client";
+import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 import {CreateStore, StoreCard} from "@/components/settings/CreateStore";
 import {CreateUser, UserCard} from "@/components/settings/CreateUser";
 import {StartingState} from "@/components/images/StartingState";
@@ -6,11 +7,11 @@ import styles from "../../../components/Shared.module.css";
 import {StoreList} from "@/components/settings/StoreList";
 import PageHeader from "@/components/shared/PageHeader";
 import {UserList} from "@/components/settings/UserList";
+import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import {useSettings} from "@/lib/hooks/useSettings";
 import {initialStaff} from "@/lib/payloads/staff";
 import {initialStore} from "@/lib/payloads/store";
 import {useState} from "react";
-import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Settings() {
   const {
@@ -18,6 +19,8 @@ export default function Settings() {
     staff,
     store,
     loading,
+    error,
+    setError,
     selectItem,
     setStaff,
     setStore,
@@ -76,6 +79,9 @@ export default function Settings() {
 
   return (
     <div className={styles.page}>
+      {error && (
+        <ErrorIcon text={error || ""} closeError={() => setError(null)} />
+      )}
       <PageHeader
         title="Settings"
         buttons={[

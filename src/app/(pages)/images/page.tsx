@@ -1,9 +1,10 @@
 "use client";
-import {ImageDetail} from "@/components/images/ImageDetail";
-import styles from "../../../components/Shared.module.css";
+import useImageUpload from "@/lib/hooks/useImages";
 import PageHeader from "@/components/shared/PageHeader";
 import {ImageList} from "@/components/images/ImageList";
-import useImageUpload from "@/lib/hooks/useImages";
+import {ErrorIcon} from "@/components/shared/ErrorIcon";
+import styles from "../../../components/Shared.module.css";
+import {ImageDetail} from "@/components/images/ImageDetail";
 import {StartingState} from "@/components/images/StartingState";
 import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
@@ -14,6 +15,7 @@ export default function Images() {
     error,
     uploadImage,
     img_detail,
+    setError,
     setImageCard,
     deleteImage,
   } = useImageUpload();
@@ -32,6 +34,9 @@ export default function Images() {
 
   return (
     <div className={styles.page}>
+      {error && (
+        <ErrorIcon text={error || ""} closeError={() => setError(null)} />
+      )}
       <PageHeader
         loading={loading}
         title="Image List"

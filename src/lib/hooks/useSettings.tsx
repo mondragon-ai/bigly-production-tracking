@@ -16,6 +16,7 @@ interface SettingsReturn {
   error: string | null;
   loading: LoadingTypes;
   store: StoreDocument | null;
+  setError: Dispatch<SetStateAction<string | null>>;
   createStaff: (staff: Staff) => Promise<void>;
   setStaff: Dispatch<SetStateAction<Staff | null>>;
   createStore: (store: StoreDocument) => Promise<void>;
@@ -203,6 +204,7 @@ export const useSettings = (): SettingsReturn => {
     staff,
     store,
     loading,
+    setError,
     selectItem,
     deleteItem,
     createStaff,

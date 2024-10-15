@@ -1,10 +1,10 @@
 "use client";
-import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
-import styles from "../../../components/Shared.module.css";
-import {ItemsList} from "@/components/jobs.tsx/ItemsList";
-import PageHeader from "@/components/shared/PageHeader";
-import {StartingState} from "@/components/images/StartingState";
 import useInventory from "@/lib/hooks/useInventory";
+import PageHeader from "@/components/shared/PageHeader";
+import {ItemsList} from "@/components/jobs.tsx/ItemsList";
+import styles from "../../../components/Shared.module.css";
+import {ItemDisplay} from "@/components/jobs.tsx/ItemDisplay";
+import {StartingState} from "@/components/images/StartingState";
 import {SkeletonDetail, SkeletonList} from "@/components/skeleton/SkeletonList";
 
 export default function Inventory() {
