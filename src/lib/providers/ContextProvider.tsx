@@ -17,7 +17,8 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
 
   useEffect(() => {
     const fetchData = () => {
-      const auth = (getItem("user") as UserType) || state;
+      const auth = (getItem("user") as UserType) || state.user;
+      const asidebaruth = (getItem("sidebar") as boolean) || state.user;
       console.log("GLOBAL_STATE");
 
       if (!auth.jwt) {
@@ -31,19 +32,27 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
 
   const setGlobalState = useCallback(
     (type: GlobalStateType, data: any) => {
-      const sessionState = (getItem(type) as UserType) || state[type];
+      const sessionState = getItem(type) || state[type];
 
-      setState((p) => ({
-        ...p,
-        [type]: {
+      if (type == "sidebar") {
+        setState((p) => ({
+          ...p,
+          [type]: data,
+        }));
+        saveItem(type, data);
+      } else {
+        setState((p) => ({
+          ...p,
+          [type]: {
+            ...sessionState,
+            ...data,
+          },
+        }));
+        saveItem(type, {
           ...sessionState,
           ...data,
-        },
-      }));
-      saveItem(type, {
-        ...sessionState,
-        ...data,
-      });
+        });
+      }
     },
     [state],
   );

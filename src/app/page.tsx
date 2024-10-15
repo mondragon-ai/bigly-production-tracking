@@ -64,6 +64,15 @@ export default function Enter() {
           </div>
         </div>
         <div className={styles.right}>
+          <div className={styles.logoWrapper}>
+            <Image
+              src={LOGO}
+              alt={"logo"}
+              width={500}
+              height={500}
+              className={styles.logo}
+            />
+          </div>
           <h1 className={geistSans.className}>Welcome Back</h1>
           <span>Sign in and start tracking</span>
           <div>

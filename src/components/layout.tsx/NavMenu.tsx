@@ -9,6 +9,7 @@ import {usePathname} from "next/navigation";
 import {useGlobalContext} from "@/lib/store/context";
 import {initialUser} from "@/lib/data/store";
 import {useRouter} from "next/navigation";
+import {Icon} from "../shared/Icon";
 
 export const NavMenu = () => {
   const router = useRouter();
@@ -28,8 +29,21 @@ export const NavMenu = () => {
 
   const is_admin = globalState.user.role == "admin";
   return (
-    <header className={styles.sidebar}>
-      <div className={styles.logo}>
+    <header
+      className={`${styles.sidebar} ${
+        globalState.sidebar ? "" : styles.closed
+      }`}
+    >
+      <div
+        className={styles.logo}
+        style={{flexDirection: "row", alignItems: "center"}}
+      >
+        <div
+          className={styles.mobileClose}
+          onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
+        >
+          <Icon icon={"close"} tone={"info"} size={25} />
+        </div>
         <img src={LOGO} alt="logo" />
       </div>
       <Divider width={90} />
@@ -40,6 +54,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 className={`${is_admin ? null : styles.isStaff}`}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 href={is_admin ? "/analytics" : "#"}
                 style={{
                   backgroundColor:
@@ -82,6 +97,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 href={"/jobs"}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 style={{
                   backgroundColor:
                     slug === "jobs" || slug === "job" || slug === "new"
@@ -137,6 +153,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 className={`${is_admin ? null : styles.isStaff}`}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 href={is_admin ? "/create" : "#"}
                 style={{
                   backgroundColor:
@@ -179,6 +196,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 className={`${is_admin ? null : styles.isStaff}`}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 href={is_admin ? "/files" : "#"}
                 style={{
                   backgroundColor:
@@ -221,6 +239,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 className={`${is_admin ? null : styles.isStaff}`}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 href={is_admin ? "/images" : "#"}
                 style={{
                   backgroundColor:
@@ -267,6 +286,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 className={`${is_admin ? null : styles.isStaff}`}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 href={is_admin ? "/items" : "#"}
                 style={{
                   backgroundColor:
@@ -310,6 +330,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 href={"/inventory"}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 style={{
                   backgroundColor:
                     slug === "inventory"
@@ -357,6 +378,7 @@ export const NavMenu = () => {
             <li>
               <Link
                 className={`${is_admin ? null : styles.isStaff}`}
+                onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
                 href={is_admin ? "/settings" : "#"}
                 style={{
                   backgroundColor:

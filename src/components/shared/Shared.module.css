@@ -237,6 +237,65 @@
   left: calc(100% - 18px);
 }
 
+.mobileNav {
+  display: none;
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .topBar .right > .btnWrapper,
+  .topBar .right > button {
+    display: none;
+  }
+
+  .topBar .right {
+    width: 100%;
+  }
+  .topBar .right > .mobileNav {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .topLogo {
+    width: auto;
+    height: 30px;
+  }
+
+  .hamWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 55px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .hamWrapper > div {
+    position: relative;
+    display: inline;
+    height: 1px;
+    background: black;
+    width: 50%;
+  }
+  .hamWrapper > div:first-of-type {
+    margin-bottom: 4px;
+  }
+  .hamWrapper > div:nth-of-type(2) {
+    margin-bottom: 4px;
+  }
+  .hamWrapper > div:nth-of-type(3) {
+    width: 40%;
+  }
+}
+
 /* =============================================================== */
 /*  5. CUSTOM TABLE                                                */
 /* =============================================================== */

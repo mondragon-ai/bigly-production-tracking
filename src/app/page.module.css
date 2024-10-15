@@ -401,6 +401,10 @@
   cursor: pointer;
 }
 
+.logoWrapper {
+  display: none;
+}
+
 /* Computer (Mac 13-inch to Mac 16-inch) */
 @media only screen and (min-width: 1280px) and (max-width: 3072px) {
   .mainPage {
@@ -415,5 +419,39 @@
     width: 80%;
     max-width: 80%;
     background-color: var(--background);
+  }
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .page > div .left {
+    display: none;
+  }
+
+  .page > div .right > div,
+  .page > div .right {
+    width: 100%;
+  }
+
+  .page > div .right h1 {
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 45px;
+    color: var(--primary-text);
+  }
+
+  .logoWrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start !important;
+  }
+
+  .logoWrapper > img {
+    margin: 0 !important;
+    width: auto;
+    height: 75px;
+    margin-bottom: 20px !important;
   }
 }

@@ -11,4 +11,5 @@ export const initialUser: UserType = {
 
 export const initGlobalValues: AppContextType = {
   user: initialUser,
+  sidebar: false,
 };

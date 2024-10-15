@@ -262,6 +262,185 @@
     margin-left: 10px;
   }
 }
+
+.mobileClose {
+  display: none;
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .sidebar .logo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobileClose {
+    padding: 1rem;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .sidebar .logo img {
+    width: 40%;
+    height: auto;
+    margin: 2rem 1rem 1rem 0rem;
+  }
+
+  .sidebar nav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .sidebar nav .topNav,
+  .sidebar nav .bottomNav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 60%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .sidebar nav .bottomNav {
+    margin-bottom: 10px;
+  }
+  .sidebar span {
+    font-size: 8px;
+    color: var(--secondary-text);
+    margin: 2rem 0 0 0;
+    padding: 1rem 1.2rem;
+  }
+
+  .sidebar nav .topNav ul,
+  .sidebar nav .bottomNav ul {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar nav .topNav ul li,
+  .sidebar nav .bottomNav ul li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0rem 0.5rem;
+  }
+
+  .sidebar nav .topNav ul li a,
+  .sidebar nav .bottomNav ul li a {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    margin: 5px 0;
+    padding: 5px 10px;
+    background-color: transparent;
+    border-radius: 6px;
+  }
+
+  .sidebar .left {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0px;
+    border-radius: 6px;
+  }
+
+  .sidebar .left svg {
+    margin-right: 10px;
+  }
+
+  .sidebar .left svg path {
+    stroke: var(--primary-text);
+  }
+
+  .sidebar nav .topNav ul li a h5,
+  .sidebar nav .bottomNav ul li a h5 {
+    font-size: 13px;
+    font-weight: 100;
+    color: var(--secondary-text);
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar nav .topNav ul li:hover a h5,
+  .sidebar nav .bottomNav ul li:hover a h5 {
+    font-size: 13px;
+    font-weight: 550 !important;
+    color: var(--secondary-text);
+  }
+
+  .isStaff:hover h5,
+  .isStaff:hover h5,
+  .isStaff h5 {
+    color: rgba(109, 113, 117, 1) !important;
+    font-weight: 100 !important;
+  }
+  .isStaff:hover {
+    cursor: not-allowed;
+  }
+
+  .sidebar nav .topNav ul li a .numbers {
+    justify-self: end;
+    padding: 5px 7px;
+    border-radius: 3px;
+  }
+
+  .avatarWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+  }
+  .avatarWrapper .text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: auto;
+    height: auto;
+    margin-left: 10px;
+  }
+}
+
 /* =============================================================== */
 /*  2. MAIN PAGE                                                   */
 /* =============================================================== */
@@ -368,5 +547,20 @@
   }
   .mainPage header {
     padding: 1rem 4rem;
+  }
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .mainPage header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    align-items: center;
+    padding: 1rem;
+    margin: 0;
+    width: 60%;
+    height: auto;
   }
 }

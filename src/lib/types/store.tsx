@@ -1,10 +1,11 @@
 export type ContextType = {
   globalState: AppContextType;
-  setGlobalState: (type: GlobalStateType, data: UserType) => void;
+  setGlobalState: (type: GlobalStateType, data: UserType | boolean) => void;
 };
 
 export type AppContextType = {
   user: UserType;
+  sidebar: boolean;
 };
 
 export type UserType = {
@@ -23,4 +24,4 @@ export type UserType = {
   jwt: null | string;
 };
 
-export type GlobalStateType = "user";
+export type GlobalStateType = "user" | "sidebar";

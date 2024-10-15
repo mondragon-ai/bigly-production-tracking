@@ -5,7 +5,7 @@ import {ContextType, GlobalStateType, UserType} from "@/lib/types/store";
 
 const contextDefaultValues: ContextType = {
   globalState: initGlobalValues,
-  setGlobalState: (type: GlobalStateType, data: UserType) => {},
+  setGlobalState: (type: GlobalStateType, data: UserType | boolean) => {},
 };
 
 export const AppContext = createContext<ContextType>(contextDefaultValues);

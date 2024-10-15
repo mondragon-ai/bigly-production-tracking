@@ -2,8 +2,14 @@
 import {useRouter} from "next/navigation";
 import {Button} from "./Button";
 import styles from "./Shared.module.css";
+import Image from "next/image";
+import {LOGO} from "@/lib/constants";
+import {useGlobalContext} from "@/lib/store/context";
+import {Icon} from "./Icon";
+
 export const TopBar = () => {
   const nav = useRouter();
+  const {globalState, setGlobalState} = useGlobalContext();
   const handleNavigate = () => {
     nav.push("/create");
   };
@@ -11,7 +17,31 @@ export const TopBar = () => {
     <header className={styles.topBarWrapper}>
       <div className={styles.topBar}>
         <div className={styles.right}>
-          {/* <ColorMode /> */}
+          <div className={styles.mobileNav}>
+            <div
+              className={styles.hamWrapper}
+              onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
+            >
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div>
+              <Image
+                src={LOGO}
+                alt={"logo"}
+                width={500}
+                height={500}
+                className={styles.topLogo}
+              />
+            </div>
+            <div
+              className={styles.hamWrapper}
+              style={{height: "50px", alignItems: "flex-end"}}
+            >
+              <Icon icon={"qr-code"} tone={"success"} size={25} />
+            </div>
+          </div>
           <div className={styles.btnWrapper}>
             <div className={styles.btn}>
               <svg
