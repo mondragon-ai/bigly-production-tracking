@@ -454,7 +454,7 @@ export const NavMenu = () => {
             <li>
               <Link href={"#"}>
                 <div className={styles.avatarWrapper}>
-                  <Avatar staff={null} />
+                  <Avatar staff={globalState.user} />
                   <div className={styles.text}>
                     <h6>{globalState.user.role}</h6>
                     <h5>{globalState.user.email}</h5>

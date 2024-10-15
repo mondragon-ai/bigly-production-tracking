@@ -517,6 +517,52 @@
   transform: translate(2px, 2px);
 }
 
+.pageHeaderWrapper .mobileBtnWrappers {
+  display: none;
+}
+
+.mobileBadgeWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .pageHeaderWrapper .left h1 {
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 35px;
+    color: var(--secondary-text);
+    margin-right: 10px;
+  }
+  .pageHeaderWrapper .right {
+    display: none;
+  }
+  .pageHeaderWrapper .mobileBtnWrappers {
+    display: flex;
+  }
+  .pageHeaderWrapper .mobileBtnWrappers .storeModal {
+    width: 95vw;
+    top: 60px;
+    right: 0px;
+  }
+  .pageHeaderWrapper .mobileBtnWrappersn.mobileActions {
+    width: 100%;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(232, 232, 232);
+  }
+
+  .mobileBadgeWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+  .mobileBadgeWrapper > div {
+    margin-bottom: 5px;
+  }
+}
+
 /* Store Modal */
 /* ===============================================================  */
 
@@ -598,6 +644,33 @@
 .storeModal th,
 .storeModal td {
   padding: 7px 0;
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .storeModal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    height: auto;
+    cursor: pointer;
+    background-color: var(--tertary-background);
+    border: 2px solid var(--foreground);
+    border-radius: 6px;
+    box-shadow: var(--drop-shadow);
+    z-index: 5;
+    overflow: hidden;
+    width: 95vw;
+    top: 60px;
+    right: 0px;
+  }
+  .mobileActions {
+    width: 100%;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(232, 232, 232);
+  }
 }
 
 /* =============================================================== */
@@ -695,6 +768,7 @@
   box-shadow: var(--drop-shadow);
   z-index: 5;
   overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 .errorCard > div {

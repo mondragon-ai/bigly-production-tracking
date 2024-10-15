@@ -11,7 +11,10 @@ export const ErrorIcon = ({
   closeError: () => void;
 }) => {
   return (
-    <div className={styles.errorCard} style={{flexDirection: "row"}}>
+    <div
+      className={styles.errorCard}
+      style={{flexDirection: "row", marginBottom: "1rem"}}
+    >
       <div>
         <Icon size={24} icon={"fire"} tone={"critical"} />
         <h5 style={{marginLeft: "10px", color: "var(--destructive-accent)"}}>
@@ -40,7 +43,7 @@ export const LoadingIndicator = ({loading}: {loading: string}) => {
   }, [loading]);
 
   return (
-    <div className={styles.errorCard}>
+    <div className={styles.errorCard} style={{marginBottom: "1rem"}}>
       <div className={styles.progressWrapper}>
         <div className={styles.progress} style={{width: `${progress}%`}}></div>
       </div>

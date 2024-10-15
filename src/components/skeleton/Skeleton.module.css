@@ -149,3 +149,10 @@
   border-radius: 5px;
   height: 220px;
 }
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .analyticWrapper {
+    width: 100% !important;
+  }
+}

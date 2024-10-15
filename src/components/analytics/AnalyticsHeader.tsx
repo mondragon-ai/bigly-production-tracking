@@ -1,13 +1,13 @@
-import {Button} from "@/components/shared/Button";
-import styles from "../Shared.module.css";
-import {HalfCircleStats} from "./charts";
-
-import localFont from "next/font/local";
-import {Dispatch, SetStateAction, useState} from "react";
-import {LoadingTypes} from "@/lib/types/shared";
-import {SkeletonText} from "../skeleton/SkeletonText";
 import {HeaderAnalytics, TimeFrameTypes} from "@/lib/types/analytics";
 import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
+import {SkeletonText} from "../skeleton/SkeletonText";
+import {Button} from "@/components/shared/Button";
+import {LoadingTypes} from "@/lib/types/shared";
+import styles from "../Shared.module.css";
+import {HalfCircleStats} from "./charts";
+import localFont from "next/font/local";
+import {useState} from "react";
+
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
   variable: "--font-geist-sans",
@@ -25,6 +25,7 @@ export const AnalyticsHeader = ({
   fetchAnalytics: (t: TimeFrameTypes) => void;
   timeframe: TimeFrameTypes;
 }) => {
+  const [type, setType] = useState<"jobs" | "units">("jobs");
   const [modal, openModal] = useState(false);
   const handleSelectModal = (type: TimeFrameTypes) => {
     openModal((p) => !p);
@@ -76,9 +77,9 @@ export const AnalyticsHeader = ({
         <SkeletonHeader />
       ) : (
         <div className={styles.right}>
-          <div className={styles.aTxt}>
+          <div className={styles.aTxt} onClick={() => setType("units")}>
             <h1 className={geistSans.className}>{header.total_units}</h1>
-            <span>total units {header.completed_units}</span>
+            <span>total units</span>
           </div>
           <div className={styles.chartContainer}>
             <HalfCircleStats
@@ -95,9 +96,15 @@ export const AnalyticsHeader = ({
               ]}
             />
           </div>
-          <div className={styles.aTxt}>
+          <div className={styles.aTxt} onClick={() => setType("jobs")}>
             <h1 className={geistSans.className}>{header.total_jobs}</h1>
             <span>total jobs</span>
+          </div>
+          <div className={`${styles.aTxt} ${styles.mobileComplete}`}>
+            <h1 className={geistSans.className}>
+              {type == "jobs" ? header.completed_jobs : header.completed_units}
+            </h1>
+            <span>completed {type}</span>
           </div>
           <div className={styles.chartContainer}>
             <HalfCircleStats

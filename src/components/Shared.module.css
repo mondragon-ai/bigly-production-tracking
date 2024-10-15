@@ -58,6 +58,30 @@
   padding: 0;
 }
 
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .page > main {
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .page > main > section {
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .page > div > .rowSection,
+  .page > div > .rowSection > section {
+    flex-direction: column-reverse !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+  }
+  .page > div > .rowSection > section:last-of-type {
+    margin-bottom: 20px;
+  }
+}
 /* =============================================================== */
 /*  1. PAGE HEADER                                                 */
 /* =============================================================== */
@@ -141,6 +165,20 @@
 
 .pageHeaderWrapper .right button {
   margin-right: 1rem;
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .pageHeaderWrapper .left h1 {
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 35px;
+    color: var(--secondary-text);
+    margin-right: 10px;
+  }
+  .pageHeaderWrapper {
+    margin-bottom: 20px;
+  }
 }
 
 /* =============================================================== */
@@ -304,4 +342,33 @@
 
 .timeFramWrapper > div:hover > span {
   color: var(--secondary-accent);
+}
+
+.mobileComplete {
+  display: none;
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .chartWrapperBox {
+    width: 100% !important;
+    margin-bottom: 1rem;
+  }
+  .page > div > .rowSection {
+    margin: 0rem 0 !important;
+  }
+  .chartContainer {
+    display: none;
+  }
+  .aTxt {
+    margin-left: 10px;
+  }
+
+  .timeFramWrapper {
+    top: 75px !important;
+  }
+
+  .mobileComplete {
+    display: flex;
+  }
 }

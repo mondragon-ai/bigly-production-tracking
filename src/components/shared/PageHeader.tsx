@@ -1,13 +1,14 @@
 "use client";
 import {BadgeType, IconTypes, LoadingTypes, Staff} from "@/lib/types/shared";
+import {SkeletonBadge, SkeletonText} from "../skeleton/SkeletonText";
+import {Dispatch, SetStateAction, useRef, useState} from "react";
 import styles from "./Shared.module.css";
 import localFont from "next/font/local";
 import {Avatar} from "./Avatar";
 import {Button} from "./Button";
 import {Badge} from "./Badge";
-import {Dispatch, SetStateAction, useRef} from "react";
 import {Icon} from "./Icon";
-import {SkeletonBadge, SkeletonText} from "../skeleton/SkeletonText";
+import {AddStaff} from "./AddStaff";
 
 type PageHeaderProps = {
   has_qr_code?: string;
@@ -40,15 +41,18 @@ const PageHeader = ({
   staff,
   buttons,
   loading,
-  openStaff,
-  has_qr_code = "",
-  setPriority,
   set_loaders = false,
+  has_qr_code = "",
+  openStaff,
+  setPriority,
 }: PageHeaderProps) => {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [modal, openModal] = useState<"staff" | "buttons" | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleButtonClick = (e: React.MouseEvent) => {
     const button = buttons.find((b) => b.text === e.currentTarget.textContent);
+    openModal(null);
     if (
       button &&
       button.onClick &&
@@ -101,7 +105,7 @@ const PageHeader = ({
           type="file"
           ref={fileInputRef}
           onChange={handleChange}
-          style={{visibility: "hidden"}}
+          style={{visibility: "hidden", display: "none"}}
         />
         <div>
           {loading == "loading" && set_loaders ? (
@@ -127,24 +131,74 @@ const PageHeader = ({
               </label>
             </div>
           )}
-          {loading == "loading" && set_loaders && badges ? (
-            <SkeletonBadge />
-          ) : badges ? (
-            badges.map((badge, index) => (
-              <Badge
-                key={index}
-                icon={badge.icon}
-                text={badge.text}
-                tone={badge.tone}
-              />
-            ))
-          ) : null}
+          <div className={styles.mobileBadgeWrapper}>
+            {loading == "loading" && set_loaders && badges ? (
+              <SkeletonBadge />
+            ) : badges ? (
+              badges.map((badge, index) => (
+                <Badge
+                  key={index}
+                  icon={badge.icon}
+                  text={badge.text}
+                  tone={badge.tone}
+                />
+              ))
+            ) : null}
+          </div>
         </div>
         {loading == "loading" && set_loaders && date ? (
           <SkeletonText color="#cccccc" width={30} header={true} />
         ) : date ? (
           <span>{date}</span>
         ) : null}
+      </div>
+
+      <div className={styles.mobileBtnWrappers}>
+        {modal == "buttons" && (
+          <div className={styles.storeModal}>
+            {buttons &&
+              buttons.map((b) => {
+                return (
+                  <div
+                    className={styles.mobileActions}
+                    onClick={handleButtonClick}
+                  >
+                    <Icon
+                      icon={b.icon}
+                      tone={b.tone == "descructive" ? "critical" : "success"}
+                    />
+                    {b.text}
+                  </div>
+                );
+              })}
+          </div>
+        )}
+        {modal == "staff" && (
+          <AddStaff
+            can_select={false}
+            setSelectedIds={setSelectedIds}
+            selectedIds={selectedIds}
+            staff={staff}
+          />
+        )}
+        {staff && staff.length ? (
+          <button
+            className={styles.btn}
+            role="button"
+            onClick={() => openModal((p) => (p ? null : "staff"))}
+            style={{marginRight: "5px"}}
+          >
+            <Icon icon={"add-user"} tone={"magic"} />
+          </button>
+        ) : null}
+
+        <button
+          className={styles.btn}
+          role="button"
+          onClick={() => openModal((p) => (p ? null : "buttons"))}
+        >
+          <Icon icon={"wand"} tone={"magic"} />
+        </button>
       </div>
       <div className={styles.right}>
         {loading == "loading" && set_loaders && staff ? (
