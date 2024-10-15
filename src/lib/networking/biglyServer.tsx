@@ -12,7 +12,7 @@ export const biglyRequest = async (
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
   };
 
   if (payload) {
