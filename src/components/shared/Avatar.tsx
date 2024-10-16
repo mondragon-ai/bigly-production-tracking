@@ -1,7 +1,7 @@
 import {Staff} from "@/lib/types/shared";
 import styles from "./Shared.module.css";
-import {getInitials} from "@/lib/utils/converter.tsx/text";
 import {UserType} from "@/lib/types/store";
+import {getInitials} from "@/lib/utils/converter.tsx/text";
 
 export const Avatar = ({staff}: {staff: UserType | null | Staff}) => {
   return (

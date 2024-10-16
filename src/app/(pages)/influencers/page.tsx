@@ -11,7 +11,7 @@ export default function Influencers() {
   return (
     <div className={styles.page}>
       <PageHeader
-        title="Custom Items"
+        title="Bigly Form"
         loading={loading}
         buttons={[]}
         date={""}

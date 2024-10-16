@@ -22,6 +22,7 @@ export type UserType = {
   name: string;
   email: string;
   jwt: null | string;
+  password: string;
 };
 
 export type GlobalStateType = "user" | "sidebar";

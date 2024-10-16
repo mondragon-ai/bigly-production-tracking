@@ -98,6 +98,7 @@
 /* =============================================================== */
 .avatar {
   background-image: linear-gradient(to bottom right, #fcd34d, #ef4444, #ec4899);
+  border: 1px solid black;
   width: 50px;
   height: 50px;
   border-radius: 25px;
@@ -106,7 +107,6 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
 }
 
 /* =============================================================== */

@@ -452,7 +452,7 @@ export const NavMenu = () => {
               </Link>
             </li>
             <li>
-              <Link href={"#"}>
+              <Link href={"/profile"}>
                 <div className={styles.avatarWrapper}>
                   <Avatar staff={globalState.user} />
                   <div className={styles.text}>
