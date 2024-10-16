@@ -1,10 +1,10 @@
 "use client";
-import {useRouter} from "next/navigation";
-import {Button} from "./Button";
-import styles from "./Shared.module.css";
-import Image from "next/image";
-import {LOGO} from "@/lib/constants";
 import {useGlobalContext} from "@/lib/store/context";
+import {useRouter} from "next/navigation";
+import styles from "./Shared.module.css";
+import {LOGO} from "@/lib/constants";
+import {Button} from "./Button";
+import Image from "next/image";
 import {Icon} from "./Icon";
 
 export const TopBar = () => {
