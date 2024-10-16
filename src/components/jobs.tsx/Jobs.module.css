@@ -339,6 +339,17 @@
   padding: 7px 0;
 }
 
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .itemsTableWrapper {
+    overflow: scroll;
+  }
+  .itemsTableWrapper table {
+    width: 500px;
+    overflow: scroll;
+  }
+}
+
 .addItemsWrapper header {
   position: relative;
   display: flex;

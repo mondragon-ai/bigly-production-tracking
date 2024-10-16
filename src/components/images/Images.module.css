@@ -143,6 +143,17 @@
   transform: translate(2px, 2px);
 }
 
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .imageTableWrapper {
+    overflow: scroll;
+  }
+  .imageTableWrapper table {
+    width: 500px;
+    overflow: scroll;
+  }
+}
+
 .imageDetailWrapper {
   position: relative;
   display: flex;

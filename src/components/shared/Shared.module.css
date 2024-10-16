@@ -371,6 +371,17 @@
   padding: 7px 0;
 }
 
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .tableWrapper {
+    overflow: scroll;
+  }
+  .tableWrapper table {
+    width: 500px;
+    overflow: scroll;
+  }
+}
+
 /* =============================================================== */
 /*  6. BADGE                                                       */
 /* =============================================================== */
@@ -747,6 +758,13 @@
 
 .modal > footer > button {
   margin-left: 10px;
+}
+
+/* Mobile (small to large) */
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .modal {
+    width: 95vw;
+  }
 }
 
 /* =============================================================== */

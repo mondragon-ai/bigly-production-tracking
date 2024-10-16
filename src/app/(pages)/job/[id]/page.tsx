@@ -187,11 +187,6 @@ const badges = (job: JobDocument | null) => {
       text: job.stage,
       tone: "info",
     },
-    {
-      icon: "fire",
-      text: "Priority",
-      tone: "critical",
-    },
   ];
   if (job.is_priority) {
     badge_list.push({
