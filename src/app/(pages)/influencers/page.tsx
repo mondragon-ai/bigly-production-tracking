@@ -19,7 +19,7 @@ export default function Influencers() {
         staff={[]}
       />
       <main>
-        <section style={{width: "55%", paddingRight: "10px"}}>
+        <section style={{width: "100%", paddingRight: "10px"}}>
           {loading == "loading" ? (
             <SkeletonList width={100} />
           ) : (
