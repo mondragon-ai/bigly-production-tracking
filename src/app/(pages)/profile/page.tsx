@@ -7,8 +7,10 @@ import useProfile from "@/lib/hooks/useProfile";
 import {ErrorIcon} from "@/components/shared/ErrorIcon";
 import {useState} from "react";
 import {Icon} from "@/components/shared/Icon";
+import {useWidth} from "@/lib/hooks/useWidth";
 
 export default function Settings() {
+  const innerWidth = useWidth();
   const {loading, user, error, setError, updatePassword} = useProfile();
   const [password, setPassword] = useState(user.password || "");
   const [show, toggleShow] = useState(false);
@@ -17,6 +19,7 @@ export default function Settings() {
     if (!password) return;
     updatePassword(password);
   };
+
   return (
     <div className={styles.page}>
       {error && (
@@ -30,8 +33,20 @@ export default function Settings() {
         staff={[]}
       />
       <div>
-        <div className={styles.rowSection} style={{width: "100%"}}>
-          <section className={styles.avatarWrapper}>
+        <div
+          className={styles.rowSection}
+          style={{
+            width: "100%",
+            flexDirection: innerWidth < 720 ? "column" : "row",
+          }}
+        >
+          <section
+            className={styles.avatarWrapper}
+            style={{
+              width: "100%",
+              flexDirection: innerWidth < 720 ? "column" : "column",
+            }}
+          >
             <div>{true ? <h6>{getInitials(user.name)}</h6> : <h6>BB</h6>}</div>
             <span>
               {user.role} - {user.position}

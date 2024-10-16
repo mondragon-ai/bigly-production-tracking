@@ -192,14 +192,17 @@ const PageHeader = ({
           </button>
         ) : null}
 
-        <button
-          className={styles.btn}
-          role="button"
-          onClick={() => openModal((p) => (p ? null : "buttons"))}
-        >
-          <Icon icon={"wand"} tone={"magic"} />
-        </button>
+        {buttons && buttons.length ? (
+          <button
+            className={styles.btn}
+            role="button"
+            onClick={() => openModal((p) => (p ? null : "buttons"))}
+          >
+            <Icon icon={"wand"} tone={"magic"} />
+          </button>
+        ) : null}
       </div>
+
       <div className={styles.right}>
         {loading == "loading" && set_loaders && staff ? (
           <SkeletonBadge />
