@@ -7,6 +7,7 @@ export const initialUser: UserType = {
   name: "",
   email: "",
   jwt: null,
+  password: "",
 };
 
 export const initGlobalValues: AppContextType = {
