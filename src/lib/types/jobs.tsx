@@ -48,6 +48,16 @@ export type Items = {
   status: "pending" | "completed" | "rejected";
 };
 
+export type Influencer = {
+  email: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  note: string;
+  phone: string;
+  created_at: {_seconds: number};
+};
+
 export type StateTimes = {
   pending: number;
   printing: number;
