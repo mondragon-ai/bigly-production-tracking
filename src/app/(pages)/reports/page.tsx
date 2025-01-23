@@ -327,7 +327,7 @@ export default function Analytics() {
             >
               {returns.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={conversion_value.bar_chart}
                   suffix={""}
                   fixed={2}
@@ -350,7 +350,7 @@ export default function Analytics() {
             >
               {returns.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={open_rate.bar_chart}
                   suffix={"%"}
                   fixed={2}
@@ -376,7 +376,7 @@ export default function Analytics() {
             >
               {click_rate.bar_chart ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={click_rate.bar_chart}
                   suffix={"%"}
                   fixed={3}
@@ -399,7 +399,7 @@ export default function Analytics() {
             >
               {recipients.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={recipients.bar_chart}
                   suffix={""}
                   fixed={0}
@@ -421,7 +421,7 @@ export default function Analytics() {
             >
               {conversion_rate.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={conversion_rate.bar_chart}
                   suffix={"%"}
                   fixed={3}
