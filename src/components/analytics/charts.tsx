@@ -162,6 +162,56 @@ export const BarChartStats = ({
   );
 };
 
+export const StackedBarChart = ({
+  data,
+  suffix,
+  fixed = 1,
+  color = "#a1a5f4",
+}: {
+  data: any[];
+  suffix: "%" | "h" | "";
+  fixed?: number;
+  color?: string;
+}) => {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart data={data} margin={{top: 5, right: 5, left: -5, bottom: 5}}>
+        <CartesianGrid horizontal={false} vertical={false} />
+        <XAxis
+          interval="preserveStartEnd"
+          dataKey="name"
+          padding={{left: 10, right: 10}}
+          axisLine={false}
+          tickSize={0}
+          tick={<CustomXAxisTick />}
+        />
+        <YAxis
+          axisLine={false}
+          padding={{top: 10, bottom: 0}}
+          type="number"
+          tickSize={0}
+          tick={<CustomYAxisTick suffix={suffix} fixed={fixed} />}
+        />
+
+        <Tooltip content={<CustomTooltip suffix={suffix} fixed={fixed} />} />
+        <Bar
+          dataKey="subscription"
+          stackId="a"
+          fill={color}
+          shape={<RoundedBar fill={"#8884d8"} />}
+        />
+        <Bar
+          dataKey="unsubscribed"
+          stackId="a"
+          fill={color}
+          shape={<RoundedBar fill={"#82ca9d"} />}
+        />
+
+        {/* <Legend /> */}
+      </BarChart>
+    </ResponsiveContainer>
+  );
+};
 const RoundedBar = (props: any) => {
   const {fill, x, y, width, height} = props;
 

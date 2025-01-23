@@ -13,7 +13,7 @@ export const shopifyGraphQlRequest = async (
   token: string,
   payload: any,
 ) => {
-  const URL = `https://${shop}.myshopify.com/api/2021-07/graphql.json `;
+  const URL = `https://${shop}.myshopify.com/api/2021-07/graphql.json`;
 
   const headers = {
     "Content-Type": "application/json",

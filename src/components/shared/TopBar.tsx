@@ -66,7 +66,7 @@ export const TopBar = () => {
           <Button
             onClick={handleNavigate}
             text="CREATE JOB"
-            thin={false}
+            thin={true}
             tone={"success"}
             align={"center"}
           />

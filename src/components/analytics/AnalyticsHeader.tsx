@@ -18,10 +18,12 @@ export const AnalyticsHeader = ({
   loading,
   header,
   timeframe,
+  title = "Anlaytics",
   fetchAnalytics,
 }: {
+  title?: string;
   loading: LoadingTypes;
-  header: HeaderAnalytics;
+  header?: HeaderAnalytics;
   fetchAnalytics: (t: TimeFrameTypes) => void;
   timeframe: TimeFrameTypes;
 }) => {
@@ -40,7 +42,7 @@ export const AnalyticsHeader = ({
     >
       <div className={styles.left}>
         <div>
-          <h1 className={geistSans.className}>Analytics</h1>
+          <h1 className={geistSans.className}>{title}</h1>
         </div>
 
         <Button
@@ -73,55 +75,61 @@ export const AnalyticsHeader = ({
           </div>
         )}
       </div>
-      {loading == "loading" || header.total_units == 0 ? (
-        <SkeletonHeader />
-      ) : (
-        <div className={styles.right}>
-          <div className={styles.aTxt} onClick={() => setType("units")}>
-            <h1 className={geistSans.className}>{header.total_units}</h1>
-            <span>total units</span>
-          </div>
-          <div className={styles.chartContainer}>
-            <HalfCircleStats
-              completed={header.completed_units / header.total_units}
-              data={[
-                {
-                  name: "completed",
-                  value: header.completed_units / header.total_units,
-                },
-                {
-                  name: "needed",
-                  value: 1 - header.completed_units / header.total_units,
-                },
-              ]}
-            />
-          </div>
-          <div className={styles.aTxt} onClick={() => setType("jobs")}>
-            <h1 className={geistSans.className}>{header.total_jobs}</h1>
-            <span>total jobs</span>
-          </div>
-          <div className={`${styles.aTxt} ${styles.mobileComplete}`}>
-            <h1 className={geistSans.className}>
-              {type == "jobs" ? header.completed_jobs : header.completed_units}
-            </h1>
-            <span>completed {type}</span>
-          </div>
-          <div className={styles.chartContainer}>
-            <HalfCircleStats
-              completed={header.completed_jobs / header.total_jobs}
-              data={[
-                {
-                  name: "needed",
-                  value: header.completed_jobs / header.total_jobs,
-                },
-                {
-                  name: "completed",
-                  value: 1 - header.completed_jobs / header.total_jobs,
-                },
-              ]}
-            />
-          </div>
-        </div>
+      {header && (
+        <>
+          {loading == "loading" || header.total_units == 0 ? (
+            <SkeletonHeader />
+          ) : (
+            <div className={styles.right}>
+              <div className={styles.aTxt} onClick={() => setType("units")}>
+                <h1 className={geistSans.className}>{header.total_units}</h1>
+                <span>total units</span>
+              </div>
+              <div className={styles.chartContainer}>
+                <HalfCircleStats
+                  completed={header.completed_units / header.total_units}
+                  data={[
+                    {
+                      name: "completed",
+                      value: header.completed_units / header.total_units,
+                    },
+                    {
+                      name: "needed",
+                      value: 1 - header.completed_units / header.total_units,
+                    },
+                  ]}
+                />
+              </div>
+              <div className={styles.aTxt} onClick={() => setType("jobs")}>
+                <h1 className={geistSans.className}>{header.total_jobs}</h1>
+                <span>total jobs</span>
+              </div>
+              <div className={`${styles.aTxt} ${styles.mobileComplete}`}>
+                <h1 className={geistSans.className}>
+                  {type == "jobs"
+                    ? header.completed_jobs
+                    : header.completed_units}
+                </h1>
+                <span>completed {type}</span>
+              </div>
+              <div className={styles.chartContainer}>
+                <HalfCircleStats
+                  completed={header.completed_jobs / header.total_jobs}
+                  data={[
+                    {
+                      name: "needed",
+                      value: header.completed_jobs / header.total_jobs,
+                    },
+                    {
+                      name: "completed",
+                      value: 1 - header.completed_jobs / header.total_jobs,
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          )}
+        </>
       )}
     </header>
   );
