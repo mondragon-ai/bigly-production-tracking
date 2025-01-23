@@ -1,4 +1,4 @@
-import {} from "../types/analytics";
+import {NameValueProps} from "../types/analytics";
 import {
   BiglyDailyReportDocument,
   KlaviyoStoreAnalytics,
@@ -6,6 +6,8 @@ import {
   PasedReportData,
   RechargeAnalytics,
   ReportHeader,
+  ShopifyAnalytics,
+  ShopifyStoreNames,
   StackChartProps,
 } from "../types/reports";
 
@@ -18,30 +20,55 @@ export const parseReportData = (
   for (const doc of analytics) {
     payload.stripe = processSubscriptions(doc.stripe);
     payload.recharge = processSubscriptions(doc.recharge);
-  }
 
-  console.log(payload.recharge);
+    payload.gross_sales = processShopify(doc.shopify, "gross_sales");
+    payload.orders = processShopify(doc.shopify, "orders");
+    payload.discounts = processShopify(doc.shopify, "discounts");
+    payload.returns = processShopify(doc.shopify, "returns");
+    payload.total_sales = processShopify(doc.shopify, "total_sales");
+    payload.shipping_charges = processShopify(doc.shopify, "shipping_charges");
+
+    payload.click_rate = processKlaviyo(doc.klaviyo, "click_rate");
+    payload.open_rate = processKlaviyo(doc.klaviyo, "open_rate");
+    payload.conversion_rate = processKlaviyo(doc.klaviyo, "conversion_rate");
+
+    payload.recipients = processKlaviyo(doc.klaviyo, "recipients", 1);
+    payload.conversion_value = processKlaviyo(
+      doc.klaviyo,
+      "conversion_value",
+      1,
+    );
+    payload.emails = processEmailSubscriptions(doc.klaviyo);
+  }
 
   return payload;
 };
 
-const processSubscriptions = (
-  s: Record<KlaviyoStoreNames, RechargeAnalytics>,
+const processEmailSubscriptions = (
+  s: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>,
 ) => {
-  let churn = 0;
   const stacked_chart: StackChartProps[] = [];
 
+  let unsubscribed = 0;
+  let subscription = 0;
   for (const [name, value] of Object.entries(s)) {
     if (value && typeof value === "object") {
       stacked_chart.push({
         name,
-        unsubscribed: value.cancelled || 0,
-        subscription: value.created || 0,
+        unsubscribed: value.count.unsubscribed || 0,
+        subscription: value.count.subscribed || 0,
       });
+
+      unsubscribed += value.count.unsubscribed;
+      subscription += value.count.subscribed;
     } else {
       console.warn(`Invalid data format for key: ${name}`, value);
     }
   }
+
+  let churn = Number(Number(unsubscribed / (subscription || 1)) * 100).toFixed(
+    2,
+  );
 
   return {
     churn,
@@ -50,9 +77,97 @@ const processSubscriptions = (
 };
 
 const processKlaviyo = (
-  kl: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>,
+  s: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>,
+  v: string,
+  m = 100,
 ) => {
-  return {};
+  let sum = 0;
+  let count = 0;
+  const bar_chart: NameValueProps[] = [];
+
+  for (const [name, value] of Object.entries(s)) {
+    if (value && typeof value === "object") {
+      if (!value["statistics"]) continue;
+      const stats = value["statistics"];
+
+      const d = stats.reduce((p, c) => {
+        return p + c[v as keyof KlaviyoStoreAnalytics["statistics"]];
+      }, 0);
+
+      bar_chart.push({
+        name,
+        value: Math.abs(d) * m,
+      });
+
+      count++;
+      sum += Math.abs(d) * m;
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  return {
+    sum: sum / count,
+    bar_chart: bar_chart,
+  };
+};
+
+const processShopify = (
+  s: Record<ShopifyStoreNames, ShopifyAnalytics>,
+  v: string,
+) => {
+  let sum = 0;
+  const bar_chart: NameValueProps[] = [];
+
+  for (const [name, value] of Object.entries(s)) {
+    if (value && typeof value === "object") {
+      bar_chart.push({
+        name,
+        value: Math.abs(value[v as keyof ShopifyAnalytics]),
+      });
+
+      sum += Math.abs(value[v as keyof ShopifyAnalytics]);
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  return {
+    sum: sum,
+    bar_chart: bar_chart,
+  };
+};
+
+const processSubscriptions = (
+  s: Record<KlaviyoStoreNames, RechargeAnalytics>,
+) => {
+  const stacked_chart: StackChartProps[] = [];
+
+  let unsubscribed = 0;
+  let subscription = 0;
+  for (const [name, value] of Object.entries(s)) {
+    if (value && typeof value === "object") {
+      stacked_chart.push({
+        name,
+        unsubscribed: value.cancelled || 0,
+        subscription: value.created || 0,
+      });
+
+      unsubscribed += value.cancelled;
+      subscription += value.created;
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  let churn = Number(Number(unsubscribed / (subscription || 1)) * 100).toFixed(
+    2,
+  );
+
+  return {
+    churn,
+    stacked_chart,
+  };
 };
 
 export const getBaseReportData = (): PasedReportData => {
@@ -86,15 +201,15 @@ export const getBaseReportData = (): PasedReportData => {
       bar_chart: [],
     },
     recharge: {
-      churn: 0,
+      churn: "0",
       stacked_chart: [],
     },
     stripe: {
-      churn: 0,
+      churn: "0",
       stacked_chart: [],
     },
     emails: {
-      churn: 0,
+      churn: "0",
       stacked_chart: [],
     },
     conversion_value: {

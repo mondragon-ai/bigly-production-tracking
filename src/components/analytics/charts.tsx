@@ -18,6 +18,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
+import {
+  formatNumber,
+  formatWithCommas,
+} from "@/lib/utils/converter.tsx/numbers";
 
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
@@ -25,26 +30,71 @@ const geistSans = localFont({
   weight: "100 900",
 });
 
-const CustomTooltip = ({active, payload, label, suffix, fixed}: any) => {
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+  suffix,
+  fixed,
+  is_money,
+  negative,
+  prefix,
+}: any) => {
   if (active && payload && payload.length) {
+    const value = Number(payload[0].value);
+    const v = value.toFixed(fixed);
+    const header = is_money
+      ? `${negative ? "-" : ""}${prefix}${formatWithCommas(Number(v))}`
+      : v;
     return (
       <div className={styles.toolWrapper}>
         <p className="label">
           {`${label}: `}
-          <span
-            style={{fontWeight: 550}}
-          >{`${payload[0].value}${suffix}`}</span>
+          <span style={{fontWeight: 550}}>{`${header}${suffix}`}</span>
         </p>
-        {/* <p className="intro">{`Value: ${
-          isMoney ? "$" + payload[0].value : payload[0].value
-        }`}</p> */}
+      </div>
+    );
+  }
+};
+
+const CustomStackedTooltip = ({active, payload, label, suffix, fixed}: any) => {
+  if (active && payload && payload.length) {
+    const data = {
+      subscription: 0,
+      unsubscribed: 0,
+    };
+
+    return (
+      <div className={styles.toolWrapper}>
+        {payload.map((p: any) => {
+          data[p.name as "subscription"] = Number(p.value);
+
+          return (
+            <p className="label">
+              {`${capitalizeWords(p.name)}: `}
+              <span style={{fontWeight: 550}}>{`${p.value}${suffix}`}</span>
+            </p>
+          );
+        })}
+        <p className="label">
+          {"Churn: "}
+          <span style={{fontWeight: 550}}>{`${(
+            Number(data.unsubscribed / (data.subscription || 1)) * 100
+          ).toFixed(2)}%`}</span>
+        </p>
       </div>
     );
   }
 };
 
 const CustomYAxisTick = (props: any) => {
-  const {x, y, payload, suffix, fixed} = props;
+  const {x, y, payload, suffix, fixed, is_money, negative, prefix} = props;
+
+  const value = Number(payload.value);
+  const v = value.toFixed(fixed);
+  const header = is_money
+    ? `${negative ? "-" : ""}${prefix}${formatNumber(Number(v))}`
+    : v;
 
   return (
     <text
@@ -56,7 +106,7 @@ const CustomYAxisTick = (props: any) => {
       transform="rotate(0)"
       fontSize={"11px"}
     >
-      {`${Number(payload.value).toFixed(fixed)}${suffix ? suffix : ""}`}{" "}
+      {`${header}${suffix ? suffix : ""}`}{" "}
     </text>
   );
 };
@@ -128,12 +178,18 @@ export const BarChartStats = ({
   data,
   suffix,
   fixed = 1,
+  is_money,
   color = "#a1a5f4",
+  negative,
+  prefix = "",
 }: {
   data: any[];
   suffix: "%" | "h" | "";
+  is_money?: boolean;
   fixed?: number;
   color?: string;
+  negative?: boolean;
+  prefix?: "$" | "";
 }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -152,10 +208,28 @@ export const BarChartStats = ({
           padding={{top: 10, bottom: 0}}
           type="number"
           tickSize={0}
-          tick={<CustomYAxisTick suffix={suffix} fixed={fixed} />}
+          tick={
+            <CustomYAxisTick
+              suffix={suffix}
+              fixed={fixed}
+              is_money={is_money}
+              negative={negative}
+              prefix={prefix}
+            />
+          }
         />
         {/* <Tooltip /> */}
-        <Tooltip content={<CustomTooltip suffix={suffix} fixed={fixed} />} />
+        <Tooltip
+          content={
+            <CustomTooltip
+              suffix={suffix}
+              fixed={fixed}
+              is_money={is_money}
+              negative={negative}
+              prefix={prefix}
+            />
+          }
+        />
         <Bar dataKey="value" fill={color} shape={<RoundedBar />} />
       </BarChart>
     </ResponsiveContainer>
@@ -193,18 +267,20 @@ export const StackedBarChart = ({
           tick={<CustomYAxisTick suffix={suffix} fixed={fixed} />}
         />
 
-        <Tooltip content={<CustomTooltip suffix={suffix} fixed={fixed} />} />
+        <Tooltip
+          content={<CustomStackedTooltip suffix={suffix} fixed={fixed} />}
+        />
         <Bar
           dataKey="subscription"
           stackId="a"
           fill={color}
-          shape={<RoundedBar fill={"#8884d8"} />}
+          shape={<RoundedBar fill={"#9CE76E"} is_stacked={true} />}
         />
         <Bar
           dataKey="unsubscribed"
           stackId="a"
           fill={color}
-          shape={<RoundedBar fill={"#82ca9d"} />}
+          shape={<RoundedBar fill={"#E85F5C"} is_stacked={true} />}
         />
 
         {/* <Legend /> */}
@@ -213,14 +289,24 @@ export const StackedBarChart = ({
   );
 };
 const RoundedBar = (props: any) => {
-  const {fill, x, y, width, height} = props;
+  const {fill, x, y, width, height, is_stacked} = props;
 
   if (width <= 0 || height <= 0) {
     return null;
   }
 
+  const radius = is_stacked ? 0 : 6;
+
   return (
-    <rect x={x} y={y} width={width} height={height} fill={fill} rx={6} ry={6} />
+    <rect
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      fill={fill}
+      rx={radius}
+      ry={radius}
+    />
   );
 };
 

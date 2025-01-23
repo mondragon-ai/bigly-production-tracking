@@ -19,7 +19,7 @@ export type PasedReportData = {
 };
 
 export type SubscriptionReport = {
-  churn: number;
+  churn: string;
   stacked_chart: StackChartProps[];
 };
 

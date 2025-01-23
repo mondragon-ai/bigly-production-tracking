@@ -62,15 +62,20 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Gross Sales"}
               width={32}
+              fixed={2}
+              is_money={true}
               main_value={`${gross_sales.sum}`}
               metric=""
+              prefix="$"
             >
               {gross_sales.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={gross_sales.bar_chart}
                   suffix={""}
-                  fixed={1}
+                  is_money={true}
+                  fixed={2}
+                  prefix="$"
                 />
               ) : null}
             </AnalyticsCard>
@@ -84,13 +89,16 @@ export default function Analytics() {
               width={32}
               main_value={`${orders.sum}`}
               metric=""
+              fixed={0}
+              is_money={false}
             >
               {orders.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={orders.bar_chart}
-                  suffix={"%"}
-                  fixed={1}
+                  suffix={""}
+                  fixed={0}
+                  is_money={false}
                 />
               ) : null}
             </AnalyticsCard>
@@ -103,13 +111,20 @@ export default function Analytics() {
               title={"Discounts"}
               width={32}
               main_value={`${discounts.sum}`}
+              fixed={2}
+              negative={true}
+              is_money={true}
+              prefix="$"
             >
               {discounts.sum ? (
                 <BarChartStats
                   color={"#e85f5c"}
                   data={discounts.bar_chart}
-                  suffix={"%"}
-                  fixed={1}
+                  suffix={""}
+                  fixed={2}
+                  is_money={true}
+                  negative={true}
+                  prefix="$"
                 />
               ) : null}
             </AnalyticsCard>
@@ -128,13 +143,20 @@ export default function Analytics() {
               width={32}
               main_value={`${returns.sum}`}
               metric=""
+              fixed={2}
+              negative={true}
+              is_money={true}
+              prefix="$"
             >
               {returns.sum ? (
                 <BarChartStats
                   color={"#e85f5c"}
                   data={returns.bar_chart}
                   suffix={""}
-                  fixed={1}
+                  fixed={2}
+                  negative={true}
+                  is_money={true}
+                  prefix="$"
                 />
               ) : null}
             </AnalyticsCard>
@@ -148,13 +170,18 @@ export default function Analytics() {
               width={32}
               main_value={`${total_sales.sum}`}
               metric=""
+              fixed={2}
+              is_money={true}
+              prefix="$"
             >
               {total_sales.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={total_sales.bar_chart}
-                  suffix={"%"}
-                  fixed={1}
+                  suffix={""}
+                  fixed={2}
+                  is_money={true}
+                  prefix="$"
                 />
               ) : null}
             </AnalyticsCard>
@@ -167,89 +194,18 @@ export default function Analytics() {
               title={"Shipping Charges"}
               width={32}
               main_value={`${shipping_charges.sum}`}
+              fixed={2}
+              is_money={true}
+              prefix="$"
             >
               {shipping_charges.sum ? (
                 <BarChartStats
-                  color={"#e85f5c"}
+                  color={"#A1A5F4"}
                   data={shipping_charges.bar_chart}
-                  suffix={"%"}
-                  fixed={1}
-                />
-              ) : null}
-            </AnalyticsCard>
-          )}
-        </section>
-
-        <section
-          className={styles.rowSection}
-          style={{marginTop: "1rem", justifyContent: "space-between"}}
-        >
-          {loading == "loading" || loading == "posting" ? (
-            <SkeletonAnalytic width={32} />
-          ) : (
-            <AnalyticsCard
-              title={"Stripe Subscriptions"}
-              width={32}
-              main_value={`${stripe.churn}`}
-              metric=""
-            >
-              {stripe.churn ? (
-                <StackedBarChart
-                  color={"#e85f5c"}
-                  data={stripe.stacked_chart}
                   suffix={""}
-                  fixed={1}
-                />
-              ) : null}
-            </AnalyticsCard>
-          )}
-
-          {loading == "loading" || loading == "posting" ? (
-            <SkeletonAnalytic width={32} />
-          ) : (
-            <AnalyticsCard
-              title={"Subscription Ratios"}
-              width={32}
-              main_value={`${total_sales.sum}`}
-              metric=""
-            >
-              {total_sales.sum ? (
-                <HalfCircleStats
-                  completed={
-                    subscription_ratio.stripe / subscription_ratio.recharge
-                  }
-                  data={[
-                    {
-                      name: "Stripe",
-                      value:
-                        subscription_ratio.stripe / subscription_ratio.recharge,
-                    },
-                    {
-                      name: "Rcharge",
-                      value:
-                        1 -
-                        subscription_ratio.stripe / subscription_ratio.recharge,
-                    },
-                  ]}
-                />
-              ) : null}
-            </AnalyticsCard>
-          )}
-
-          {loading == "loading" || loading == "posting" ? (
-            <SkeletonAnalytic width={32} />
-          ) : (
-            <AnalyticsCard
-              title={"Recharge Subscriptions"}
-              width={32}
-              main_value={`${recharge.churn}`}
-            >
-              {recharge.churn ? (
-                <BarChartStats
-                  color={"#e85f5c"}
-                  data={recharge.stacked_chart}
-                  suffix={"%"}
-                  fixed={1}
+                  fixed={2}
+                  is_money={true}
+                  prefix="$"
                 />
               ) : null}
             </AnalyticsCard>
@@ -267,7 +223,7 @@ export default function Analytics() {
               title={"Stripe Subscriptions"}
               width={32}
               main_value={`${stripe.churn}`}
-              metric=""
+              metric="%"
             >
               {stripe.stacked_chart ? (
                 <StackedBarChart
@@ -280,7 +236,7 @@ export default function Analytics() {
             </AnalyticsCard>
           )}
 
-          {loading == "loading" || loading == "posting" ? (
+          {loading == "loading" || loading == "posting" || total_sales.sum ? (
             <SkeletonAnalytic width={32} />
           ) : (
             <AnalyticsCard
@@ -289,7 +245,7 @@ export default function Analytics() {
               main_value={`${total_sales.sum}`}
               metric=""
             >
-              {total_sales.sum ? (
+              {!total_sales.sum ? (
                 <HalfCircleStats
                   completed={
                     subscription_ratio.stripe / subscription_ratio.recharge
@@ -319,6 +275,7 @@ export default function Analytics() {
               title={"Recharge Subscriptions"}
               width={32}
               main_value={`${recharge.churn}`}
+              metric="%"
             >
               {recharge.stacked_chart ? (
                 <StackedBarChart
@@ -364,13 +321,18 @@ export default function Analytics() {
               width={32}
               main_value={`${conversion_value.sum}`}
               metric=""
+              fixed={2}
+              prefix="$"
+              is_money={true}
             >
               {returns.sum ? (
                 <BarChartStats
                   color={"#e85f5c"}
                   data={conversion_value.bar_chart}
                   suffix={""}
-                  fixed={1}
+                  fixed={2}
+                  is_money={true}
+                  prefix="$"
                 />
               ) : null}
             </AnalyticsCard>
@@ -383,13 +345,15 @@ export default function Analytics() {
               title={"Email Open Rate"}
               width={32}
               main_value={`${open_rate.sum}`}
+              metric={"%"}
+              fixed={2}
             >
               {returns.sum ? (
                 <BarChartStats
                   color={"#e85f5c"}
                   data={open_rate.bar_chart}
-                  suffix={""}
-                  fixed={1}
+                  suffix={"%"}
+                  fixed={2}
                 />
               ) : null}
             </AnalyticsCard>
@@ -407,14 +371,15 @@ export default function Analytics() {
               title={"Email Click Rate"}
               width={32}
               main_value={`${click_rate.sum}`}
-              metric=""
+              metric="%"
+              fixed={3}
             >
-              {click_rate.sum ? (
+              {click_rate.bar_chart ? (
                 <BarChartStats
                   color={"#e85f5c"}
                   data={click_rate.bar_chart}
-                  suffix={""}
-                  fixed={1}
+                  suffix={"%"}
+                  fixed={3}
                 />
               ) : null}
             </AnalyticsCard>
@@ -428,13 +393,17 @@ export default function Analytics() {
               width={32}
               main_value={`${recipients.sum}`}
               metric=""
+              fixed={0}
+              prefix=""
+              is_money={true}
             >
               {recipients.sum ? (
                 <BarChartStats
                   color={"#e85f5c"}
                   data={recipients.bar_chart}
-                  suffix={"%"}
-                  fixed={1}
+                  suffix={""}
+                  fixed={0}
+                  is_money={true}
                 />
               ) : null}
             </AnalyticsCard>
@@ -447,13 +416,15 @@ export default function Analytics() {
               title={"Email Conversion Rate"}
               width={32}
               main_value={`${conversion_rate.sum}`}
+              metric="%"
+              fixed={3}
             >
               {conversion_rate.sum ? (
                 <BarChartStats
                   color={"#e85f5c"}
                   data={conversion_rate.bar_chart}
                   suffix={"%"}
-                  fixed={1}
+                  fixed={3}
                 />
               ) : null}
             </AnalyticsCard>

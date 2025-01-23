@@ -1,3 +1,4 @@
+import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
 import styles from "../Shared.module.css";
 
 export const AnalyticsCard = ({
@@ -7,6 +8,9 @@ export const AnalyticsCard = ({
   children,
   width,
   fixed,
+  negative = false,
+  is_money = false,
+  prefix = "",
 }: {
   title: string;
   width: number;
@@ -14,15 +18,26 @@ export const AnalyticsCard = ({
   metric?: string;
   children: React.ReactNode;
   fixed?: number;
-}) => (
-  <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
-    <header>
-      <h5>{title}</h5>
-      <h2>
-        {fixed ? Number(main_value).toFixed(fixed) : main_value}
-        <span>{metric}</span>
-      </h2>
-    </header>
-    <main className={styles.chartContainer}>{children}</main>
-  </div>
-);
+  is_money?: boolean;
+  negative?: boolean;
+  prefix?: "$" | "";
+}) => {
+  const header = fixed ? Number(main_value).toFixed(fixed) : main_value;
+
+  return (
+    <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
+      <header>
+        <h5>{title}</h5>
+        <h2>
+          {is_money
+            ? `${negative ? "-" : ""}${prefix}${formatWithCommas(
+                Number(header),
+              )}`
+            : header}
+          <span>{metric}</span>
+        </h2>
+      </header>
+      <main className={styles.chartContainer}>{children}</main>
+    </div>
+  );
+};
