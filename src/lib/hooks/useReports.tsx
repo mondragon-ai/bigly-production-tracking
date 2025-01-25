@@ -58,11 +58,11 @@ export const useReports = (): AnalyticsReturn => {
     setLoading("loading");
     setError(null);
     try {
-      // const {status, data, message} = await biglyRequest(
-      //   `/app/analytics/${tf}`,
-      //   "GET",
-      //   null,
-      // );
+      const {status, data, message} = await biglyRequest(
+        `/bigly/report/${tf}`,
+        "GET",
+        null,
+      );
 
       // if (status == 401) {
       //   return router.push("/");
@@ -71,14 +71,14 @@ export const useReports = (): AnalyticsReturn => {
       //   return router.push("/jobs");
       // }
 
-      // if (status < 300 && data) {
-      //   console.log({data});
-      //   toast.success(message);
-      //   setAnalytics(data.analytics);
-      //   return;
-      // } else {
-      //   handleHttpError(status, `${message}`, setError);
-      // }
+      if (status < 300 && data) {
+        console.log({data});
+        toast.success(message);
+        setAnalytics(data.analytics);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
       return;
     } catch (err) {
       handleHttpError(500, "Server Error", setError);

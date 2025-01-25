@@ -223,13 +223,13 @@ export default function Analytics() {
               title={"Stripe Subscriptions"}
               width={32}
               main_value={`${stripe.churn}`}
-              metric="%"
+              metric="% churn"
             >
               {stripe.stacked_chart ? (
                 <StackedBarChart
                   color={"#e85f5c"}
                   data={stripe.stacked_chart}
-                  suffix={""}
+                  suffix={"%"}
                   fixed={1}
                 />
               ) : null}
@@ -275,13 +275,13 @@ export default function Analytics() {
               title={"Recharge Subscriptions"}
               width={32}
               main_value={`${recharge.churn}`}
-              metric="%"
+              metric="% churn"
             >
               {recharge.stacked_chart ? (
                 <StackedBarChart
                   color={"#e85f5c"}
                   data={recharge.stacked_chart}
-                  suffix={""}
+                  suffix={"%"}
                   fixed={1}
                 />
               ) : null}
@@ -300,7 +300,7 @@ export default function Analytics() {
               title={"Email Subscriptions"}
               width={32}
               main_value={`${emails.churn}`}
-              metric=""
+              metric="% churn"
             >
               {emails.churn ? (
                 <StackedBarChart

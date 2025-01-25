@@ -88,3 +88,61 @@ export type BiglyDailyReportDocument = {
   recharge: Record<KlaviyoStoreNames, RechargeAnalytics>;
   stripe: Record<KlaviyoStoreNames, RechargeAnalytics>;
 };
+
+type SalesMetrics = {
+  gross_sales: number;
+  orders: number;
+  discounts: number;
+  returns: number;
+  total_sales: number;
+  shipping_charges: number;
+};
+
+type SubscriptionMetrics = {
+  unsubscribed: number;
+  subscribed: number;
+};
+
+type KlaviyoMetrics = {
+  campaing_count: number;
+  click_rate: number;
+  open_rate: number;
+  conversion_rate: number;
+  recipients: number;
+  conversion_value: number;
+  unsubscribed: number;
+  subscribed: number;
+};
+
+type ShopifyMetrics = {
+  ht: SalesMetrics;
+  sc: SalesMetrics;
+  aj: SalesMetrics;
+  ajn: SalesMetrics;
+  raj: SalesMetrics;
+  oh: SalesMetrics;
+  dmo: SalesMetrics;
+  htl: SalesMetrics;
+  pod: SalesMetrics;
+};
+
+type StripeRechargeMetrics = {
+  ht: SubscriptionMetrics;
+  sc: SubscriptionMetrics;
+  aj: SubscriptionMetrics;
+  oh?: SubscriptionMetrics;
+};
+
+type KlaviyoRechargeMetrics = {
+  ht: KlaviyoMetrics;
+  sc: KlaviyoMetrics;
+  aj: KlaviyoMetrics;
+  oh: KlaviyoMetrics;
+};
+
+export type ParsedBaseType = {
+  shopify: ShopifyMetrics;
+  stripe: StripeRechargeMetrics;
+  recharge: StripeRechargeMetrics;
+  klaviyo: KlaviyoRechargeMetrics;
+};

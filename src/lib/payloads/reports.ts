@@ -3,6 +3,7 @@ import {
   BiglyDailyReportDocument,
   KlaviyoStoreAnalytics,
   KlaviyoStoreNames,
+  ParsedBaseType,
   PasedReportData,
   RechargeAnalytics,
   ReportHeader,
@@ -17,58 +18,219 @@ export const parseReportData = (
   const payload = getBaseReportData();
   if (!analytics) return payload;
 
+  const base = parsedBase();
+
   for (const doc of analytics) {
-    payload.stripe = processSubscriptions(doc.stripe);
-    payload.recharge = processSubscriptions(doc.recharge);
+    // Process Sub data
+    processSubs(base, doc.stripe, "stripe");
+    processSubs(base, doc.recharge, "recharge");
 
-    payload.gross_sales = processShopify(doc.shopify, "gross_sales");
-    payload.orders = processShopify(doc.shopify, "orders");
-    payload.discounts = processShopify(doc.shopify, "discounts");
-    payload.returns = processShopify(doc.shopify, "returns");
-    payload.total_sales = processShopify(doc.shopify, "total_sales");
-    payload.shipping_charges = processShopify(doc.shopify, "shipping_charges");
+    // Process Sales data
+    processSales(base, doc.shopify, "gross_sales");
+    processSales(base, doc.shopify, "orders");
+    processSales(base, doc.shopify, "returns");
+    processSales(base, doc.shopify, "discounts");
+    processSales(base, doc.shopify, "total_sales");
+    processSales(base, doc.shopify, "shipping_charges");
 
-    payload.click_rate = processKlaviyo(doc.klaviyo, "click_rate");
-    payload.open_rate = processKlaviyo(doc.klaviyo, "open_rate");
-    payload.conversion_rate = processKlaviyo(doc.klaviyo, "conversion_rate");
+    // Process Email Sub data
+    processEmailSubs(base, doc.klaviyo);
 
-    payload.recipients = processKlaviyo(doc.klaviyo, "recipients", 1);
-    payload.conversion_value = processKlaviyo(
-      doc.klaviyo,
-      "conversion_value",
-      1,
-    );
-    payload.emails = processEmailSubscriptions(doc.klaviyo);
+    // Process Klaviyo Email data
+    processMarketing(base, doc.klaviyo, "click_rate", 100);
+    processMarketing(base, doc.klaviyo, "open_rate", 100);
+    processMarketing(base, doc.klaviyo, "conversion_rate", 100);
+    processMarketing(base, doc.klaviyo, "recipients", 1);
+    processMarketing(base, doc.klaviyo, "conversion_value", 1);
   }
+
+  // Subscriptions Chart Data
+  payload.stripe = processSubscriptions(base, "stripe");
+  payload.recharge = processSubscriptions(base, "recharge");
+
+  // Shopify Chart Data
+  payload.gross_sales = processShopify(base, "gross_sales");
+  payload.orders = processShopify(base, "orders");
+  payload.discounts = processShopify(base, "discounts");
+  payload.returns = processShopify(base, "returns");
+  payload.total_sales = processShopify(base, "total_sales");
+  payload.shipping_charges = processShopify(base, "shipping_charges");
+
+  // Klaviyo Chart Data
+  payload.emails = processEmailSubscriptions(base);
+  payload.recipients = processKlaviyo(base, "recipients", false);
+  payload.conversion_value = processKlaviyo(base, "conversion_value", false);
+
+  // ? Work on ratios
+  payload.click_rate = processKlaviyo(base, "click_rate", true);
+  payload.open_rate = processKlaviyo(base, "open_rate", true);
+  payload.conversion_rate = processKlaviyo(base, "conversion_rate", true);
 
   return payload;
 };
 
-const processEmailSubscriptions = (
-  s: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>,
-) => {
-  const stacked_chart: StackChartProps[] = [];
-
-  let unsubscribed = 0;
-  let subscription = 0;
-  for (const [name, value] of Object.entries(s)) {
+// * PROCESS RAW DATA
+// ========================================================
+const processEmailSubs = (
+  base: ParsedBaseType,
+  data: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>,
+): ParsedBaseType => {
+  for (const [name, value] of Object.entries(data)) {
     if (value && typeof value === "object") {
-      stacked_chart.push({
-        name,
-        unsubscribed: value.count.unsubscribed || 0,
-        subscription: value.count.subscribed || 0,
-      });
-
-      unsubscribed += value.count.unsubscribed;
-      subscription += value.count.subscribed;
+      base.klaviyo[name as "aj"].subscribed += value.count.subscribed || 0;
+      base.klaviyo[name as "aj"].unsubscribed += value.count.unsubscribed || 0;
     } else {
       console.warn(`Invalid data format for key: ${name}`, value);
     }
   }
 
-  let churn = Number(Number(unsubscribed / (subscription || 1)) * 100).toFixed(
-    2,
-  );
+  return base;
+};
+
+// Work on avg
+const processMarketing = (
+  base: ParsedBaseType,
+  data: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>,
+  type:
+    | "click_rate"
+    | "open_rate"
+    | "conversion_rate"
+    | "recipients"
+    | "conversion_value",
+  multipler = 100,
+): ParsedBaseType => {
+  for (const [name, value] of Object.entries(data)) {
+    if (value && typeof value === "object") {
+      if (!value["statistics"] || !value["statistics"].length) continue;
+      const stats = value["statistics"];
+      const avg = multipler > 1 ? stats.length : 1;
+
+      const d = stats.reduce((p, c) => {
+        if (name == "oh" && type == "open_rate") {
+          console.log(c[type]);
+        }
+        return p + c[type];
+      }, 0);
+
+      if (name == "oh" && type == "open_rate") {
+        console.log({d: (Math.abs(d) / avg) * multipler});
+      }
+
+      base.klaviyo[name as "aj"].campaing_count = stats.length;
+      base.klaviyo[name as "aj"][type] += (Math.abs(d) / avg) * multipler;
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+  return base;
+};
+
+const processSales = (
+  base: ParsedBaseType,
+  data: Record<ShopifyStoreNames, ShopifyAnalytics>,
+  type:
+    | "gross_sales"
+    | "orders"
+    | "discounts"
+    | "returns"
+    | "total_sales"
+    | "shipping_charges",
+): ParsedBaseType => {
+  for (const [name, value] of Object.entries(data)) {
+    if (value && typeof value === "object") {
+      base.shopify[name as "aj"][type] += Math.abs(
+        value[type as keyof ShopifyAnalytics],
+      );
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  return base;
+};
+
+const processSubs = (
+  base: ParsedBaseType,
+  data: Record<KlaviyoStoreNames, RechargeAnalytics>,
+  type: "stripe" | "recharge",
+): ParsedBaseType => {
+  for (const [name, value] of Object.entries(data)) {
+    if (value && typeof value === "object") {
+      base[type][name as "aj"].subscribed += value.created || 0;
+      base[type][name as "aj"].unsubscribed += value.cancelled || 0;
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  return base;
+};
+
+// * Create Chart Data
+// ========================================================
+const processKlaviyo = (
+  base: ParsedBaseType,
+  type:
+    | "recipients"
+    | "conversion_value"
+    | "click_rate"
+    | "open_rate"
+    | "conversion_rate",
+  get_mean: boolean,
+) => {
+  let sum = 0;
+  let count = 0;
+  const bar_chart: NameValueProps[] = [];
+
+  for (const [name, value] of Object.entries(base.klaviyo)) {
+    if (value && typeof value === "object") {
+      bar_chart.push({
+        name,
+        value: base.klaviyo[name as "aj"][type],
+      });
+
+      if (name == "oh" && type == "open_rate") {
+        console.log({stat: base.klaviyo[name as "aj"][type]});
+      }
+
+      count++;
+      sum += base.klaviyo[name as "aj"][type];
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  return {
+    sum: sum / (get_mean ? count : 1),
+    bar_chart: bar_chart,
+  };
+};
+
+const processEmailSubscriptions = (base: ParsedBaseType) => {
+  const stacked_chart: StackChartProps[] = [];
+
+  let count = 0;
+  let unsubscribed = 0;
+  let subscription = 0;
+  for (const [name, value] of Object.entries(base.klaviyo)) {
+    if (value && typeof value === "object") {
+      stacked_chart.push({
+        name,
+        unsubscribed: value.unsubscribed || 0,
+        subscription: value.subscribed || 0,
+      });
+
+      unsubscribed += value.unsubscribed;
+      subscription += value.subscribed;
+      count++;
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  let churn = Number(
+    Number((unsubscribed / (subscription || 1)) * 100) / count,
+  ).toFixed(2);
 
   return {
     churn,
@@ -76,57 +238,27 @@ const processEmailSubscriptions = (
   };
 };
 
-const processKlaviyo = (
-  s: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>,
-  v: string,
-  m = 100,
-) => {
-  let sum = 0;
-  let count = 0;
-  const bar_chart: NameValueProps[] = [];
-
-  for (const [name, value] of Object.entries(s)) {
-    if (value && typeof value === "object") {
-      if (!value["statistics"]) continue;
-      const stats = value["statistics"];
-
-      const d = stats.reduce((p, c) => {
-        return p + c[v as keyof KlaviyoStoreAnalytics["statistics"]];
-      }, 0);
-
-      bar_chart.push({
-        name,
-        value: Math.abs(d) * m,
-      });
-
-      count++;
-      sum += Math.abs(d) * m;
-    } else {
-      console.warn(`Invalid data format for key: ${name}`, value);
-    }
-  }
-
-  return {
-    sum: sum / count,
-    bar_chart: bar_chart,
-  };
-};
-
 const processShopify = (
-  s: Record<ShopifyStoreNames, ShopifyAnalytics>,
-  v: string,
+  base: ParsedBaseType,
+  key:
+    | "orders"
+    | "gross_sales"
+    | "discounts"
+    | "returns"
+    | "total_sales"
+    | "shipping_charges",
 ) => {
   let sum = 0;
   const bar_chart: NameValueProps[] = [];
 
-  for (const [name, value] of Object.entries(s)) {
+  for (const [name, value] of Object.entries(base.shopify)) {
     if (value && typeof value === "object") {
       bar_chart.push({
         name,
-        value: Math.abs(value[v as keyof ShopifyAnalytics]),
+        value: Math.abs(value[key]),
       });
 
-      sum += Math.abs(value[v as keyof ShopifyAnalytics]);
+      sum += Math.abs(value[key]);
     } else {
       console.warn(`Invalid data format for key: ${name}`, value);
     }
@@ -139,30 +271,33 @@ const processShopify = (
 };
 
 const processSubscriptions = (
-  s: Record<KlaviyoStoreNames, RechargeAnalytics>,
+  base: ParsedBaseType,
+  type: "stripe" | "recharge",
 ) => {
   const stacked_chart: StackChartProps[] = [];
 
+  let count = 0;
   let unsubscribed = 0;
   let subscription = 0;
-  for (const [name, value] of Object.entries(s)) {
+  for (const [name, value] of Object.entries(base[type])) {
     if (value && typeof value === "object") {
       stacked_chart.push({
         name,
-        unsubscribed: value.cancelled || 0,
-        subscription: value.created || 0,
+        unsubscribed: value.unsubscribed || 0,
+        subscription: value.subscribed || 0,
       });
 
-      unsubscribed += value.cancelled;
-      subscription += value.created;
+      unsubscribed += value.unsubscribed;
+      subscription += value.subscribed;
+      count++;
     } else {
       console.warn(`Invalid data format for key: ${name}`, value);
     }
   }
 
-  let churn = Number(Number(unsubscribed / (subscription || 1)) * 100).toFixed(
-    2,
-  );
+  let churn = Number(
+    (Number(unsubscribed / (subscription || 1)) * 100) / count,
+  ).toFixed(2);
 
   return {
     churn,
@@ -170,6 +305,7 @@ const processSubscriptions = (
   };
 };
 
+// Base Chart payload
 export const getBaseReportData = (): PasedReportData => {
   return {
     subscription_ratio: {
@@ -231,6 +367,160 @@ export const getBaseReportData = (): PasedReportData => {
     conversion_rate: {
       sum: 0,
       bar_chart: [],
+    },
+  };
+};
+
+// Base Parsing Object
+export const parsedBase = (): ParsedBaseType => {
+  return {
+    shopify: {
+      ht: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      sc: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      aj: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      ajn: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      raj: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      oh: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      dmo: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      htl: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+      pod: {
+        gross_sales: 0,
+        orders: 0,
+        discounts: 0,
+        returns: 0,
+        total_sales: 0,
+        shipping_charges: 0,
+      },
+    },
+    stripe: {
+      ht: {
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      sc: {
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      aj: {
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+    },
+    recharge: {
+      ht: {
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      sc: {
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      aj: {
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      oh: {
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+    },
+    klaviyo: {
+      ht: {
+        campaing_count: 0,
+        click_rate: 0,
+        open_rate: 0,
+        conversion_rate: 0,
+        recipients: 0,
+        conversion_value: 0,
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      sc: {
+        campaing_count: 0,
+        click_rate: 0,
+        open_rate: 0,
+        conversion_rate: 0,
+        recipients: 0,
+        conversion_value: 0,
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      aj: {
+        campaing_count: 0,
+        click_rate: 0,
+        open_rate: 0,
+        conversion_rate: 0,
+        recipients: 0,
+        conversion_value: 0,
+        unsubscribed: 0,
+        subscribed: 0,
+      },
+      oh: {
+        campaing_count: 0,
+        click_rate: 0,
+        open_rate: 0,
+        conversion_rate: 0,
+        recipients: 0,
+        conversion_value: 0,
+        unsubscribed: 0,
+        subscribed: 0,
+      },
     },
   };
 };
