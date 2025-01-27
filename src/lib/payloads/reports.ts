@@ -184,19 +184,36 @@ const processHeader = (
   base: ParsedBaseType,
   goals: BiglySalesGoals,
 ): HeaderAnalytics => {
+  if (!goals)
+    return {
+      total_units: 0,
+      completed_units: 0,
+      total_jobs: 0,
+      completed_jobs: 0,
+    };
+
   let goal = 0;
   for (const [k, v] of Object.entries(goals)) {
-    if (k != "annual" && k != "id") {
-      console.log(`[${k}, ${formatWithCommas(v)}]`);
+    if (k != "annual" && k != "id" && k != "sum") {
       goal += Number(v);
     }
   }
-  console.log(goal);
+
+  let month = 0;
+  for (const [k, v] of Object.entries(goals)) {
+    if (k == "sum") {
+      for (const [k, v] of Object.entries(goals.sum)) {
+        month += Number(v.total);
+      }
+    }
+  }
+
+  console.log(month);
 
   return {
-    total_units: goal,
-    completed_units: 0,
-    total_jobs: goals.annual,
+    total_units: goal || 0,
+    completed_units: month || 0,
+    total_jobs: goals.annual || 0,
     completed_jobs: 0,
   };
 };

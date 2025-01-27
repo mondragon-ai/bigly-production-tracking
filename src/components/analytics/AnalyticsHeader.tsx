@@ -66,6 +66,9 @@ export const AnalyticsHeader = ({
             <div onClick={() => handleSelectModal("seven_days")}>
               <span>7 Days</span>
             </div>
+            <div onClick={() => handleSelectModal("mtd")}>
+              <span>Month To Date</span>
+            </div>
             <div onClick={() => handleSelectModal("thirty_days")}>
               <span>30 Days</span>
             </div>

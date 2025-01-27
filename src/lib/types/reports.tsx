@@ -169,4 +169,12 @@ export type BiglySalesGoals = {
   htl: number;
   pod: number;
   annual: number;
+  sum: Record<
+    string,
+    {
+      total: number;
+      sum: Record<string, number>;
+    }
+  >;
+  ytd: number;
 };
