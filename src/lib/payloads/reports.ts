@@ -66,6 +66,8 @@ export const parseReportData = (
   payload.open_rate = processKlaviyo(base, "open_rate", true);
   payload.conversion_rate = processKlaviyo(base, "conversion_rate", true);
 
+  payload.monthly_sales_goals = processSalesGoals(base, "total_sales");
+
   return payload;
 };
 
@@ -106,15 +108,8 @@ const processMarketing = (
       const avg = multipler > 1 ? stats.length : 1;
 
       const d = stats.reduce((p, c) => {
-        if (name == "oh" && type == "open_rate") {
-          console.log(c[type]);
-        }
         return p + c[type];
       }, 0);
-
-      if (name == "oh" && type == "open_rate") {
-        console.log({d: (Math.abs(d) / avg) * multipler});
-      }
 
       base.klaviyo[name as "aj"].campaing_count = stats.length;
       base.klaviyo[name as "aj"][type] += (Math.abs(d) / avg) * multipler;
@@ -168,6 +163,41 @@ const processSubs = (
 
 // * Create Chart Data
 // ========================================================
+
+const processSalesGoals = (
+  base: ParsedBaseType,
+  key:
+    | "orders"
+    | "gross_sales"
+    | "discounts"
+    | "returns"
+    | "total_sales"
+    | "shipping_charges",
+) => {
+  let sum = 0;
+  const bar_chart: StackChartProps[] = [];
+
+  const m = Math.random() * 10;
+  for (const [name, value] of Object.entries(base.shopify)) {
+    if (value && typeof value === "object") {
+      bar_chart.push({
+        name,
+        subscription: Math.abs(value[key]),
+        unsubscribed: Math.abs(value[key]) * m,
+      });
+
+      sum += Math.abs(value[key]);
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  return {
+    churn: sum.toFixed(2),
+    stacked_chart: bar_chart,
+  };
+};
+
 const processKlaviyo = (
   base: ParsedBaseType,
   type:
@@ -188,10 +218,6 @@ const processKlaviyo = (
         name,
         value: base.klaviyo[name as "aj"][type],
       });
-
-      if (name == "oh" && type == "open_rate") {
-        console.log({stat: base.klaviyo[name as "aj"][type]});
-      }
 
       count++;
       sum += base.klaviyo[name as "aj"][type];
@@ -308,6 +334,10 @@ const processSubscriptions = (
 // Base Chart payload
 export const getBaseReportData = (): PasedReportData => {
   return {
+    monthly_sales_goals: {
+      churn: "0",
+      stacked_chart: [],
+    },
     subscription_ratio: {
       stripe: 0,
       recharge: 0,

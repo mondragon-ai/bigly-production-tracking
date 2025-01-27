@@ -45,3 +45,9 @@ export const formatTimestamp = (seconds: number): string => {
 
   return date.toLocaleString("en-US", options);
 };
+
+export const constGetCurrentMonth = () => {
+  const month = new Date().getMonth();
+  const year = new Date().getFullYear();
+  return `01/${month < 10 ? `0${month + 1}` : month + 1}/${year}`;
+};

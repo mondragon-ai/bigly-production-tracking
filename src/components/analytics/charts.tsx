@@ -288,6 +288,70 @@ export const StackedBarChart = ({
     </ResponsiveContainer>
   );
 };
+
+export const ComparedBarChart = ({
+  data,
+  suffix,
+  fixed = 1,
+  color = "#a1a5f4",
+  is_money,
+  prefix,
+}: {
+  data: any[];
+  suffix: "%" | "h" | "";
+  fixed?: number;
+  color?: string;
+  is_money?: boolean;
+  prefix?: "$" | "";
+}) => {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart data={data} margin={{top: 5, right: 5, left: -5, bottom: 5}}>
+        <CartesianGrid horizontal={false} vertical={false} />
+        <XAxis
+          interval="preserveStartEnd"
+          dataKey="name"
+          padding={{left: 10, right: 10}}
+          axisLine={false}
+          tickSize={0}
+          tick={<CustomXAxisTick />}
+        />
+        <YAxis
+          axisLine={false}
+          padding={{top: 10, bottom: 0}}
+          type="number"
+          tickSize={0}
+          tick={
+            <CustomYAxisTick
+              suffix={suffix}
+              fixed={fixed}
+              is_money={is_money}
+              negative={false}
+              prefix={prefix}
+            />
+          }
+        />
+
+        <Tooltip
+          content={<CustomStackedTooltip suffix={suffix} fixed={fixed} />}
+        />
+        <Bar
+          dataKey="subscription"
+          fill={color}
+          shape={<RoundedBar fill={"#9CE76E"} is_stacked={true} />}
+        />
+        <Bar
+          dataKey="unsubscribed"
+          fill={color}
+          shape={<RoundedBar fill={"#E85F5C"} is_stacked={true} />}
+        />
+
+        {/* <Legend /> */}
+      </BarChart>
+    </ResponsiveContainer>
+  );
+};
+
 const RoundedBar = (props: any) => {
   const {fill, x, y, width, height, is_stacked} = props;
 

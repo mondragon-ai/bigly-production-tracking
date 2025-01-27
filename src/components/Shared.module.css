@@ -379,6 +379,12 @@
   padding: 1rem;
   margin: 0rem;
 }
+
+.chartWrapperBox header > svg {
+  position: absolute;
+  right: 1rem;
+  cursor: pointer;
+}
 .chartWrapperBox header h5 {
   font-size: 13px;
   font-weight: 450;
@@ -418,6 +424,36 @@
   width: 100%;
 }
 
+.chartWrapperBox .goalsContainer {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  padding: 1rem;
+}
+
+.chartWrapperBox .goalsContainer > div {
+  height: auto;
+  display: flex;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.chartWrapperBox .goalsContainer > div:first-of-type > div {
+  width: 10%;
+}
+
+.chartWrapperBox .goalsContainer > div:last-of-type {
+  margin-top: 5rem;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
 .toolWrapper {
   background-color: #fff;
   padding: 5px 7px;
@@ -505,4 +541,44 @@
   .mobileComplete {
     display: flex;
   }
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 1rem 0 0rem 0;
+}
+
+.inputWrapper input,
+.inputWrapper select {
+  width: 100%;
+  padding: 7px 10px;
+  margin: 0px 0;
+  display: inline-block;
+  border: 2px solid var(--foreground);
+  border-radius: 4px;
+  color: var(--primary-text);
+  box-sizing: border-box;
+  background-color: var(--background);
+}
+
+.inputWrapper label {
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 13px;
+  color: var(--secondary-text);
+}
+
+.inputWrapper span {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 10px;
+  color: var(--secondary-accent);
 }

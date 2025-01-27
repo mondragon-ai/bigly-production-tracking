@@ -16,6 +16,7 @@ export type PasedReportData = {
   click_rate: BarChart;
   recipients: BarChart;
   conversion_rate: BarChart;
+  monthly_sales_goals: SubscriptionReport;
 };
 
 export type SubscriptionReport = {

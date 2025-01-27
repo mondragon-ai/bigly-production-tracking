@@ -1,6 +1,7 @@
 "use client";
 import {
   BarChartStats,
+  ComparedBarChart,
   HalfCircleStats,
   LineChartStats,
   StackedBarChart,
@@ -13,6 +14,8 @@ import {parseReportData} from "@/lib/payloads/reports";
 import {TimeFrameTypes} from "@/lib/types/analytics";
 import {useReports} from "@/lib/hooks/useReports";
 import {useState} from "react";
+import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
+import {BiglyGoalsCard} from "@/components/analytics/BiglyGoals";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");
@@ -20,6 +23,8 @@ export default function Analytics() {
   console.log({analytics});
 
   const {
+    monthly_sales_goals,
+
     subscription_ratio,
     stripe,
     recharge,
@@ -60,6 +65,59 @@ export default function Analytics() {
             <SkeletonAnalytic width={32} />
           ) : (
             <AnalyticsCard
+              title={"Daily Goals"}
+              width={49}
+              fixed={2}
+              is_money={true}
+              main_value={`${monthly_sales_goals.churn}`}
+              metric=""
+              prefix="$"
+            >
+              {monthly_sales_goals.stacked_chart ? (
+                <ComparedBarChart
+                  color={"#A1A5F4"}
+                  data={monthly_sales_goals.stacked_chart}
+                  suffix={""}
+                  is_money={true}
+                  fixed={2}
+                  prefix="$"
+                />
+              ) : null}
+            </AnalyticsCard>
+          )}
+
+          {loading == "loading" || loading == "posting" ? (
+            <SkeletonAnalytic width={32} />
+          ) : (
+            <AnalyticsCard
+              title={"Monthly Goals"}
+              width={49}
+              main_value={`${stripe.stacked_chart}`}
+              metric=""
+              fixed={0}
+              is_money={true}
+            >
+              {stripe.stacked_chart ? (
+                <ComparedBarChart
+                  color={"#A1A5F4"}
+                  data={stripe.stacked_chart}
+                  suffix={""}
+                  fixed={0}
+                  is_money={false}
+                />
+              ) : null}
+            </AnalyticsCard>
+          )}
+        </section>
+
+        <section
+          className={styles.rowSection}
+          style={{marginTop: "1rem", justifyContent: "space-between"}}
+        >
+          {loading == "loading" || loading == "posting" ? (
+            <SkeletonAnalytic width={32} />
+          ) : (
+            <AnalyticsCard
               title={"Gross Sales"}
               width={32}
               fixed={2}
@@ -90,7 +148,7 @@ export default function Analytics() {
               main_value={`${orders.sum}`}
               metric=""
               fixed={0}
-              is_money={false}
+              is_money={true}
             >
               {orders.sum ? (
                 <BarChartStats
@@ -391,11 +449,11 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Email Campaign Recipiants"}
               width={32}
-              main_value={`${recipients.sum}`}
+              main_value={`${formatNumber(recipients.sum!)}`}
               metric=""
               fixed={0}
               prefix=""
-              is_money={true}
+              is_money={false}
             >
               {recipients.sum ? (
                 <BarChartStats
@@ -429,6 +487,13 @@ export default function Analytics() {
               ) : null}
             </AnalyticsCard>
           )}
+        </section>
+
+        <section
+          className={styles.rowSection}
+          style={{marginTop: "1rem", justifyContent: "space-between"}}
+        >
+          <BiglyGoalsCard width={100} />
         </section>
       </div>
     </div>
