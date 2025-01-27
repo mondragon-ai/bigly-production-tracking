@@ -33,6 +33,7 @@ export default function Analytics() {
         loading={loading}
         fetchAnalytics={handleFetchingAnalytics}
         timeframe={tf}
+        reports={false}
       />
       <div>
         <section
