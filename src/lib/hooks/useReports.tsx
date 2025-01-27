@@ -7,12 +7,13 @@ import {biglyRequest} from "../networking/biglyServer";
 import {TimeFrameTypes} from "../types/analytics";
 import {handleHttpError} from "@/app/shared";
 import {useRouter} from "next/navigation";
-import {BiglyDailyReportDocument} from "../types/reports";
+import {BiglyDailyReportDocument, BiglySalesGoals} from "../types/reports";
 
 interface AnalyticsReturn {
   loading: LoadingTypes;
   error: string | null;
   analytics: BiglyDailyReportDocument[] | null;
+  goals: BiglySalesGoals | null;
   fetchTimeframe: (t: TimeFrameTypes) => Promise<void>;
 }
 
@@ -22,6 +23,7 @@ export const useReports = (): AnalyticsReturn => {
   const [analytics, setAnalytics] = useState<BiglyDailyReportDocument[] | null>(
     null,
   );
+  const [goals, setGoals] = useState<BiglySalesGoals | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
 
@@ -50,8 +52,34 @@ export const useReports = (): AnalyticsReturn => {
     }
   };
 
+  const fetchGoals = async () => {
+    setLoading("loading");
+    setError(null);
+    try {
+      const {status, data, message} = await biglyRequest(
+        "/bigly/goals",
+        "GET",
+        null,
+      );
+
+      if (status < 300 && data) {
+        toast.success(message);
+        setGoals(data);
+        return;
+      } else {
+        return handleHttpError(status, `${message || ""}`, setError);
+      }
+    } catch (err) {
+      console.log(err);
+      handleHttpError(500, "Server Error", setError);
+    } finally {
+      setLoading(null);
+    }
+  };
+
   useEffect(() => {
     fetchAnalytics();
+    fetchGoals();
   }, []);
 
   const fetchTimeframe = async (tf: TimeFrameTypes) => {
@@ -88,6 +116,7 @@ export const useReports = (): AnalyticsReturn => {
   };
 
   return {
+    goals,
     analytics,
     loading,
     error,

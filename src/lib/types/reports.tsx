@@ -1,7 +1,7 @@
-import {NameValueProps} from "./analytics";
+import {HeaderAnalytics, NameValueProps} from "./analytics";
 
 export type PasedReportData = {
-  subscription_ratio: ReportHeader;
+  goals: HeaderAnalytics;
   gross_sales: BarChart;
   discounts: BarChart;
   orders: BarChart;
@@ -16,7 +16,17 @@ export type PasedReportData = {
   click_rate: BarChart;
   recipients: BarChart;
   conversion_rate: BarChart;
-  monthly_sales_goals: SubscriptionReport;
+  monthly_sales_goals: SalesGoals;
+  daily_sales_goals: SalesGoals;
+};
+
+export type SalesGoals = {
+  churn: string;
+  stacked_chart: {
+    name: string;
+    sales: number;
+    goal: number;
+  }[];
 };
 
 export type SubscriptionReport = {
@@ -146,4 +156,17 @@ export type ParsedBaseType = {
   stripe: StripeRechargeMetrics;
   recharge: StripeRechargeMetrics;
   klaviyo: KlaviyoRechargeMetrics;
+};
+
+export type BiglySalesGoals = {
+  ht: number;
+  sc: number;
+  aj: number;
+  ajn: number;
+  raj: number;
+  oh: number;
+  dmo: number;
+  htl: number;
+  pod: number;
+  annual: number;
 };

@@ -1,6 +1,7 @@
-import {NameValueProps} from "../types/analytics";
+import {HeaderAnalytics, NameValueProps} from "../types/analytics";
 import {
   BiglyDailyReportDocument,
+  BiglySalesGoals,
   KlaviyoStoreAnalytics,
   KlaviyoStoreNames,
   ParsedBaseType,
@@ -11,9 +12,12 @@ import {
   ShopifyStoreNames,
   StackChartProps,
 } from "../types/reports";
+import {formatWithCommas} from "../utils/converter.tsx/numbers";
+import {getDaysInCurrentMonth} from "../utils/converter.tsx/time";
 
 export const parseReportData = (
   analytics: BiglyDailyReportDocument[] | null,
+  goals: BiglySalesGoals | null,
 ): PasedReportData => {
   const payload = getBaseReportData();
   if (!analytics) return payload;
@@ -66,7 +70,20 @@ export const parseReportData = (
   payload.open_rate = processKlaviyo(base, "open_rate", true);
   payload.conversion_rate = processKlaviyo(base, "conversion_rate", true);
 
-  payload.monthly_sales_goals = processSalesGoals(base, "total_sales");
+  payload.daily_sales_goals = processSalesGoals(
+    base,
+    "gross_sales",
+    goals!,
+    true,
+  );
+  payload.monthly_sales_goals = processSalesGoals(
+    base,
+    "gross_sales",
+    goals!,
+    false,
+  );
+
+  payload.goals = processHeader(base, goals!);
 
   return payload;
 };
@@ -163,6 +180,26 @@ const processSubs = (
 
 // * Create Chart Data
 // ========================================================
+const processHeader = (
+  base: ParsedBaseType,
+  goals: BiglySalesGoals,
+): HeaderAnalytics => {
+  let goal = 0;
+  for (const [k, v] of Object.entries(goals)) {
+    if (k != "annual" && k != "id") {
+      console.log(`[${k}, ${formatWithCommas(v)}]`);
+      goal += Number(v);
+    }
+  }
+  console.log(goal);
+
+  return {
+    total_units: goal,
+    completed_units: 0,
+    total_jobs: goals.annual,
+    completed_jobs: 0,
+  };
+};
 
 const processSalesGoals = (
   base: ParsedBaseType,
@@ -173,17 +210,20 @@ const processSalesGoals = (
     | "returns"
     | "total_sales"
     | "shipping_charges",
+  goals: BiglySalesGoals,
+  is_daily: boolean,
 ) => {
-  let sum = 0;
-  const bar_chart: StackChartProps[] = [];
+  const num = is_daily ? getDaysInCurrentMonth() : 1;
 
-  const m = Math.random() * 10;
+  let sum = 0;
+  const bar_chart: {name: string; sales: number; goal: number}[] = [];
+
   for (const [name, value] of Object.entries(base.shopify)) {
     if (value && typeof value === "object") {
       bar_chart.push({
         name,
-        subscription: Math.abs(value[key]),
-        unsubscribed: Math.abs(value[key]) * m,
+        sales: Math.abs(value[key]),
+        goal: Math.abs(goals ? goals[name as "aj"] : 0) / num,
       });
 
       sum += Math.abs(value[key]);
@@ -334,14 +374,20 @@ const processSubscriptions = (
 // Base Chart payload
 export const getBaseReportData = (): PasedReportData => {
   return {
+    daily_sales_goals: {
+      churn: "0",
+      stacked_chart: [],
+    },
     monthly_sales_goals: {
       churn: "0",
       stacked_chart: [],
     },
-    subscription_ratio: {
-      stripe: 0,
-      recharge: 0,
-    } as ReportHeader,
+    goals: {
+      total_units: 0,
+      completed_units: 0,
+      total_jobs: 0,
+      completed_jobs: 0,
+    },
     gross_sales: {
       sum: 0,
       bar_chart: [],

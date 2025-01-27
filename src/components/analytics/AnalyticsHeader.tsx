@@ -7,6 +7,7 @@ import styles from "../Shared.module.css";
 import {HalfCircleStats} from "./charts";
 import localFont from "next/font/local";
 import {useState} from "react";
+import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
 
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
@@ -18,10 +19,12 @@ export const AnalyticsHeader = ({
   loading,
   header,
   timeframe,
+  reports = false,
   title = "Anlaytics",
   fetchAnalytics,
 }: {
   title?: string;
+  reports: boolean;
   loading: LoadingTypes;
   header?: HeaderAnalytics;
   fetchAnalytics: (t: TimeFrameTypes) => void;
@@ -82,8 +85,12 @@ export const AnalyticsHeader = ({
           ) : (
             <div className={styles.right}>
               <div className={styles.aTxt} onClick={() => setType("units")}>
-                <h1 className={geistSans.className}>{header.total_units}</h1>
-                <span>total units</span>
+                <h1 className={geistSans.className}>
+                  {reports
+                    ? formatNumber(header.total_units)
+                    : header.total_units}
+                </h1>
+                <span> total{`${!reports ? " units" : " sales"}`}</span>
               </div>
               <div className={styles.chartContainer}>
                 <HalfCircleStats
@@ -101,8 +108,12 @@ export const AnalyticsHeader = ({
                 />
               </div>
               <div className={styles.aTxt} onClick={() => setType("jobs")}>
-                <h1 className={geistSans.className}>{header.total_jobs}</h1>
-                <span>total jobs</span>
+                <h1 className={geistSans.className}>
+                  {reports
+                    ? formatNumber(header.total_jobs)
+                    : header.total_jobs}
+                </h1>
+                <span>total {`${!reports ? " units" : " sales"}`}</span>
               </div>
               <div className={`${styles.aTxt} ${styles.mobileComplete}`}>
                 <h1 className={geistSans.className}>

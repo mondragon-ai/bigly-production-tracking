@@ -4,18 +4,28 @@ import styles from "../Shared.module.css";
 import {Button} from "../shared/Button";
 import {useState} from "react";
 import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
+import {BiglySalesGoals} from "@/lib/types/reports";
 
-export const BiglyGoalsCard = ({width}: {width: number}) => {
-  const [goals, setGoals] = useState({
-    aj: {name: "Alex Jones", value: ""},
-    ht: {name: "Hodge Twins", value: ""},
-    sc: {name: "Shop Crowder", value: ""},
-    ajn: {name: "Alex Jones Naturals", value: ""},
-    raj: {name: "Real Alex Jones", value: ""},
-    oh: {name: "Optimal Human", value: ""},
-    dmo: {name: "DMO", value: ""},
-    htl: {name: "Hold The Line", value: ""},
-    pod: {name: "Bigly POD", value: ""},
+export const BiglyGoalsCard = ({
+  width,
+  goals,
+}: {
+  width: number;
+  goals: BiglySalesGoals;
+}) => {
+  if (!goals) return;
+
+  const [goal, setGoals] = useState({
+    aj: {name: "Alex Jones", value: `${goals?.aj || ""}`},
+    ht: {name: "Hodge Twins", value: `${goals?.ht || ""}`},
+    sc: {name: "Shop Crowder", value: `${goals?.sc || ""}`},
+    ajn: {name: "Alex Jones Naturals", value: `${goals?.ajn || ""}`},
+    raj: {name: "Real Alex Jones", value: `${goals?.raj || ""}`},
+    oh: {name: "Optimal Human", value: `${goals?.oh || ""}`},
+    dmo: {name: "DMO", value: `${goals?.dmo || ""}`},
+    htl: {name: "Hold The Line", value: `${goals?.htl || ""}`},
+    pod: {name: "Bigly POD", value: `${goals?.pod || ""}`},
+    annual: {name: "Annual", value: `${goals?.annual || ""}`},
   });
   return (
     <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
@@ -25,29 +35,53 @@ export const BiglyGoalsCard = ({width}: {width: number}) => {
       </header>
       <section className={styles.goalsContainer}>
         <div>
-          {Object.entries(goals).map(([k, v], i) => {
-            return (
-              <div className={styles.inputWrapper}>
-                <label htmlFor="name">{v.name}</label>
-                <input
-                  type="text"
-                  name={v.name}
-                  placeholder="$1,234,567.90"
-                  value={goals[k as "aj"].value}
-                  onChange={(e) =>
-                    setGoals(
-                      (prev) =>
-                        prev && {
-                          ...prev,
-                          [k]: {...prev[k as "aj"], value: e.target.value},
-                        },
-                    )
-                  }
-                />
-                <span>${formatNumber(Number(goals[k as "aj"].value))}</span>
-              </div>
-            );
+          {Object.entries(goal).map(([k, v], i) => {
+            if (k == "annual") return;
+            else {
+              return (
+                <div className={styles.inputWrapper}>
+                  <label htmlFor="name">{v.name}</label>
+                  <input
+                    type="text"
+                    name={v.name}
+                    placeholder="$0.0"
+                    value={goal[k as "aj"].value}
+                    onChange={(e) =>
+                      setGoals(
+                        (prev) =>
+                          prev && {
+                            ...prev,
+                            [k]: {...prev[k as "aj"], value: e.target.value},
+                          },
+                      )
+                    }
+                  />
+                  <span>${formatNumber(Number(goal[k as "aj"].value))}</span>
+                </div>
+              );
+            }
           })}
+        </div>
+        <div>
+          <div className={styles.inputWrapper}>
+            <label htmlFor="name">Annual Goals</label>
+            <input
+              type="text"
+              name={"annual"}
+              placeholder="$0.0"
+              value={goal.annual.value}
+              onChange={(e) =>
+                setGoals(
+                  (prev) =>
+                    prev && {
+                      ...prev,
+                      annual: {...prev.annual, value: e.target.value},
+                    },
+                )
+              }
+            />
+            <span>${formatNumber(Number(goal.annual.value))}</span>
+          </div>
         </div>
         <div>
           <Button

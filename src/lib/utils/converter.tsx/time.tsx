@@ -51,3 +51,17 @@ export const constGetCurrentMonth = () => {
   const year = new Date().getFullYear();
   return `01/${month < 10 ? `0${month + 1}` : month + 1}/${year}`;
 };
+
+/**
+ * Gets the number of days in the current month.
+ *
+ * @returns {number} The number of days in the current month.
+ */
+export const getDaysInCurrentMonth = (): number => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  return daysInMonth;
+};

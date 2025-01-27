@@ -19,13 +19,14 @@ import {BiglyGoalsCard} from "@/components/analytics/BiglyGoals";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");
-  const {loading, analytics, fetchTimeframe} = useReports();
-  console.log({analytics});
+  const {loading, analytics, goals: g, fetchTimeframe} = useReports();
 
   const {
     monthly_sales_goals,
+    daily_sales_goals,
 
-    subscription_ratio,
+    goals,
+
     stripe,
     recharge,
     gross_sales,
@@ -41,7 +42,7 @@ export default function Analytics() {
     click_rate,
     recipients,
     conversion_rate,
-  } = parseReportData(analytics);
+  } = parseReportData(analytics, g);
 
   const handleFetchingAnalytics = (tf: TimeFrameTypes) => {
     setTimeFrame(tf);
@@ -51,6 +52,8 @@ export default function Analytics() {
   return (
     <div className={styles.page}>
       <AnalyticsHeader
+        reports={true}
+        header={goals}
         title={"Daily Reports"}
         loading={loading}
         fetchAnalytics={handleFetchingAnalytics}
@@ -69,14 +72,14 @@ export default function Analytics() {
               width={49}
               fixed={2}
               is_money={true}
-              main_value={`${monthly_sales_goals.churn}`}
+              main_value={`${daily_sales_goals.churn}`}
               metric=""
               prefix="$"
             >
-              {monthly_sales_goals.stacked_chart ? (
+              {daily_sales_goals.stacked_chart ? (
                 <ComparedBarChart
                   color={"#A1A5F4"}
-                  data={monthly_sales_goals.stacked_chart}
+                  data={daily_sales_goals.stacked_chart}
                   suffix={""}
                   is_money={true}
                   fixed={2}
@@ -92,18 +95,20 @@ export default function Analytics() {
             <AnalyticsCard
               title={"Monthly Goals"}
               width={49}
-              main_value={`${stripe.stacked_chart}`}
-              metric=""
-              fixed={0}
+              fixed={2}
               is_money={true}
+              main_value={`${monthly_sales_goals.churn}`}
+              metric=""
+              prefix="$"
             >
-              {stripe.stacked_chart ? (
+              {monthly_sales_goals.stacked_chart ? (
                 <ComparedBarChart
                   color={"#A1A5F4"}
-                  data={stripe.stacked_chart}
+                  data={monthly_sales_goals.stacked_chart}
                   suffix={""}
-                  fixed={0}
-                  is_money={false}
+                  is_money={true}
+                  fixed={2}
+                  prefix="$"
                 />
               ) : null}
             </AnalyticsCard>
@@ -296,35 +301,7 @@ export default function Analytics() {
 
           {loading == "loading" || loading == "posting" || total_sales.sum ? (
             <SkeletonAnalytic width={32} />
-          ) : (
-            <AnalyticsCard
-              title={"Subscription Ratios"}
-              width={32}
-              main_value={`${total_sales.sum}`}
-              metric=""
-            >
-              {!total_sales.sum ? (
-                <HalfCircleStats
-                  completed={
-                    subscription_ratio.stripe / subscription_ratio.recharge
-                  }
-                  data={[
-                    {
-                      name: "Stripe",
-                      value:
-                        subscription_ratio.stripe / subscription_ratio.recharge,
-                    },
-                    {
-                      name: "Rcharge",
-                      value:
-                        1 -
-                        subscription_ratio.stripe / subscription_ratio.recharge,
-                    },
-                  ]}
-                />
-              ) : null}
-            </AnalyticsCard>
-          )}
+          ) : null}
 
           {loading == "loading" || loading == "posting" ? (
             <SkeletonAnalytic width={32} />
@@ -493,7 +470,7 @@ export default function Analytics() {
           className={styles.rowSection}
           style={{marginTop: "1rem", justifyContent: "space-between"}}
         >
-          <BiglyGoalsCard width={100} />
+          <BiglyGoalsCard width={100} goals={g!} />
         </section>
       </div>
     </div>

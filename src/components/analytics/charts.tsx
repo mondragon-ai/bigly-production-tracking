@@ -87,6 +87,44 @@ const CustomStackedTooltip = ({active, payload, label, suffix, fixed}: any) => {
   }
 };
 
+const CustomComparedTooltip = ({
+  active,
+  payload,
+  label,
+  suffix,
+  fixed,
+}: any) => {
+  if (active && payload && payload.length) {
+    const data = {
+      sales: 0,
+      goal: 0,
+    };
+
+    return (
+      <div className={styles.toolWrapper}>
+        {payload.map((p: any) => {
+          data[p.name as "sales"] = Number(p.value);
+
+          return (
+            <p className="label">
+              {`${capitalizeWords(p.name)}: `}
+              <span style={{fontWeight: 550}}>{`$${formatNumber(
+                p.value,
+              )}${suffix}`}</span>
+            </p>
+          );
+        })}
+        <p className="label">
+          {"Progress: "}
+          <span style={{fontWeight: 550}}>{`${(
+            Number(data.sales / (data.goal || 1)) * 100
+          ).toFixed(2)}%`}</span>
+        </p>
+      </div>
+    );
+  }
+};
+
 const CustomYAxisTick = (props: any) => {
   const {x, y, payload, suffix, fixed, is_money, negative, prefix} = props;
 
@@ -333,17 +371,17 @@ export const ComparedBarChart = ({
         />
 
         <Tooltip
-          content={<CustomStackedTooltip suffix={suffix} fixed={fixed} />}
+          content={<CustomComparedTooltip suffix={suffix} fixed={fixed} />}
         />
         <Bar
-          dataKey="subscription"
+          dataKey="sales"
           fill={color}
-          shape={<RoundedBar fill={"#9CE76E"} is_stacked={true} />}
+          shape={<RoundedBar fill={"#9CE76E"} is_stacked={false} />}
         />
         <Bar
-          dataKey="unsubscribed"
+          dataKey="goal"
           fill={color}
-          shape={<RoundedBar fill={"#E85F5C"} is_stacked={true} />}
+          shape={<RoundedBar fill={"#A1A5F4"} is_stacked={false} />}
         />
 
         {/* <Legend /> */}
