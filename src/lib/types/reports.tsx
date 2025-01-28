@@ -173,7 +173,7 @@ export type BiglySalesGoals = {
     string,
     {
       total: number;
-      sum: Record<string, number>;
+      sales: Record<string, number>;
     }
   >;
   ytd: number;

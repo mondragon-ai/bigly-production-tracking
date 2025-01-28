@@ -70,18 +70,13 @@ export const parseReportData = (
   payload.open_rate = processKlaviyo(base, "open_rate", true);
   payload.conversion_rate = processKlaviyo(base, "conversion_rate", true);
 
-  payload.daily_sales_goals = processSalesGoals(
+  payload.daily_sales_goals = processDailySalesGoals(
+    analytics[analytics.length - 1].shopify,
     base,
     "gross_sales",
     goals!,
-    true,
   );
-  payload.monthly_sales_goals = processSalesGoals(
-    base,
-    "gross_sales",
-    goals!,
-    false,
-  );
+  payload.monthly_sales_goals = processMonthlySalesGoals(goals!);
 
   payload.goals = processHeader(base, goals!);
 
@@ -218,7 +213,8 @@ const processHeader = (
   };
 };
 
-const processSalesGoals = (
+const processDailySalesGoals = (
+  data: Record<ShopifyStoreNames, ShopifyAnalytics>,
   base: ParsedBaseType,
   key:
     | "orders"
@@ -228,25 +224,79 @@ const processSalesGoals = (
     | "total_sales"
     | "shipping_charges",
   goals: BiglySalesGoals,
-  is_daily: boolean,
 ) => {
-  const num = is_daily ? getDaysInCurrentMonth() : 1;
+  if (!goals)
+    return {
+      churn: "0",
+      stacked_chart: [],
+    };
+  const num = getDaysInCurrentMonth();
 
   let sum = 0;
   const bar_chart: {name: string; sales: number; goal: number}[] = [];
 
-  for (const [name, value] of Object.entries(base.shopify)) {
+  for (const [name, value] of Object.entries(data)) {
     if (value && typeof value === "object") {
       bar_chart.push({
         name,
         sales: Math.abs(value[key]),
         goal: Math.abs(goals ? goals[name as "aj"] : 0) / num,
       });
-
       sum += Math.abs(value[key]);
     } else {
       console.warn(`Invalid data format for key: ${name}`, value);
     }
+  }
+
+  // for (const [name, value] of Object.entries(base.shopify)) {
+  // }
+
+  return {
+    churn: sum.toFixed(2),
+    stacked_chart: bar_chart,
+  };
+};
+
+const processMonthlySalesGoals = (goals: BiglySalesGoals) => {
+  if (!goals)
+    return {
+      churn: "0",
+      stacked_chart: [],
+    };
+
+  const stores: Record<string, number> = {};
+  let sum = 0;
+  const bar_chart: {name: string; sales: number; goal: number}[] = [];
+
+  for (const [name, value] of Object.entries(goals.sum)) {
+    console.log({value: value});
+    if (value && typeof value === "object") {
+      for (const [d, v] of Object.entries(value.sales)) {
+        if (value && typeof value === "object") {
+          console.log({d, v});
+
+          if (stores[d as "aj"]) {
+            stores[d as "aj"] += Math.abs(v);
+          } else {
+            stores[d as "aj"] = Math.abs(v);
+          }
+
+          sum += Math.abs(v);
+        } else {
+          console.warn(`Invalid data format for key: ${name}`, value);
+        }
+      }
+    } else {
+      console.warn(`Invalid data format for key: ${name}`, value);
+    }
+  }
+
+  for (const [name, value] of Object.entries(stores)) {
+    bar_chart.push({
+      name,
+      sales: Math.abs(value),
+      goal: Math.abs(goals ? goals[name as "aj"] : 0),
+    });
   }
 
   return {
