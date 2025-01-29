@@ -203,13 +203,11 @@ const processHeader = (
     }
   }
 
-  console.log(month);
-
   return {
     total_units: goal || 0,
     completed_units: month || 0,
     total_jobs: goals.annual || 0,
-    completed_jobs: 0,
+    completed_jobs: (goals.ytd || 0) + month,
   };
 };
 
@@ -247,9 +245,6 @@ const processDailySalesGoals = (
       console.warn(`Invalid data format for key: ${name}`, value);
     }
   }
-
-  // for (const [name, value] of Object.entries(base.shopify)) {
-  // }
 
   return {
     churn: sum.toFixed(2),
