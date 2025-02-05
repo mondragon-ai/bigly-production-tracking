@@ -15,6 +15,7 @@ interface AnalyticsReturn {
   analytics: BiglyDailyReportDocument[] | null;
   goals: BiglySalesGoals | null;
   fetchTimeframe: (t: TimeFrameTypes) => Promise<void>;
+  saveGoals: (goals: BiglySalesGoals) => Promise<void>;
 }
 
 export const useReports = (): AnalyticsReturn => {
@@ -115,11 +116,57 @@ export const useReports = (): AnalyticsReturn => {
     }
   };
 
+  const saveGoals = async (goals: BiglySalesGoals) => {
+    setLoading("loading");
+    setError(null);
+
+    try {
+      const {status, data, message} = await biglyRequest(
+        `/bigly/goals`,
+        "POST",
+        {
+          ht: goals.ht,
+          sc: goals.sc,
+          aj: goals.aj,
+          ajn: goals.ajn,
+          raj: goals.raj,
+          oh: goals.oh,
+          dmo: goals.dmo,
+          htl: goals.htl,
+          pod: goals.pod,
+          annual: goals.annual,
+        },
+      );
+
+      // if (status == 401) {
+      //   return router.push("/");
+      // }
+      // if (status == 403) {
+      //   return router.push("/jobs");
+      // }
+
+      if (status < 300 && data) {
+        console.log({data});
+        toast.success(message);
+        setAnalytics(data.analytics);
+        return;
+      } else {
+        handleHttpError(status, `${message}`, setError);
+      }
+      return;
+    } catch (err) {
+      handleHttpError(500, "Server Error", setError);
+    } finally {
+      setLoading(null);
+    }
+  };
+
   return {
     goals,
     analytics,
     loading,
     error,
     fetchTimeframe,
+    saveGoals,
   };
 };

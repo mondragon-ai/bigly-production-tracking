@@ -19,7 +19,13 @@ import {BiglyGoalsCard} from "@/components/analytics/BiglyGoals";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");
-  const {loading, analytics, goals: g, fetchTimeframe} = useReports();
+  const {
+    loading,
+    analytics,
+    goals: g,
+    fetchTimeframe,
+    saveGoals,
+  } = useReports();
 
   const {
     monthly_sales_goals,
@@ -470,7 +476,7 @@ export default function Analytics() {
           className={styles.rowSection}
           style={{marginTop: "1rem", justifyContent: "space-between"}}
         >
-          <BiglyGoalsCard width={100} goals={g!} />
+          <BiglyGoalsCard width={100} goals={g!} saveGoals={saveGoals} />
         </section>
       </div>
     </div>

@@ -9,9 +9,11 @@ import {BiglySalesGoals} from "@/lib/types/reports";
 export const BiglyGoalsCard = ({
   width,
   goals,
+  saveGoals,
 }: {
   width: number;
   goals: BiglySalesGoals;
+  saveGoals: (goals: BiglySalesGoals) => Promise<void>;
 }) => {
   if (!goals) return;
 
@@ -27,6 +29,24 @@ export const BiglyGoalsCard = ({
     pod: {name: "Bigly POD", value: `${goals?.pod || ""}`},
     annual: {name: "Annual", value: `${goals?.annual || ""}`},
   });
+
+  const handleSaveGoals = async () => {
+    const payload = {
+      ht: Number(goal.ht.value),
+      sc: Number(goal.sc.value),
+      aj: Number(goal.aj.value),
+      ajn: Number(goal.ajn.value),
+      raj: Number(goal.raj.value),
+      oh: Number(goal.oh.value),
+      dmo: Number(goal.dmo.value),
+      htl: Number(goal.htl.value),
+      pod: Number(goal.pod.value),
+      annual: Number(goal.annual.value),
+      sum: {n: {total: 0, sales: {}}},
+      ytd: 0,
+    };
+    await saveGoals(payload);
+  };
   return (
     <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
       <header>
@@ -90,6 +110,7 @@ export const BiglyGoalsCard = ({
             tone={"success"}
             icon="floppy"
             align={"center"}
+            onClick={() => handleSaveGoals()}
           />
         </div>
       </section>
