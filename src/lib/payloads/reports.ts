@@ -189,7 +189,7 @@ const processHeader = (
 
   let goal = 0;
   for (const [k, v] of Object.entries(goals)) {
-    if (k != "annual" && k != "id" && k != "sum") {
+    if (k != "annual" && k != "id" && k != "sum" && k != "ytd") {
       goal += Number(v);
     }
   }
