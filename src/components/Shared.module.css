@@ -478,7 +478,7 @@
   align-items: center;
   position: absolute !important;
   height: auto;
-  width: 100px;
+  width: 120px;
   top: 115px !important;
   left: 0px;
   cursor: pointer;
@@ -581,4 +581,29 @@
   font-weight: 400;
   line-height: 10px;
   color: var(--secondary-accent);
+}
+
+.dateRange {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.datePicker {
+  display: flex;
+  width: 100%;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
+.datePicker > div {
+  border-radius: 5px;
+}
+
+.datePicker > span {
+  border-radius: 5px;
+}
+
+.datePicker > span .react-calendar__month-view__days__day--weekend {
+  color: #ec4899 !important;
 }

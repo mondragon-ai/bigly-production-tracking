@@ -50,9 +50,23 @@ export default function Analytics() {
     conversion_rate,
   } = parseReportData(analytics, g);
 
-  const handleFetchingAnalytics = (tf: TimeFrameTypes) => {
-    setTimeFrame(tf);
-    fetchTimeframe(tf);
+  const handleFetchingAnalytics = (t: TimeFrameTypes) => {
+    const tp = [
+      "today",
+      "seven_days",
+      "thirty_days",
+      "mtd",
+      "ninety_days",
+      "twelve_months",
+      "custom",
+    ];
+    console.log({t, b: tp.includes(t)});
+    if (tp.includes(t)) {
+      setTimeFrame(t);
+    } else {
+      setTimeFrame("custom");
+    }
+    fetchTimeframe(t);
   };
 
   return (

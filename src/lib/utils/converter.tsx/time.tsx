@@ -65,3 +65,13 @@ export const getDaysInCurrentMonth = (): number => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   return daysInMonth;
 };
+
+export const formatDateToYYYYMMDD = (date: Date | string): string | null => {
+  if (!date) return null;
+
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};

@@ -8,12 +8,21 @@ import {HalfCircleStats} from "./charts";
 import localFont from "next/font/local";
 import {useState} from "react";
 import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
+// import DatePicker from "react-date-picker";
+import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
+import "react-calendar/dist/Calendar.css";
+import {formatDateToYYYYMMDD} from "@/lib/utils/converter.tsx/time";
+import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
+type ValuePiece = Date | null;
+
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export const AnalyticsHeader = ({
   loading,
@@ -30,11 +39,38 @@ export const AnalyticsHeader = ({
   fetchAnalytics: (t: TimeFrameTypes) => void;
   timeframe: TimeFrameTypes;
 }) => {
+  const [range, setRange] = useState<Value>([new Date(), new Date()]);
+
   const [type, setType] = useState<"jobs" | "units">("jobs");
+  const [custom, setCustom] = useState(false);
   const [modal, openModal] = useState(false);
   const handleSelectModal = (type: TimeFrameTypes) => {
     openModal((p) => !p);
-    fetchAnalytics(type);
+    if (type === "custom") {
+      setCustom(true);
+      return;
+    } else {
+      setCustom(false);
+      fetchAnalytics(type);
+    }
+  };
+
+  const handleDateRange = () => {
+    if (!range || !Array.isArray(range)) {
+      setCustom(false);
+      return;
+    }
+    let tf = `${formatDateToYYYYMMDD(range[0] as Date)}`;
+
+    if (range[1]) {
+      tf += `--${formatDateToYYYYMMDD(range[1] as Date)}`;
+    }
+    if (!range[0]) {
+      tf = "yesterday";
+    }
+
+    setCustom(false);
+    fetchAnalytics(tf);
   };
   return (
     <header
@@ -48,15 +84,48 @@ export const AnalyticsHeader = ({
           <h1 className={geistSans.className}>{title}</h1>
         </div>
 
-        <Button
-          loading={false}
-          thin={true}
-          text={capitalizeWords(timeframe).toLocaleUpperCase() || "TODAY"}
-          tone={"success"}
-          align={"center"}
-          icon={"calendar"}
-          onClick={() => openModal((p) => !p)}
-        />
+        <div>
+          {custom ? (
+            <Button
+              loading={false}
+              thin={true}
+              text={"Search"}
+              tone={"success"}
+              align={"center"}
+              icon={"calendar"}
+              onClick={() => handleDateRange()}
+            />
+          ) : (
+            <Button
+              loading={false}
+              thin={true}
+              text={capitalizeWords(timeframe).toLocaleUpperCase() || "TODAY"}
+              tone={"success"}
+              align={"center"}
+              icon={"calendar"}
+              onClick={() => openModal((p) => !p)}
+            />
+          )}
+
+          {custom && (
+            <div className={styles.dateRange}>
+              {/* <DateRangePicker
+                label="Placement start"
+                selectorButtonPlacement="start"
+              /> */}
+              <DateRangePicker
+                onChange={setRange}
+                value={range}
+                className={styles.datePicker}
+              />
+              {/* <DatePicker
+                onChange={setEnd}
+                value={end}
+                className={styles.datePicker}
+              /> */}
+            </div>
+          )}
+        </div>
 
         {modal && (
           <div className={styles.timeFramWrapper}>
@@ -77,6 +146,9 @@ export const AnalyticsHeader = ({
             </div>
             <div onClick={() => handleSelectModal("twelve_months")}>
               <span>12 Months</span>
+            </div>
+            <div onClick={() => handleSelectModal("custom")}>
+              <span>Custom Range</span>
             </div>
           </div>
         )}

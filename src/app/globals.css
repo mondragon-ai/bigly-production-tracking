@@ -88,3 +88,29 @@ a {
     color-scheme: dark;
   }
 }
+
+.react-calendar__month-view__days__day--weekend {
+  color: #e53c53 !important;
+}
+
+.react-calendar__tile.react-calendar__decade-view__years__year,
+.react-calendar__tile.react-calendar__year-view__months__month,
+.react-calendar__tile.react-calendar__month-view__days__day {
+  color: black;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth,
+.react-calendar__decade-view__years__year--neighboringDecade,
+.react-calendar__century-view__decades__decade--neighboringCentury {
+  color: rgb(180 180 180) !important;
+}
+
+.react-calendar__tile--hasActive,
+.react-calendar__tile--hasActive,
+.react-calendar__tile--active {
+  background: rgb(161, 165, 244) !important;
+}
+
+.react-calendar__navigation__arrow {
+  color: black;
+}

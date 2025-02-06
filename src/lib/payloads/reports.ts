@@ -70,8 +70,12 @@ export const parseReportData = (
   payload.open_rate = processKlaviyo(base, "open_rate", true);
   payload.conversion_rate = processKlaviyo(base, "conversion_rate", true);
 
+  const shopify =
+    analytics && analytics.length > 0
+      ? analytics[analytics.length - 1]?.shopify
+      : null;
   payload.daily_sales_goals = processDailySalesGoals(
-    analytics[analytics.length - 1].shopify,
+    shopify,
     base,
     "gross_sales",
     goals!,
@@ -212,7 +216,7 @@ const processHeader = (
 };
 
 const processDailySalesGoals = (
-  data: Record<ShopifyStoreNames, ShopifyAnalytics>,
+  data: Record<ShopifyStoreNames, ShopifyAnalytics> | null,
   base: ParsedBaseType,
   key:
     | "orders"
@@ -223,7 +227,7 @@ const processDailySalesGoals = (
     | "shipping_charges",
   goals: BiglySalesGoals,
 ) => {
-  if (!goals)
+  if (!goals || !data)
     return {
       churn: "0",
       stacked_chart: [],
@@ -264,12 +268,9 @@ const processMonthlySalesGoals = (goals: BiglySalesGoals) => {
   const bar_chart: {name: string; sales: number; goal: number}[] = [];
 
   for (const [name, value] of Object.entries(goals.sum)) {
-    console.log({value: value});
     if (value && typeof value === "object") {
       for (const [d, v] of Object.entries(value.sales)) {
         if (value && typeof value === "object") {
-          console.log({d, v});
-
           if (stores[d as "aj"]) {
             stores[d as "aj"] += Math.abs(v);
           } else {

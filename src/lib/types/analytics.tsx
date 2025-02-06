@@ -44,7 +44,9 @@ export type TimeFrameTypes =
   | "thirty_days"
   | "mtd"
   | "ninety_days"
-  | "twelve_months";
+  | "twelve_months"
+  | "custom"
+  | string;
 
 export type ParsedAnalyticsReturn = {
   header: HeaderAnalytics;
