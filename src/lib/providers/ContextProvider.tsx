@@ -22,7 +22,7 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
       console.log("GLOBAL_STATE");
 
       if (!auth.jwt) {
-        // router.push("/");
+        router.push("/");
       } else {
         setState((p) => ({...p, user: auth}));
       }
