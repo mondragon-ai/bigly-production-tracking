@@ -111,7 +111,7 @@
 .fileTableWrapper tr,
 .fileTableWrapper td {
   height: auto;
-  vertical-align: bottom;
+  vertical-align: top;
   border: none;
   text-align: left;
   border-bottom: 1px solid rgb(222, 222, 222);

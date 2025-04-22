@@ -28,5 +28,8 @@ export const formatNumber = (num: number, trunc?: boolean): string => {
  * @returns {string} The formatted money string.
  */
 export const formatToMoney = (num: number): string => {
-  return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (num < 0) {
+    return "-$" + (num * -1).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return "$" + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

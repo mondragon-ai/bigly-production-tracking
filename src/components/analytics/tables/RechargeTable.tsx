@@ -1,9 +1,9 @@
 // components/AnalyticsTable.tsx
 import {memo, useMemo} from "react";
 import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
-import styles from "../Shared.module.css";
-import tableStyles from "../files/Files.module.css";
-import {CleanedAnalytics, Platforms} from "@/lib/types/reports";
+import styles from "../../Shared.module.css";
+import tableStyles from "../../files/Files.module.css";
+import {CleanedAnalytics} from "@/lib/types/reports";
 
 type AnalyticsTableProps = {
   title: string;
@@ -37,13 +37,12 @@ export const RechargeTable = memo(
               const cancelled = metrics.cancelled ?? 0;
               const totalCount = metrics.total_count ?? 0;
               const net = created - cancelled;
-              const isNegative = cancelled > created ? -1 : 1;
               const churnRate =
                 created === 0 && cancelled === 0
                   ? "0"
                   : created === 0 && cancelled > 0
                   ? "100"
-                  : (((isNegative * cancelled) / created) * 100).toFixed(2);
+                  : ((cancelled / created) * 100).toFixed(2);
 
               return {
                 product,
@@ -74,7 +73,7 @@ export const RechargeTable = memo(
           className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
           style={{maxHeight: "300px", overflow: "auto", position: "relative"}}
         >
-          <table>
+          <table style={{minWidth: "120%"}}>
             <thead style={{position: "sticky", top: 0}}>
               <tr>
                 {HEADERS.map((header, i) => (

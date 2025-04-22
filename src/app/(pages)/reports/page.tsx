@@ -1,23 +1,12 @@
 "use client";
-import {
-  BarChartStats,
-  ComparedBarChart,
-  HalfCircleStats,
-  LineChartStats,
-  StackedBarChart,
-} from "@/components/analytics/charts";
-import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
+
+import {RechargeTable} from "@/components/analytics/tables/RechargeTable";
 import {AnalyticsHeader} from "@/components/analytics/AnalyticsHeader";
-import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
 import styles from "../../../components/Shared.module.css";
-import {parseReportData} from "@/lib/payloads/reports";
 import {TimeFrameTypes} from "@/lib/types/analytics";
 import {useReports} from "@/lib/hooks/useReports";
 import {useState} from "react";
-import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
-import {BiglyGoalsCard} from "@/components/analytics/BiglyGoals";
-import {Divider} from "@/components/shared/Divider";
-import {RechargeTable} from "@/components/analytics/tables/AnalyticsTable";
+import {ShopifyTable} from "@/components/analytics/tables/ShopifyTable";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");
@@ -68,7 +57,8 @@ export default function Analytics() {
           className={styles.rowSection}
           style={{marginTop: "1rem", justifyContent: "space-between"}}
         >
-          <RechargeTable title={"recharge"} width={50} data={analytics} />
+          <RechargeTable title={"Recharge"} width={45} data={analytics} />
+          <ShopifyTable title={"Shopify"} width={54} data={analytics} />
         </section>
       </div>
     </div>
