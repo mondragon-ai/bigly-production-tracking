@@ -90,6 +90,9 @@
   line-height: 20px;
   color: var(--primary-text);
 }
+.fileTableWrapper tr:hover {
+  background-color: rgba(199, 199, 199, 0.055);
+}
 
 .fileTableWrapper thead {
   background-color: var(--tertary-background);

@@ -607,3 +607,23 @@
 .datePicker > span .react-calendar__month-view__days__day--weekend {
   color: #ec4899 !important;
 }
+
+/* =============================================================== */
+/*  4. ANALYTICS - TABLE                                           */
+/* =============================================================== */
+.tableContainer {
+  width: 100%;
+}
+
+/* Shared.module.css (additions) */
+.tableHeader {
+  text-align: left;
+  padding: 0 1rem;
+  vertical-align: middle;
+}
+
+.tableCell {
+  text-align: left;
+  padding: 0 1rem;
+  vertical-align: middle;
+}

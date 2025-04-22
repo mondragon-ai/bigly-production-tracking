@@ -7,12 +7,16 @@ import {biglyRequest} from "../networking/biglyServer";
 import {TimeFrameTypes} from "../types/analytics";
 import {handleHttpError} from "@/app/shared";
 import {useRouter} from "next/navigation";
-import {BiglyDailyReportDocument, BiglySalesGoals} from "../types/reports";
+import {
+  BiglyDailyReportDocument,
+  BiglySalesGoals,
+  CleanedAnalytics,
+} from "../types/reports";
 
 interface AnalyticsReturn {
   loading: LoadingTypes;
   error: string | null;
-  analytics: BiglyDailyReportDocument[] | null;
+  analytics: CleanedAnalytics | null;
   goals: BiglySalesGoals | null;
   fetchTimeframe: (t: TimeFrameTypes) => Promise<void>;
   saveGoals: (goals: BiglySalesGoals) => Promise<void>;
@@ -21,9 +25,7 @@ interface AnalyticsReturn {
 export const useReports = (): AnalyticsReturn => {
   const router = useRouter();
   // const {globalState} = useGlobalContext();
-  const [analytics, setAnalytics] = useState<BiglyDailyReportDocument[] | null>(
-    null,
-  );
+  const [analytics, setAnalytics] = useState<CleanedAnalytics | null>(null);
   const [goals, setGoals] = useState<BiglySalesGoals | null>(null);
   const [loading, setLoading] = useState<LoadingTypes>("loading");
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export const useReports = (): AnalyticsReturn => {
 
       if (status < 300 && data) {
         toast.success(message);
-        setAnalytics(data.analytics);
+        setAnalytics(data);
         return;
       } else {
         return handleHttpError(status, `${message || ""}`, setError);
@@ -103,7 +105,7 @@ export const useReports = (): AnalyticsReturn => {
       if (status < 300 && data) {
         console.log({data});
         toast.success(message);
-        setAnalytics(data.analytics);
+        setAnalytics(data);
         return;
       } else {
         handleHttpError(status, `${message}`, setError);

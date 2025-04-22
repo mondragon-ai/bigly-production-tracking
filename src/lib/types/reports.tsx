@@ -51,11 +51,9 @@ export type ReportHeader = {
 };
 
 export type KlaviyoStoreAnalytics = {
-  count: {
-    churn: number;
-    subscribed: number;
-    unsubscribed: number;
-  };
+  churn: number;
+  subscribed: number;
+  unsubscribed: number;
   statistics: KlaviyoCampaignStatistics[] | null;
 };
 
@@ -72,10 +70,18 @@ export type KlaviyoCampaignStatistics = {
   spam_complaint_rate: number;
 };
 
+export type StripeAnalytics = {
+  created: number;
+  cancelled: number;
+  churn: number;
+  total_count: number;
+};
+
 export type RechargeAnalytics = {
   created: number;
   cancelled: number;
   churn: number;
+  total_count: number;
 };
 
 export type ShopifyAnalytics = {
@@ -90,14 +96,35 @@ export type ShopifyAnalytics = {
   total_sales: number;
 };
 
+export type Platforms = "shopify" | "klaviyo" | "recharge" | "stripe";
 export type KlaviyoStoreNames = "ht" | "oh" | "sc" | "aj";
 export type ShopifyStoreNames = "shophodgetwins" | "optimalhuman" | "bigly-pod";
 
 export type BiglyDailyReportDocument = {
-  klaviyo: Record<KlaviyoStoreNames, KlaviyoStoreAnalytics>;
-  shopify: Record<ShopifyStoreNames, ShopifyAnalytics>;
-  recharge: Record<KlaviyoStoreNames, RechargeAnalytics>;
-  stripe: Record<KlaviyoStoreNames, RechargeAnalytics>;
+  klaviyo: KlaviyoStoreAnalytics;
+  shopify: ShopifyAnalytics;
+  recharge: Record<Stores, RechargeAnalytics>;
+  stripe: StripeAnalytics;
+};
+
+export type Stores =
+  | "shophodgetwins"
+  | "ba47ec-2"
+  | "d0c050-47"
+  | "p0qzen-9g"
+  | "1b0aa4-a0"
+  | "optimalhuman"
+  | "bigly-pod"
+  | "690ebd-37"
+  | "patrioticcoins"
+  | "ht"
+  | "sc"
+  | "oh"
+  | "aj";
+
+export type CleanedAnalytics = {
+  comparison: Record<Stores, BiglyDailyReportDocument>;
+  yesterday: Record<Stores, BiglyDailyReportDocument>;
 };
 
 type SalesMetrics = {

@@ -19,7 +19,6 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
     const fetchData = () => {
       const auth = (getItem("user") as UserType) || state.user;
       const asidebaruth = (getItem("sidebar") as boolean) || state.user;
-      console.log("GLOBAL_STATE");
 
       if (!auth.jwt) {
         router.push("/");
