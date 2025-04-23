@@ -9,18 +9,12 @@ import {useState} from "react";
 import {ShopifyTable} from "@/components/analytics/tables/ShopifyTable";
 
 export default function Analytics() {
-  const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");
-  const {
-    loading,
-    analytics,
-    goals: g,
-    fetchTimeframe,
-    saveGoals,
-  } = useReports();
+  const [tf, setTimeFrame] = useState<TimeFrameTypes>("yesterday");
+  const {loading, analytics, goals, fetchTimeframe, saveGoals} = useReports();
 
   const handleFetchingAnalytics = (t: TimeFrameTypes) => {
     const tp = [
-      "today",
+      "yesterday",
       "seven_days",
       "thirty_days",
       "mtd",
@@ -37,15 +31,19 @@ export default function Analytics() {
     fetchTimeframe(t);
   };
 
+  const mtd = Object.entries(goals?.sum || {}).reduce((acc, date) => {
+    return acc + date[1].total;
+  }, 0);
+
   return (
     <div className={styles.page}>
       <AnalyticsHeader
         reports={true}
         header={{
-          total_units: 100,
-          completed_units: 100,
-          total_jobs: 100,
-          completed_jobs: 100,
+          total_units: 5000000,
+          completed_units: mtd,
+          total_jobs: 50000000,
+          completed_jobs: 15000000,
         }}
         title={"Daily Reports"}
         loading={loading}

@@ -72,6 +72,11 @@ export const AnalyticsHeader = ({
     setCustom(false);
     fetchAnalytics(tf);
   };
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 2);
+  const compareDay = yesterday.toISOString().split("T")[0];
+
   return (
     <header
       className={styles.pageHeaderWrapper}
@@ -84,53 +89,85 @@ export const AnalyticsHeader = ({
           <h1 className={geistSans.className}>{title}</h1>
         </div>
 
-        <div>
-          {custom ? (
-            <Button
-              loading={false}
-              thin={true}
-              text={"Search"}
-              tone={"success"}
-              align={"center"}
-              icon={"calendar"}
-              onClick={() => handleDateRange()}
-            />
-          ) : (
-            <Button
-              loading={false}
-              thin={true}
-              text={capitalizeWords(timeframe).toLocaleUpperCase() || "TODAY"}
-              tone={"success"}
-              align={"center"}
-              icon={"calendar"}
-              onClick={() => openModal((p) => !p)}
-            />
-          )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            {custom ? (
+              <Button
+                loading={false}
+                thin={true}
+                text={"Search"}
+                tone={"success"}
+                align={"center"}
+                icon={"calendar"}
+                onClick={() => handleDateRange()}
+              />
+            ) : (
+              <Button
+                loading={false}
+                thin={true}
+                text={capitalizeWords(timeframe).toLocaleUpperCase() || "TODAY"}
+                tone={"success"}
+                align={"center"}
+                icon={"calendar"}
+                onClick={() => openModal((p) => !p)}
+              />
+            )}
 
-          {custom && (
-            <div className={styles.dateRange}>
-              {/* <DateRangePicker
+            {custom && (
+              <div className={styles.dateRange}>
+                {/* <DateRangePicker
                 label="Placement start"
                 selectorButtonPlacement="start"
               /> */}
-              <DateRangePicker
-                onChange={setRange}
-                value={range}
-                className={styles.datePicker}
-              />
-              {/* <DatePicker
+                <DateRangePicker
+                  onChange={setRange}
+                  value={range}
+                  className={styles.datePicker}
+                  maxDate={new Date()}
+                  minDate={new Date("2025-04-02")}
+                />
+                {/* <DatePicker
                 onChange={setEnd}
                 value={end}
                 className={styles.datePicker}
               /> */}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <span style={{marginRight: "5px"}}>
+              <strong>Date Range:</strong> {capitalizeWords(timeframe)}
+            </span>
+            <span>
+              {" "}
+              <strong>Compare Date:</strong> {compareDay}
+            </span>
+          </div>
         </div>
 
         {modal && (
           <div className={styles.timeFramWrapper}>
-            <div onClick={() => handleSelectModal("today")}>
-              <span>Today</span>
+            <div onClick={() => handleSelectModal("yesterday")}>
+              <span>Yesterday</span>
             </div>
             <div onClick={() => handleSelectModal("seven_days")}>
               <span>7 Days</span>

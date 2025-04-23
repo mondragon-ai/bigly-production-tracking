@@ -42,7 +42,17 @@ export const ShopifyTable = memo(
       return Object.entries(data.yesterday).flatMap(
         ([storeName, storeData]) => {
           const platformData = storeData.shopify;
-          const comparisonData = data.comparison[storeName as Stores].shopify;
+          const comparisonData = data.comparison[storeName as Stores]
+            ?.shopify || {
+            orders: 0,
+            gross_sales: 0,
+            discounts: 0,
+            returns: 0,
+            net_sales: 0,
+            shipping_charges: 0,
+            taxes: 0,
+            total_sales: 0,
+          };
           if (!platformData) return [];
 
           const {
@@ -75,8 +85,6 @@ export const ShopifyTable = memo(
           const totalDiff =
             compTotal == 0 ? 0 : ((total_sales - compTotal) / compTotal) * 100;
           const aovDiff = compAov == 0 ? 0 : ((aov - compAov) / compAov) * 100;
-
-          console.log({total_sales, compTotal, totalDiff, storeName});
 
           return {
             storeName,
