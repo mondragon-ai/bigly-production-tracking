@@ -1,12 +1,14 @@
-import tableStyles from "../../files/Files.module.css";
-import styles from "../../Shared.module.css";
+// components/RechargeTable.tsx
 import {memo, useMemo} from "react";
 import {
   formatToMoney,
   formatWithCommas,
 } from "@/lib/utils/converter.tsx/numbers";
+import styles from "../../Shared.module.css";
+import tableStyles from "../../files/Files.module.css";
 import {CleanedAnalytics, Stores} from "@/lib/types/reports";
 import {useWidth} from "@/lib/hooks/useWidth";
+import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 
 type AnalyticsTableProps = {
   title: string;
@@ -16,31 +18,35 @@ type AnalyticsTableProps = {
 
 type RowData = {
   storeName: string;
-  orders: number;
-  aov: number;
-  gross_sales: number;
-  discounts: number;
-  returns: number;
-  net_sales: number;
-  shipping_charges: number;
-  taxes: number;
-  total_sales: number;
-  orderDiff: number;
-  totalDiff: number;
-  aovDiff: number;
+  subscribed: number;
+  unsubscribed: number;
+  conversion_value: number;
+  average_order_value: number;
+  open_rate: number;
+  click_rate: number;
+  recipients: number;
+  subDiff: number;
+  unsubDiff: number;
+  cvsValueDiff: number;
+  recDiff: number;
 };
+
+const STORES = [
+  {name: "OH", abbreviation: "oh"},
+  {name: "Hodge Twins", abbreviation: "ht"},
+  {name: "Alex Jones", abbreviation: "aj"},
+  {name: "Shop Crowder", abbreviation: "sc"},
+];
 
 const HEADERS = [
   "Store",
-  "Orders",
-  "AOV",
-  "Gross Sales",
-  "Net Sales",
-  "Returns",
-  "Discounts",
-  "Shipping",
-  "Taxes",
-  "Total Sales",
+  "subscribed",
+  "unsubscribed",
+  "conversion_value",
+  "average_order_value",
+  "open_rate",
+  "click_rate",
+  "recipients",
 ];
 
 const Arrow = ({value}: {value: number}) => (
@@ -61,93 +67,73 @@ const Diff = ({value}: {value: number}) => (
   </span>
 );
 
-const calculateRows = (
-  data: CleanedAnalytics | null,
-): [RowData[], Record<string, number>] => {
-  const totals: Record<string, number> = {
-    orders: 0,
-    gross_sales: 0,
-    discounts: 0,
-    returns: 0,
-    net_sales: 0,
-    shipping_charges: 0,
-    taxes: 0,
-    total_sales: 0,
-  };
-
-  if (!data) return [[], totals];
+const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
+  if (!data) return [];
 
   const rows: RowData[] = [];
 
-  for (const [storeName, storeData] of Object.entries(data.yesterday)) {
-    const platformData = storeData.shopify;
-    const comparisonData = data.comparison[storeName as Stores]?.shopify || {
-      orders: 0,
-      gross_sales: 0,
-      discounts: 0,
-      returns: 0,
-      net_sales: 0,
-      shipping_charges: 0,
-      taxes: 0,
-      total_sales: 0,
+  Object.entries(data.yesterday).forEach(([storeName, storeData]) => {
+    const platformData = storeData.klaviyo;
+    const comparisonData = data.comparison[storeName as Stores]?.klaviyo || {
+      subscribed: 0,
+      unsubscribed: 0,
+      conversion_value: 0,
+      average_order_value: 0,
+      open_rate: 0,
+      click_rate: 0,
+      recipients: 0,
     };
 
-    if (!platformData) continue;
+    if (!platformData) return;
 
-    const {
-      orders,
-      gross_sales,
-      discounts,
-      returns,
-      net_sales,
-      shipping_charges,
-      taxes,
-      total_sales,
-    } = platformData;
-    const {orders: compOrders, total_sales: compTotal} = comparisonData;
+    const {subscribed, unsubscribed, conversion_value, recipients} =
+      comparisonData;
 
-    const aov = orders === 0 ? 0 : total_sales / orders;
-    const compAov = compOrders === 0 ? 0 : compTotal / compOrders;
+    const subDiff =
+      subscribed === 0
+        ? 0
+        : ((platformData.subscribed - subscribed) / subscribed) * 100;
 
-    const orderDiff =
-      compOrders === 0 ? 0 : ((orders - compOrders) / compOrders) * 100;
-    const totalDiff =
-      compTotal === 0 ? 0 : ((total_sales - compTotal) / compTotal) * 100;
-    const aovDiff = compAov === 0 ? 0 : ((aov - compAov) / compAov) * 100;
+    const unsubDiff =
+      unsubscribed === 0
+        ? 0
+        : ((platformData.unsubscribed - unsubscribed) / unsubscribed) * 100;
+
+    const cvsValueDiff =
+      conversion_value === 0
+        ? 0
+        : ((platformData.conversion_value - conversion_value) /
+            conversion_value) *
+          100;
+
+    const recDiff =
+      recipients === 0
+        ? 0
+        : ((platformData.recipients - recipients) / recipients) * 100;
 
     rows.push({
+      subscribed: platformData.subscribed,
+      unsubscribed: platformData.unsubscribed,
+      conversion_value: platformData.conversion_value,
+      average_order_value: platformData.average_order_value,
+      open_rate: Number((platformData.open_rate * 100).toFixed(2)),
+      click_rate: Number((platformData.click_rate * 100).toFixed(2)),
+      recipients: platformData.subscribed,
+      subDiff,
+      unsubDiff,
+      cvsValueDiff,
+      recDiff,
       storeName,
-      orders,
-      aov,
-      gross_sales,
-      discounts,
-      returns,
-      net_sales,
-      shipping_charges,
-      taxes,
-      total_sales,
-      orderDiff,
-      totalDiff,
-      aovDiff,
     });
+  });
 
-    totals.orders += orders;
-    totals.gross_sales += gross_sales;
-    totals.discounts += discounts;
-    totals.returns += returns;
-    totals.net_sales += net_sales;
-    totals.shipping_charges += shipping_charges;
-    totals.taxes += taxes;
-    totals.total_sales += total_sales;
-  }
-
-  return [rows, totals];
+  return [...rows];
 };
 
-export const ShopifyTable = memo(
+export const KlaviyoTable = memo(
   ({title, width, data}: AnalyticsTableProps) => {
-    const [rows, totals] = useMemo(() => calculateRows(data), [data]);
     const w = useWidth();
+    const rows = useMemo(() => calculateRows(data), [data]);
 
     return (
       <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
@@ -167,7 +153,7 @@ export const ShopifyTable = memo(
                     className={styles.tableHeader}
                     style={{padding: i === 0 ? "0 1rem" : "7px 0"}}
                   >
-                    {header}
+                    {capitalizeWords(header)}
                   </th>
                 ))}
               </tr>
@@ -182,7 +168,7 @@ export const ShopifyTable = memo(
               ) : (
                 <>
                   {rows.map((row, idx) => (
-                    <tr key={idx}>
+                    <tr key={`${row.storeName}-${row.subscribed}-${idx}`}>
                       <td
                         className={styles.tableCell}
                         style={{fontWeight: 550, padding: "7px 1rem"}}
@@ -190,29 +176,31 @@ export const ShopifyTable = memo(
                         {row.storeName.toUpperCase()}
                       </td>
                       <td>
-                        {formatWithCommas(row.orders)}
+                        {formatWithCommas(row.subscribed)}
                         <br />
-                        <Diff value={row.orderDiff} />
+                        <Diff value={row.subDiff} />
                       </td>
-                      <td className={styles.tableCell}>
-                        {formatToMoney(row.aov)}
+                      <td>
+                        {formatWithCommas(row.unsubscribed)}
                         <br />
-                        <Diff value={row.aovDiff} />
+                        <Diff value={row.unsubDiff} />
                       </td>
-                      <td>{formatToMoney(row.gross_sales)}</td>
-                      <td>{formatToMoney(row.net_sales)}</td>
-                      <td>{formatToMoney(row.returns)}</td>
-                      <td>{formatToMoney(row.discounts)}</td>
-                      <td>{formatToMoney(row.shipping_charges)}</td>
-                      <td>{formatToMoney(row.taxes)}</td>
-                      <td className={styles.tableCell}>
-                        {formatToMoney(row.total_sales)}
+                      <td>
+                        {formatToMoney(row.conversion_value)}
                         <br />
-                        <Diff value={row.totalDiff} />
+                        <Diff value={row.cvsValueDiff} />
+                      </td>
+                      <td>{formatToMoney(row.average_order_value)}</td>
+                      <td>{formatWithCommas(row.open_rate)}%</td>
+                      <td>{formatWithCommas(row.click_rate)}%</td>
+                      <td>
+                        {formatWithCommas(row.recipients)}
+                        <br />
+                        <Diff value={row.recDiff} />
                       </td>
                     </tr>
                   ))}
-                  <tr>
+                  {/* <tr>
                     <td
                       className={styles.tableCell}
                       style={{fontWeight: 550, padding: "7px 1rem"}}
@@ -236,7 +224,7 @@ export const ShopifyTable = memo(
                     <td className={styles.tableCell}>
                       {formatToMoney(totals.total_sales)}
                     </td>
-                  </tr>
+                  </tr> */}
                 </>
               )}
             </tbody>
@@ -247,4 +235,4 @@ export const ShopifyTable = memo(
   },
 );
 
-ShopifyTable.displayName = "ShopifyTable";
+KlaviyoTable.displayName = "KlaviyoTable";

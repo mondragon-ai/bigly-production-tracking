@@ -1,9 +1,10 @@
-// components/AnalyticsTable.tsx
+// components/RechargeTable.tsx
 import {memo, useMemo} from "react";
 import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
 import styles from "../../Shared.module.css";
 import tableStyles from "../../files/Files.module.css";
 import {CleanedAnalytics} from "@/lib/types/reports";
+import {useWidth} from "@/lib/hooks/useWidth";
 
 type AnalyticsTableProps = {
   title: string;
@@ -11,9 +12,28 @@ type AnalyticsTableProps = {
   data: CleanedAnalytics | null;
 };
 
+type RowData = {
+  product: string;
+  storeName: string;
+  totalCount: number;
+  created: number;
+  cancelled: number;
+  net: number;
+  churnRate: string;
+};
+
+const STORES = [
+  {name: "OH", abbreviation: "oh"},
+  {name: "Hodge Twins", abbreviation: "ht"},
+  {name: "Real Alex Jones", abbreviation: "raj"},
+  {name: "Alex Jones", abbreviation: "aj"},
+  {name: "Shop Crowder", abbreviation: "sc"},
+  {name: "Total", abbreviation: "total"},
+];
+
 const HEADERS = [
   "Product Name",
-  "Store",
+  // "Store",
   "Total Count",
   "Created",
   "Cancelled",
@@ -21,113 +41,183 @@ const HEADERS = [
   "Churn Rate",
 ];
 
+const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
+  if (!data) return [];
+
+  const perProductTotals: Record<
+    string,
+    Omit<RowData, "storeName" | "churnRate"> & {storeCount: number}
+  > = {};
+  const rows: RowData[] = [];
+
+  console.log({ye: data.yesterday});
+  Object.entries(data.yesterday).forEach(([storeName, storeData]) => {
+    const platformData = storeData.recharge;
+    if (!platformData) return;
+
+    Object.entries(platformData).forEach(([product, metrics]) => {
+      const created = metrics.created ?? 0;
+      const cancelled = metrics.cancelled ?? 0;
+      const totalCount = metrics.total_count ?? 0;
+      const net = created - cancelled;
+
+      const churnRate =
+        created === 0 && cancelled === 0
+          ? "0"
+          : created === 0 && cancelled > 0
+          ? "100"
+          : ((cancelled / created) * 100).toFixed(2);
+
+      rows.push({
+        product,
+        storeName,
+        totalCount,
+        created,
+        cancelled,
+        net,
+        churnRate,
+      });
+
+      if (!perProductTotals[product]) {
+        perProductTotals[product] = {
+          product,
+          totalCount: 0,
+          created: 0,
+          cancelled: 0,
+          net: 0,
+          storeCount: 0,
+        };
+      }
+
+      const totals = perProductTotals[product];
+      totals.totalCount += totalCount;
+      totals.created += created;
+      totals.cancelled += cancelled;
+      totals.net += net;
+      totals.storeCount += 1;
+    });
+  });
+
+  const totalRows: RowData[] = Object.entries(perProductTotals)
+    .map(([product, metrics]) => {
+      const churnRate =
+        metrics.created === 0 && metrics.cancelled === 0
+          ? "0"
+          : metrics.created === 0 && metrics.cancelled > 0
+          ? "100"
+          : ((metrics.cancelled / metrics.created) * 100).toFixed(2);
+
+      return {
+        product,
+        storeName: "total",
+        totalCount: metrics.totalCount,
+        created: metrics.created,
+        cancelled: metrics.cancelled,
+        net: metrics.net,
+        churnRate,
+      };
+    })
+    .sort((a, b) => b.totalCount - a.totalCount);
+
+  return [...rows.sort((a, b) => b.totalCount - a.totalCount), ...totalRows];
+};
+
 export const RechargeTable = memo(
   ({title, width, data}: AnalyticsTableProps) => {
-    const rows = useMemo(() => {
-      if (!data) return [];
-
-      return Object.entries(data.yesterday).flatMap(
-        ([storeName, storeData]) => {
-          const platformData = storeData.recharge;
-          if (!platformData) return [];
-
-          return Object.entries(platformData)
-            .map(([product, metrics]) => {
-              const created = metrics.created ?? 0;
-              const cancelled = metrics.cancelled ?? 0;
-              const totalCount = metrics.total_count ?? 0;
-              const net = created - cancelled;
-              const churnRate =
-                created === 0 && cancelled === 0
-                  ? "0"
-                  : created === 0 && cancelled > 0
-                  ? "100"
-                  : ((cancelled / created) * 100).toFixed(2);
-
-              return {
-                product,
-                storeName,
-                totalCount,
-                net,
-                created,
-                cancelled,
-                churnRate: churnRate,
-              };
-            })
-            .sort((a, b) => {
-              return b.totalCount - a.totalCount;
-            });
-        },
-      );
-    }, [data]);
+    const w = useWidth();
+    const rows = useMemo(() => calculateRows(data), [data]);
 
     return (
       <div
-        className={styles.chartWrapperBox}
-        style={{width: `${width}%`, maxHeight: "300px"}}
+        style={{
+          width: `${width}%`,
+          display: "flex",
+          flexDirection: "column",
+          gap: "4px",
+        }}
       >
-        <header>
-          <h5>{title}</h5>
-        </header>
-        <main
-          className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
-          style={{maxHeight: "300px", overflow: "auto", position: "relative"}}
-        >
-          <table style={{minWidth: "120%"}}>
-            <thead style={{position: "sticky", top: 0}}>
-              <tr>
-                {HEADERS.map((header, i) => (
-                  <th
-                    key={header}
-                    className={styles.tableHeader}
-                    style={{
-                      padding: i == 0 ? "0 1rem" : "7px 0",
-                    }}
-                  >
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody style={{overflow: "scroll"}}>
-              {rows.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={HEADERS.length}
-                    style={{
-                      padding: "7px 1rem",
-                    }}
-                  >
-                    No data available
-                  </td>
-                </tr>
-              ) : (
-                rows.map((row, idx) => (
-                  <tr key={idx}>
-                    <td
-                      className={styles.tableCell}
-                      style={{
-                        padding: "7px 1rem",
-                      }}
-                    >
-                      {row.product}
-                    </td>
-                    <td style={{fontWeight: 550}}>
-                      {row.storeName.toLocaleUpperCase()}
-                    </td>
-                    <td>{formatWithCommas(row.totalCount)}</td>
-                    <td>{formatWithCommas(row.created)}</td>
-                    <td>{formatWithCommas(row.cancelled)}</td>
-                    <td style={{color: Number(row.net) < 0 ? "red" : ""}}>
-                      {formatWithCommas(row.net)}
-                    </td>
-                    <td className={styles.tableCell}>{row.churnRate}%</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </main>
+        {STORES.map((store, i) => {
+          return (
+            <div
+              className={styles.chartWrapperBox}
+              style={{
+                width: "100%",
+                marginBottom: i == STORES.length - 1 ? 0 : "10px",
+              }}
+            >
+              <header>
+                <h5>
+                  {title} - {store.name}
+                </h5>
+              </header>
+              <main
+                className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
+                style={{
+                  // maxHeight: "300px",
+                  overflow: "auto",
+                  position: "relative",
+                }}
+              >
+                <table style={{minWidth: w < 720 ? "170%" : "100%"}}>
+                  <thead style={{position: "sticky", top: 0}}>
+                    <tr>
+                      {HEADERS.map((header, i) => (
+                        <th
+                          key={header}
+                          className={styles.tableHeader}
+                          style={{padding: i === 0 ? "0 1rem" : "7px 0"}}
+                        >
+                          {header}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={HEADERS.length}
+                          style={{padding: "7px 1rem"}}
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    ) : (
+                      rows.map((row, idx) => {
+                        if (store.abbreviation == row.storeName) {
+                          return (
+                            <tr key={`${row.storeName}-${row.product}-${idx}`}>
+                              <td
+                                className={styles.tableCell}
+                                style={{padding: "7px 1rem"}}
+                              >
+                                {row.product}
+                              </td>
+                              {/* <td style={{fontWeight: 550}}>
+                                {row.storeName.toUpperCase()}
+                              </td> */}
+                              <td>{formatWithCommas(row.totalCount)}</td>
+                              <td>{formatWithCommas(row.created)}</td>
+                              <td>{formatWithCommas(row.cancelled)}</td>
+                              <td
+                                style={{color: row.net < 0 ? "red" : undefined}}
+                              >
+                                {formatWithCommas(row.net)}
+                              </td>
+                              <td className={styles.tableCell}>
+                                {row.churnRate}%
+                              </td>
+                            </tr>
+                          );
+                        }
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </main>
+            </div>
+          );
+        })}
       </div>
     );
   },

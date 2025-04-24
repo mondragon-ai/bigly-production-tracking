@@ -7,6 +7,7 @@ import {TimeFrameTypes} from "@/lib/types/analytics";
 import {useReports} from "@/lib/hooks/useReports";
 import {useState} from "react";
 import {ShopifyTable} from "@/components/analytics/tables/ShopifyTable";
+import {KlaviyoTable} from "@/components/analytics/tables/KlaviyoTable";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("yesterday");
@@ -55,8 +56,21 @@ export default function Analytics() {
           className={styles.rowSection}
           style={{marginTop: "1rem", justifyContent: "space-between"}}
         >
-          <RechargeTable title={"Recharge"} width={45} data={analytics} />
-          <ShopifyTable title={"Shopify"} width={54} data={analytics} />
+          <RechargeTable title={"Recharge"} width={100} data={analytics} />
+        </section>
+
+        <section
+          className={styles.rowSection}
+          style={{marginTop: "1rem", justifyContent: "space-between"}}
+        >
+          <ShopifyTable title={"Shopify"} width={100} data={analytics} />
+        </section>
+
+        <section
+          className={styles.rowSection}
+          style={{marginTop: "1rem", justifyContent: "space-between"}}
+        >
+          <KlaviyoTable title={"Klaviyo"} width={100} data={analytics} />
         </section>
       </div>
     </div>
