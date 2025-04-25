@@ -516,6 +516,7 @@
 
 .mobileComplete {
   display: none;
+  cursor: pointer;
 }
 
 /* Mobile (small to large) */
@@ -532,6 +533,8 @@
   }
   .aTxt {
     margin-left: 10px;
+
+    display: none;
   }
 
   .timeFramWrapper {
@@ -632,6 +635,7 @@
   margin-right: 5px;
   margin-left: 0 !important;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .tableBadge:hover {

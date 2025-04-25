@@ -12,10 +12,16 @@ import {StripeTable} from "@/components/analytics/tables/StripeTable";
 import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
 import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
 import {ComparedBarChart} from "@/components/analytics/charts";
+import {parseReportData} from "@/lib/payloads/reports";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("yesterday");
   const {loading, analytics, goals, fetchTimeframe, saveGoals} = useReports();
+
+  const {daily_sales_goals, monthly_sales_goals, header} = parseReportData(
+    analytics,
+    goals,
+  );
 
   const handleFetchingAnalytics = (t: TimeFrameTypes) => {
     const tp = [
@@ -44,12 +50,7 @@ export default function Analytics() {
     <div className={styles.page}>
       <AnalyticsHeader
         reports={true}
-        header={{
-          total_units: 5000000,
-          completed_units: mtd,
-          total_jobs: 50000000,
-          completed_jobs: 15000000,
-        }}
+        header={header}
         title={"Daily Reports"}
         loading={loading}
         fetchAnalytics={handleFetchingAnalytics}
@@ -62,53 +63,53 @@ export default function Analytics() {
         >
           {loading == "loading" || loading == "posting" ? (
             <SkeletonAnalytic width={32} />
-          ) : null
-          // <AnalyticsCard
-          //   title={"Daily Goals"}
-          //   width={49}
-          //   fixed={2}
-          //   is_money={true}
-          //   main_value={`${daily_sales_goals.churn}`}
-          //   metric=""
-          //   prefix="$"
-          // >
-          //   {daily_sales_goals.stacked_chart ? (
-          //     <ComparedBarChart
-          //       color={"#A1A5F4"}
-          //       data={daily_sales_goals.stacked_chart}
-          //       suffix={""}
-          //       is_money={true}
-          //       fixed={2}
-          //       prefix="$"
-          //     />
-          //   ) : null}
-          // </AnalyticsCard>
-          }
+          ) : (
+            <AnalyticsCard
+              title={"Daily Goals"}
+              width={49}
+              fixed={2}
+              is_money={true}
+              main_value={`${daily_sales_goals.churn}`}
+              metric=""
+              prefix="$"
+            >
+              {daily_sales_goals.stacked_chart ? (
+                <ComparedBarChart
+                  color={"#A1A5F4"}
+                  data={daily_sales_goals.stacked_chart}
+                  suffix={""}
+                  is_money={true}
+                  fixed={2}
+                  prefix="$"
+                />
+              ) : null}
+            </AnalyticsCard>
+          )}
 
           {loading == "loading" || loading == "posting" ? (
             <SkeletonAnalytic width={32} />
-          ) : null
-          // <AnalyticsCard
-          //   title={"Monthly Goals"}
-          //   width={49}
-          //   fixed={2}
-          //   is_money={true}
-          //   main_value={`${monthly_sales_goals.churn}`}
-          //   metric=""
-          //   prefix="$"
-          // >
-          //   {monthly_sales_goals.stacked_chart ? (
-          //     <ComparedBarChart
-          //       color={"#A1A5F4"}
-          //       data={monthly_sales_goals.stacked_chart}
-          //       suffix={""}
-          //       is_money={true}
-          //       fixed={2}
-          //       prefix="$"
-          //     />
-          //   ) : null}
-          // </AnalyticsCard>
-          }
+          ) : (
+            <AnalyticsCard
+              title={"Monthly Goals"}
+              width={49}
+              fixed={2}
+              is_money={true}
+              main_value={`${monthly_sales_goals.churn}`}
+              metric=""
+              prefix="$"
+            >
+              {monthly_sales_goals.stacked_chart ? (
+                <ComparedBarChart
+                  color={"#A1A5F4"}
+                  data={monthly_sales_goals.stacked_chart}
+                  suffix={""}
+                  is_money={true}
+                  fixed={2}
+                  prefix="$"
+                />
+              ) : null}
+            </AnalyticsCard>
+          )}
         </section>
         <section
           className={styles.rowSection}

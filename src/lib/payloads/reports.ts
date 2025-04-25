@@ -1,101 +1,145 @@
+import {HeaderAnalytics} from "../types/analytics";
 import {
   BiglySalesGoals,
   CleanedAnalytics,
   ParsedBaseType,
   PasedReportData,
 } from "../types/reports";
-// import {getDaysInCurrentMonth} from "../utils/converter.tsx/time";
+import {getDaysInCurrentMonth} from "../utils/converter.tsx/time";
 
+// ============================ Parse Analytics/Goal Data ============================
 export const parseReportData = (
   analytics: CleanedAnalytics | null,
   goals: BiglySalesGoals | null,
 ): PasedReportData => {
-  const payload = getBaseReportData();
-  if (!analytics) return payload;
-  const {comparison, yesterday} = analytics;
+  if (!analytics) return getBaseReportData();
 
-  console.log({comparison, yesterday});
+  const {yesterday} = analytics;
 
-  const base = parsedBase();
-
-  return payload;
+  return {
+    ...getBaseReportData(),
+    daily_sales_goals: buildDailySalesGoals(yesterday, goals),
+    monthly_sales_goals: buildMonthlySalesGoals(goals),
+    header: buildHeaderSalesGoals(goals!),
+  };
 };
 
-// Base Chart payload
-export const getBaseReportData = (): PasedReportData => {
-  return {
-    daily_sales_goals: {
-      churn: "0",
-      stacked_chart: [],
+// ============================ Goal Charts ============================
+const buildDailySalesGoals = (
+  data: CleanedAnalytics["comparison"],
+  goals: BiglySalesGoals | null,
+) => {
+  if (!goals || !data) return emptyStackedChart();
+
+  const daysInMonth = getDaysInCurrentMonth();
+  const result = Object.entries(data).reduce<{
+    churn: number;
+    stacked_chart: {name: string; sales: number; goal: number}[];
+  }>(
+    (acc, [store, metrics]) => {
+      if (metrics?.shopify) {
+        const sales = Math.abs(metrics.shopify.total_sales);
+        const goal = Math.abs(goals[store as "aj"] ?? 0) / daysInMonth;
+
+        acc.stacked_chart.push({name: store, sales, goal});
+        acc.churn += sales;
+      } else {
+        console.warn(`Invalid daily sales format for store: ${store}`);
+      }
+      return acc;
     },
-    monthly_sales_goals: {
-      churn: "0",
-      stacked_chart: [],
-    },
-    goals: {
+    {churn: 0, stacked_chart: []},
+  );
+
+  return {churn: result.churn.toFixed(2), stacked_chart: result.stacked_chart};
+};
+
+const buildMonthlySalesGoals = (goals: BiglySalesGoals | null) => {
+  if (!goals) return emptyStackedChart();
+
+  const storeTotals: Record<string, number> = {};
+  let churn = 0;
+
+  Object.entries(goals.sum).forEach(([date, {sales}]) => {
+    Object.entries(sales).forEach(([store, value]) => {
+      storeTotals[store] = (storeTotals[store] ?? 0) + Math.abs(value);
+      churn += Math.abs(value);
+    });
+  });
+
+  const stacked_chart = Object.entries(storeTotals).map(([name, sales]) => ({
+    name,
+    sales,
+    goal: Math.abs(goals[name as "aj"] ?? 0),
+  }));
+
+  return {churn: churn.toFixed(2), stacked_chart};
+};
+const buildHeaderSalesGoals = (
+  goals: BiglySalesGoals | null,
+): HeaderAnalytics => {
+  if (!goals) {
+    return {
       total_units: 0,
       completed_units: 0,
       total_jobs: 0,
       completed_jobs: 0,
-    },
-    gross_sales: {
-      sum: 0,
-      bar_chart: [],
-    },
-    discounts: {
-      sum: 0,
-      bar_chart: [],
-    },
-    orders: {
-      sum: 0,
-      bar_chart: [],
-    },
-    returns: {
-      sum: 0,
-      bar_chart: [],
-    },
-    total_sales: {
-      sum: 0,
-      bar_chart: [],
-    },
-    shipping_charges: {
-      sum: 0,
-      bar_chart: [],
-    },
-    recharge: {
-      churn: "0",
-      stacked_chart: [],
-    },
-    stripe: {
-      churn: "0",
-      stacked_chart: [],
-    },
-    emails: {
-      churn: "0",
-      stacked_chart: [],
-    },
-    conversion_value: {
-      sum: 0,
-      bar_chart: [],
-    },
-    open_rate: {
-      sum: 0,
-      bar_chart: [],
-    },
-    click_rate: {
-      sum: 0,
-      bar_chart: [],
-    },
-    recipients: {
-      sum: 0,
-      bar_chart: [],
-    },
-    conversion_rate: {
-      sum: 0,
-      bar_chart: [],
-    },
+    };
+  }
+
+  const excludedKeys = ["annual", "id", "sum", "ytd"];
+
+  const monthly_goals = Object.entries(goals).reduce((sum, [key, value]) => {
+    return excludedKeys.includes(key) ? sum : sum + Number(value);
+  }, 0);
+
+  const monthly_totals = Object.values(goals.sum ?? {}).reduce((sum, store) => {
+    return sum + (store?.total ?? 0);
+  }, 0);
+
+  return {
+    total_units: monthly_goals,
+    completed_units: monthly_totals,
+    total_jobs: goals.annual ?? 0,
+    completed_jobs: (goals.ytd ?? 0) + monthly_totals,
   };
 };
+
+// ============================ BASE PAYLOD ============================
+const emptyStackedChart = () => ({
+  churn: "0",
+  stacked_chart: [],
+});
+
+const emptyBarChart = () => ({
+  sum: 0,
+  bar_chart: [],
+});
+
+export const getBaseReportData = (): PasedReportData => ({
+  daily_sales_goals: emptyStackedChart(),
+  monthly_sales_goals: emptyStackedChart(),
+  header: {
+    total_units: 0,
+    completed_units: 0,
+    total_jobs: 0,
+    completed_jobs: 0,
+  },
+  gross_sales: emptyBarChart(),
+  discounts: emptyBarChart(),
+  orders: emptyBarChart(),
+  returns: emptyBarChart(),
+  total_sales: emptyBarChart(),
+  shipping_charges: emptyBarChart(),
+  recharge: emptyStackedChart(),
+  stripe: emptyStackedChart(),
+  emails: emptyStackedChart(),
+  conversion_value: emptyBarChart(),
+  open_rate: emptyBarChart(),
+  click_rate: emptyBarChart(),
+  recipients: emptyBarChart(),
+  conversion_rate: emptyBarChart(),
+});
 
 // Base Parsing Object
 export const parsedBase = (): ParsedBaseType => {

@@ -1,7 +1,7 @@
 import {HeaderAnalytics, NameValueProps} from "./analytics";
 
 export type PasedReportData = {
-  goals: HeaderAnalytics;
+  header: HeaderAnalytics;
   gross_sales: BarChart;
   discounts: BarChart;
   orders: BarChart;

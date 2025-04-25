@@ -7,7 +7,7 @@ import styles from "../Shared.module.css";
 import {HalfCircleStats} from "./charts";
 import localFont from "next/font/local";
 import {useState} from "react";
-import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
+import {formatNumber, formatToMoney} from "@/lib/utils/converter.tsx/numbers";
 // import DatePicker from "react-date-picker";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
@@ -202,14 +202,14 @@ export const AnalyticsHeader = ({
                     ? formatNumber(header.total_units)
                     : header.total_units}
                 </h1>
-                <span> total{`${!reports ? " units" : " sales"}`}</span>
+                <span> {`${!reports ? "total units" : "monthly goal"}`}</span>
               </div>
               <div className={styles.chartContainer}>
                 <HalfCircleStats
                   completed={header.completed_units / header.total_units}
                   data={[
                     {
-                      name: "completed",
+                      name: `${!reports ? "completed" : "monthly totals"}`,
                       value: header.completed_units / header.total_units,
                     },
                     {
@@ -225,16 +225,28 @@ export const AnalyticsHeader = ({
                     ? formatNumber(header.total_jobs)
                     : header.total_jobs}
                 </h1>
-                <span>total {`${!reports ? " units" : " sales"}`}</span>
+                <span>{`${!reports ? "total units" : "yearly goal"}`}</span>
               </div>
-              <div className={`${styles.aTxt} ${styles.mobileComplete}`}>
-                <h1 className={geistSans.className}>
-                  {type == "jobs"
-                    ? header.completed_jobs
-                    : header.completed_units}
-                </h1>
-                <span>completed {type}</span>
-              </div>
+              {!custom && (
+                <div
+                  className={`${styles.aTxt} ${styles.mobileComplete}`}
+                  onClick={() =>
+                    setType((prev) => (prev == "jobs" ? "units" : "jobs"))
+                  }
+                >
+                  <h1 className={geistSans.className}>
+                    {type == "jobs"
+                      ? formatToMoney(header.completed_jobs)
+                      : formatToMoney(header.completed_units)}
+                  </h1>
+
+                  <span>{`${
+                    !reports
+                      ? `completed ${type}`
+                      : `${type == "jobs" ? "yearly" : "monthly"} total`
+                  }`}</span>
+                </div>
+              )}
               <div className={styles.chartContainer}>
                 <HalfCircleStats
                   completed={header.completed_jobs / header.total_jobs}
@@ -244,7 +256,7 @@ export const AnalyticsHeader = ({
                       value: header.completed_jobs / header.total_jobs,
                     },
                     {
-                      name: "completed",
+                      name: `${!reports ? "completed" : "yearly totals"}`,
                       value: 1 - header.completed_jobs / header.total_jobs,
                     },
                   ]}

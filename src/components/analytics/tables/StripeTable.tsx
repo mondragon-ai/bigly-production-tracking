@@ -79,8 +79,6 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
     }
   });
 
-  console.log(rows);
-
   return [...rows];
 };
 
