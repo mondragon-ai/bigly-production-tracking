@@ -52,18 +52,15 @@ export type ReportHeader = {
 
 export type KlaviyoStoreAnalytics = {
   average_order_value: number;
-  bounce_rate: number;
-  churn: number;
+  churn?: number;
   click_rate: number;
-  conversion_rate: number;
+  conversion_rate?: number;
   conversion_value: number;
   open_rate: number;
   recipients: number;
-  revenue_per_recipient: number;
-  spam_complaint_rate: number;
   subscribed: number;
-  unsubscribe_rate: number;
   unsubscribed: number;
+  total_count: number;
 };
 
 export type KlaviyoCampaignStatistics = {

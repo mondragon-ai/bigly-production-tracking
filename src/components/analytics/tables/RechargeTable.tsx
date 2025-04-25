@@ -124,7 +124,7 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
 
 export const RechargeTable = memo(
   ({title, width, data}: AnalyticsTableProps) => {
-    const [store, setStore] = useState<Stores>("ht");
+    const [store, setStore] = useState<Stores>("oh");
     const w = useWidth();
     const rows = useMemo(() => calculateRows(data), [data]);
 

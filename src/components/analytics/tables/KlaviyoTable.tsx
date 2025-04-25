@@ -6,7 +6,11 @@ import {
 } from "@/lib/utils/converter.tsx/numbers";
 import styles from "../../Shared.module.css";
 import tableStyles from "../../files/Files.module.css";
-import {CleanedAnalytics, Stores} from "@/lib/types/reports";
+import {
+  CleanedAnalytics,
+  KlaviyoStoreAnalytics,
+  Stores,
+} from "@/lib/types/reports";
 import {useWidth} from "@/lib/hooks/useWidth";
 import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 
@@ -18,18 +22,12 @@ type AnalyticsTableProps = {
 
 type RowData = {
   storeName: string;
-  subscribed: number;
-  unsubscribed: number;
-  conversion_value: number;
-  average_order_value: number;
-  open_rate: number;
-  click_rate: number;
-  recipients: number;
   subDiff: number;
   unsubDiff: number;
   cvsValueDiff: number;
   recDiff: number;
-};
+  totalDif: number;
+} & KlaviyoStoreAnalytics;
 
 const STORES = [
   {name: "OH", abbreviation: "oh"},
@@ -40,6 +38,7 @@ const STORES = [
 
 const HEADERS = [
   "Store",
+  "total count (L180)",
   "subscribed",
   "unsubscribed",
   "conversion_value",
@@ -86,13 +85,23 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
 
     if (!platformData) return;
 
-    const {subscribed, unsubscribed, conversion_value, recipients} =
-      comparisonData;
+    const {
+      subscribed,
+      unsubscribed,
+      conversion_value,
+      recipients,
+      total_count,
+    } = comparisonData;
 
     const subDiff =
       subscribed === 0
         ? 0
         : ((platformData.subscribed - subscribed) / subscribed) * 100;
+
+    const totalDif =
+      total_count === 0
+        ? 0
+        : ((platformData.total_count - total_count) / total_count) * 100;
 
     const unsubDiff =
       unsubscribed === 0
@@ -118,7 +127,9 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
       average_order_value: platformData.average_order_value,
       open_rate: Number((platformData.open_rate * 100).toFixed(2)),
       click_rate: Number((platformData.click_rate * 100).toFixed(2)),
-      recipients: platformData.subscribed,
+      recipients: platformData.recipients,
+      total_count: platformData.total_count,
+      totalDif,
       subDiff,
       unsubDiff,
       cvsValueDiff,
@@ -176,6 +187,11 @@ export const KlaviyoTable = memo(
                         {row.storeName.toUpperCase()}
                       </td>
                       <td>
+                        {formatWithCommas(row.total_count)}
+                        <br />
+                        <Diff value={row.totalDif} />
+                      </td>
+                      <td>
                         {formatWithCommas(row.subscribed)}
                         <br />
                         <Diff value={row.subDiff} />
@@ -200,31 +216,6 @@ export const KlaviyoTable = memo(
                       </td>
                     </tr>
                   ))}
-                  {/* <tr>
-                    <td
-                      className={styles.tableCell}
-                      style={{fontWeight: 550, padding: "7px 1rem"}}
-                    >
-                      Total
-                    </td>
-                    <td>{formatWithCommas(totals.orders)}</td>
-                    <td className={styles.tableCell}>
-                      {formatToMoney(
-                        totals.orders === 0
-                          ? 0
-                          : totals.total_sales / totals.orders,
-                      )}
-                    </td>
-                    <td>{formatToMoney(totals.gross_sales)}</td>
-                    <td>{formatToMoney(totals.net_sales)}</td>
-                    <td>{formatToMoney(totals.returns)}</td>
-                    <td>{formatToMoney(totals.discounts)}</td>
-                    <td>{formatToMoney(totals.shipping_charges)}</td>
-                    <td>{formatToMoney(totals.taxes)}</td>
-                    <td className={styles.tableCell}>
-                      {formatToMoney(totals.total_sales)}
-                    </td>
-                  </tr> */}
                 </>
               )}
             </tbody>

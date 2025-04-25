@@ -8,6 +8,10 @@ import {useReports} from "@/lib/hooks/useReports";
 import {useState} from "react";
 import {ShopifyTable} from "@/components/analytics/tables/ShopifyTable";
 import {KlaviyoTable} from "@/components/analytics/tables/KlaviyoTable";
+import {StripeTable} from "@/components/analytics/tables/StripeTable";
+import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
+import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
+import {ComparedBarChart} from "@/components/analytics/charts";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("yesterday");
@@ -56,7 +60,62 @@ export default function Analytics() {
           className={styles.rowSection}
           style={{marginTop: "1rem", justifyContent: "space-between"}}
         >
-          <RechargeTable title={"Recharge"} width={100} data={analytics} />
+          {loading == "loading" || loading == "posting" ? (
+            <SkeletonAnalytic width={32} />
+          ) : null
+          // <AnalyticsCard
+          //   title={"Daily Goals"}
+          //   width={49}
+          //   fixed={2}
+          //   is_money={true}
+          //   main_value={`${daily_sales_goals.churn}`}
+          //   metric=""
+          //   prefix="$"
+          // >
+          //   {daily_sales_goals.stacked_chart ? (
+          //     <ComparedBarChart
+          //       color={"#A1A5F4"}
+          //       data={daily_sales_goals.stacked_chart}
+          //       suffix={""}
+          //       is_money={true}
+          //       fixed={2}
+          //       prefix="$"
+          //     />
+          //   ) : null}
+          // </AnalyticsCard>
+          }
+
+          {loading == "loading" || loading == "posting" ? (
+            <SkeletonAnalytic width={32} />
+          ) : null
+          // <AnalyticsCard
+          //   title={"Monthly Goals"}
+          //   width={49}
+          //   fixed={2}
+          //   is_money={true}
+          //   main_value={`${monthly_sales_goals.churn}`}
+          //   metric=""
+          //   prefix="$"
+          // >
+          //   {monthly_sales_goals.stacked_chart ? (
+          //     <ComparedBarChart
+          //       color={"#A1A5F4"}
+          //       data={monthly_sales_goals.stacked_chart}
+          //       suffix={""}
+          //       is_money={true}
+          //       fixed={2}
+          //       prefix="$"
+          //     />
+          //   ) : null}
+          // </AnalyticsCard>
+          }
+        </section>
+        <section
+          className={styles.rowSection}
+          style={{marginTop: "1rem", justifyContent: "space-between"}}
+        >
+          <RechargeTable title={"Recharge"} width={54} data={analytics} />
+          <StripeTable title={"Stripe"} width={45} data={analytics} />
         </section>
 
         <section
