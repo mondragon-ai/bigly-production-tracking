@@ -181,37 +181,39 @@ export const ShopifyTable = memo(
                 </tr>
               ) : (
                 <>
-                  {rows.map((row, idx) => (
-                    <tr key={idx}>
-                      <td
-                        className={styles.tableCell}
-                        style={{fontWeight: 550, padding: "7px 1rem"}}
-                      >
-                        {row.storeName.toUpperCase()}
-                      </td>
-                      <td>
-                        {formatWithCommas(row.orders)}
-                        <br />
-                        <Diff value={row.orderDiff} />
-                      </td>
-                      <td className={styles.tableCell}>
-                        {formatToMoney(row.aov)}
-                        <br />
-                        <Diff value={row.aovDiff} />
-                      </td>
-                      <td>{formatToMoney(row.gross_sales)}</td>
-                      <td>{formatToMoney(row.net_sales)}</td>
-                      <td>{formatToMoney(row.returns)}</td>
-                      <td>{formatToMoney(row.discounts)}</td>
-                      <td>{formatToMoney(row.shipping_charges)}</td>
-                      <td>{formatToMoney(row.taxes)}</td>
-                      <td className={styles.tableCell}>
-                        {formatToMoney(row.total_sales)}
-                        <br />
-                        <Diff value={row.totalDiff} />
-                      </td>
-                    </tr>
-                  ))}
+                  {rows
+                    .sort((a, b) => b.total_sales - a.total_sales)
+                    .map((row, idx) => (
+                      <tr key={idx}>
+                        <td
+                          className={styles.tableCell}
+                          style={{fontWeight: 550, padding: "7px 1rem"}}
+                        >
+                          {row.storeName.toUpperCase()}
+                        </td>
+                        <td>
+                          {formatWithCommas(row.orders)}
+                          <br />
+                          <Diff value={row.orderDiff} />
+                        </td>
+                        <td className={styles.tableCell}>
+                          {formatToMoney(row.aov)}
+                          <br />
+                          <Diff value={row.aovDiff} />
+                        </td>
+                        <td>{formatToMoney(row.gross_sales)}</td>
+                        <td>{formatToMoney(row.net_sales)}</td>
+                        <td>{formatToMoney(row.returns)}</td>
+                        <td>{formatToMoney(row.discounts)}</td>
+                        <td>{formatToMoney(row.shipping_charges)}</td>
+                        <td>{formatToMoney(row.taxes)}</td>
+                        <td className={styles.tableCell}>
+                          {formatToMoney(row.total_sales)}
+                          <br />
+                          <Diff value={row.totalDiff} />
+                        </td>
+                      </tr>
+                    ))}
                   <tr>
                     <td
                       className={styles.tableCell}

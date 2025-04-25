@@ -627,3 +627,13 @@
   padding: 0 1rem;
   vertical-align: middle;
 }
+
+.tableBadge {
+  margin-right: 5px;
+  margin-left: 0 !important;
+  cursor: pointer;
+}
+
+.tableBadge:hover {
+  background: var(--magic-bkg) !important;
+}

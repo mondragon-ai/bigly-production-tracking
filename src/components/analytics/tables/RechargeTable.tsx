@@ -1,10 +1,11 @@
 // components/RechargeTable.tsx
-import {memo, useMemo} from "react";
+import {memo, useMemo, useState} from "react";
 import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
 import styles from "../../Shared.module.css";
 import tableStyles from "../../files/Files.module.css";
-import {CleanedAnalytics} from "@/lib/types/reports";
+import {CleanedAnalytics, Stores} from "@/lib/types/reports";
 import {useWidth} from "@/lib/hooks/useWidth";
+import {Badge} from "@/components/shared/Badge";
 
 type AnalyticsTableProps = {
   title: string;
@@ -50,7 +51,6 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
   > = {};
   const rows: RowData[] = [];
 
-  console.log({ye: data.yesterday});
   Object.entries(data.yesterday).forEach(([storeName, storeData]) => {
     const platformData = storeData.recharge;
     if (!platformData) return;
@@ -124,100 +124,85 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
 
 export const RechargeTable = memo(
   ({title, width, data}: AnalyticsTableProps) => {
+    const [store, setStore] = useState<Stores>("ht");
     const w = useWidth();
     const rows = useMemo(() => calculateRows(data), [data]);
 
     return (
-      <div
-        style={{
-          width: `${width}%`,
-          display: "flex",
-          flexDirection: "column",
-          gap: "4px",
-        }}
-      >
-        {STORES.map((store, i) => {
-          return (
-            <div
-              className={styles.chartWrapperBox}
-              style={{
-                width: "100%",
-                marginBottom: i == STORES.length - 1 ? 0 : "10px",
-              }}
-            >
-              <header>
-                <h5>
-                  {title} - {store.name}
-                </h5>
-              </header>
-              <main
-                className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
-                style={{
-                  // maxHeight: "300px",
-                  overflow: "auto",
-                  position: "relative",
-                }}
-              >
-                <table style={{minWidth: w < 720 ? "170%" : "100%"}}>
-                  <thead style={{position: "sticky", top: 0}}>
-                    <tr>
-                      {HEADERS.map((header, i) => (
-                        <th
-                          key={header}
-                          className={styles.tableHeader}
-                          style={{padding: i === 0 ? "0 1rem" : "7px 0"}}
-                        >
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.length === 0 ? (
-                      <tr>
+      <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
+        <header>
+          <h5>{title}</h5>
+          <div
+            style={{marginTop: "10px", display: "flex", flexDirection: "row"}}
+          >
+            {STORES.map((s) => {
+              const isSelected = s.abbreviation === store;
+              return (
+                <Badge
+                  icon={"calendar"}
+                  text={s.name}
+                  tone={isSelected ? "magic" : "info"}
+                  className={styles.tableBadge}
+                  onClick={() => setStore(s.abbreviation as Stores)}
+                />
+              );
+            })}
+          </div>
+        </header>
+        <main
+          className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
+          style={{overflow: "auto", position: "relative"}}
+        >
+          <table style={{minWidth: w < 720 ? "170%" : "100%"}}>
+            <thead style={{position: "sticky", top: 0}}>
+              <tr>
+                {HEADERS.map((header, i) => (
+                  <th
+                    key={header}
+                    className={styles.tableHeader}
+                    style={{padding: i === 0 ? "0 1rem" : "7px 0"}}
+                  >
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.length === 0 ? (
+                <tr>
+                  <td colSpan={HEADERS.length} style={{padding: "7px 1rem"}}>
+                    No data available
+                  </td>
+                </tr>
+              ) : (
+                rows.map((row, idx) => {
+                  if (store === row.storeName) {
+                    return (
+                      <tr key={`${row.storeName}-${row.product}-${idx}`}>
                         <td
-                          colSpan={HEADERS.length}
+                          className={styles.tableCell}
                           style={{padding: "7px 1rem"}}
                         >
-                          No data available
+                          {row.product}
                         </td>
+                        {/* <td style={{fontWeight: 550}}>
+                        {row.storeName.toUpperCase()}
+                      </td> */}
+                        <td>{formatWithCommas(row.totalCount)}</td>
+                        <td>{formatWithCommas(row.created)}</td>
+                        <td>{formatWithCommas(row.cancelled)}</td>
+                        <td style={{color: row.net < 0 ? "red" : undefined}}>
+                          {formatWithCommas(row.net)}
+                        </td>
+                        <td className={styles.tableCell}>{row.churnRate}%</td>
                       </tr>
-                    ) : (
-                      rows.map((row, idx) => {
-                        if (store.abbreviation == row.storeName) {
-                          return (
-                            <tr key={`${row.storeName}-${row.product}-${idx}`}>
-                              <td
-                                className={styles.tableCell}
-                                style={{padding: "7px 1rem"}}
-                              >
-                                {row.product}
-                              </td>
-                              {/* <td style={{fontWeight: 550}}>
-                                {row.storeName.toUpperCase()}
-                              </td> */}
-                              <td>{formatWithCommas(row.totalCount)}</td>
-                              <td>{formatWithCommas(row.created)}</td>
-                              <td>{formatWithCommas(row.cancelled)}</td>
-                              <td
-                                style={{color: row.net < 0 ? "red" : undefined}}
-                              >
-                                {formatWithCommas(row.net)}
-                              </td>
-                              <td className={styles.tableCell}>
-                                {row.churnRate}%
-                              </td>
-                            </tr>
-                          );
-                        }
-                      })
-                    )}
-                  </tbody>
-                </table>
-              </main>
-            </div>
-          );
-        })}
+                    );
+                  }
+                })
+              )}
+            </tbody>
+          </table>
+        </main>
       </div>
     );
   },
