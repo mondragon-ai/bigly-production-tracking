@@ -22,6 +22,8 @@ export type IconTypes =
   | "shopping-bag"
   | "qr-code"
   | "add-user"
+  | "angle-up"
+  | "angle-down"
   | "hour_glass";
 
 export type LoadingTypes =

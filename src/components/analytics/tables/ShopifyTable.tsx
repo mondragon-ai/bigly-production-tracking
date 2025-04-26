@@ -1,12 +1,13 @@
 import tableStyles from "../../files/Files.module.css";
 import styles from "../../Shared.module.css";
-import {memo, useMemo} from "react";
+import {memo, useMemo, useState} from "react";
 import {
   formatToMoney,
   formatWithCommas,
 } from "@/lib/utils/converter.tsx/numbers";
 import {CleanedAnalytics, Stores} from "@/lib/types/reports";
 import {useWidth} from "@/lib/hooks/useWidth";
+import {SortingColumn} from "./SortingColumn";
 
 type AnalyticsTableProps = {
   title: string;
@@ -31,16 +32,16 @@ type RowData = {
 };
 
 const HEADERS = [
-  "Store",
-  "Orders",
-  "AOV",
-  "Gross Sales",
-  "Net Sales",
-  "Returns",
-  "Discounts",
-  "Shipping",
-  "Taxes",
-  "Total Sales",
+  {name: "Store", key: ""},
+  {name: "Orders", key: "orders"},
+  {name: "AOV", key: "aov"},
+  {name: "Gross Sales", key: "gross_sales"},
+  {name: "Net Sales", key: "net_sales"},
+  {name: "Returns", key: "returns"},
+  {name: "Discounts", key: "discounts"},
+  {name: "Shipping", key: "shipping_charges"},
+  {name: "Taxes", key: "taxes"},
+  {name: "Total Sales", key: "total_sales"},
 ];
 
 const Arrow = ({value}: {value: number}) => (
@@ -109,10 +110,9 @@ const calculateRows = (
     const aov = orders === 0 ? 0 : total_sales / orders;
     const compAov = compOrders === 0 ? 0 : compTotal / compOrders;
 
-    const orderDiff =
-      compOrders === 0 ? 0 : ((orders - compOrders) / compOrders) * 100;
+    const orderDiff = orders === 0 ? 0 : ((compOrders - orders) / orders) * 100;
     const totalDiff =
-      compTotal === 0 ? 0 : ((total_sales - compTotal) / compTotal) * 100;
+      total_sales === 0 ? 0 : ((compTotal - total_sales) / total_sales) * 100;
     const aovDiff = compAov === 0 ? 0 : ((aov - compAov) / compAov) * 100;
 
     rows.push({
@@ -146,8 +146,23 @@ const calculateRows = (
 
 export const ShopifyTable = memo(
   ({title, width, data}: AnalyticsTableProps) => {
+    const [selectedColumn, setSelectedColumn] = useState<{
+      name: string;
+      fromHighest: boolean;
+    }>({name: "totalCount", fromHighest: true});
     const [rows, totals] = useMemo(() => calculateRows(data), [data]);
     const w = useWidth();
+
+    const filteredRows = useMemo(() => {
+      const sortedRows = [...rows].sort((a, b) => {
+        const compareA = a[selectedColumn.name as "total_sales"] ?? 0;
+        const compareB = b[selectedColumn.name as "total_sales"] ?? 0;
+        return selectedColumn.fromHighest
+          ? compareB - compareA
+          : compareA - compareB;
+      });
+      return sortedRows;
+    }, [rows, selectedColumn]);
 
     return (
       <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
@@ -163,11 +178,20 @@ export const ShopifyTable = memo(
               <tr>
                 {HEADERS.map((header, i) => (
                   <th
-                    key={header}
+                    key={header.name}
                     className={styles.tableHeader}
                     style={{padding: i === 0 ? "0 1rem" : "7px 0"}}
                   >
-                    {header}
+                    <div>
+                      {header.name}
+                      {header.key && (
+                        <SortingColumn
+                          name={header.key}
+                          column={selectedColumn}
+                          setColumn={setSelectedColumn}
+                        />
+                      )}
+                    </div>
                   </th>
                 ))}
               </tr>
@@ -181,39 +205,37 @@ export const ShopifyTable = memo(
                 </tr>
               ) : (
                 <>
-                  {rows
-                    .sort((a, b) => b.total_sales - a.total_sales)
-                    .map((row, idx) => (
-                      <tr key={idx}>
-                        <td
-                          className={styles.tableCell}
-                          style={{fontWeight: 550, padding: "7px 1rem"}}
-                        >
-                          {row.storeName.toUpperCase()}
-                        </td>
-                        <td>
-                          {formatWithCommas(row.orders)}
-                          <br />
-                          <Diff value={row.orderDiff} />
-                        </td>
-                        <td className={styles.tableCell}>
-                          {formatToMoney(row.aov)}
-                          <br />
-                          <Diff value={row.aovDiff} />
-                        </td>
-                        <td>{formatToMoney(row.gross_sales)}</td>
-                        <td>{formatToMoney(row.net_sales)}</td>
-                        <td>{formatToMoney(row.returns)}</td>
-                        <td>{formatToMoney(row.discounts)}</td>
-                        <td>{formatToMoney(row.shipping_charges)}</td>
-                        <td>{formatToMoney(row.taxes)}</td>
-                        <td className={styles.tableCell}>
-                          {formatToMoney(row.total_sales)}
-                          <br />
-                          <Diff value={row.totalDiff} />
-                        </td>
-                      </tr>
-                    ))}
+                  {filteredRows.map((row, idx) => (
+                    <tr key={idx}>
+                      <td
+                        className={styles.tableCell}
+                        style={{fontWeight: 550, padding: "7px 1rem"}}
+                      >
+                        {row.storeName.toUpperCase()}
+                      </td>
+                      <td>
+                        {formatWithCommas(row.orders)}
+                        <br />
+                        <Diff value={row.orderDiff} />
+                      </td>
+                      <td className={styles.tableCell}>
+                        {formatToMoney(row.aov)}
+                        <br />
+                        <Diff value={row.aovDiff} />
+                      </td>
+                      <td>{formatToMoney(row.gross_sales)}</td>
+                      <td>{formatToMoney(row.net_sales)}</td>
+                      <td>{formatToMoney(row.returns)}</td>
+                      <td>{formatToMoney(row.discounts)}</td>
+                      <td>{formatToMoney(row.shipping_charges)}</td>
+                      <td>{formatToMoney(row.taxes)}</td>
+                      <td className={styles.tableCell}>
+                        {formatToMoney(row.total_sales)}
+                        <br />
+                        <Diff value={row.totalDiff} />
+                      </td>
+                    </tr>
+                  ))}
                   <tr>
                     <td
                       className={styles.tableCell}

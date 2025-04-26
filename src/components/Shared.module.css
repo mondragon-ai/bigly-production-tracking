@@ -618,11 +618,16 @@
   width: 100%;
 }
 
-/* Shared.module.css (additions) */
 .tableHeader {
   text-align: left;
   padding: 0 1rem;
   vertical-align: middle;
+}
+
+.tableHeader > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .tableCell {
@@ -640,4 +645,19 @@
 
 .tableBadge:hover {
   background: var(--magic-bkg) !important;
+}
+
+.sortingColumn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.sortingColumn > svg:hover,
+.sortingColumn > svg:hover path {
+  stroke: var(--magic-bkg);
 }

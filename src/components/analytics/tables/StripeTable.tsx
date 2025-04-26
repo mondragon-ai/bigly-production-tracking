@@ -1,4 +1,4 @@
-import {memo, useMemo} from "react";
+import {memo, useEffect, useMemo, useState} from "react";
 import {
   formatToMoney,
   formatWithCommas,
@@ -84,12 +84,24 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
 
 export const StripeTable = memo(({title, width, data}: AnalyticsTableProps) => {
   const w = useWidth();
+  const [total, setTotal] = useState<number>(0);
   const rows = useMemo(() => calculateRows(data), [data]);
+
+  useEffect(() => {
+    const tab_total = rows.reduce((acc, row) => {
+      return acc + row.total_count;
+    }, 0);
+    setTotal(tab_total);
+  }, [rows]);
 
   return (
     <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
       <header>
         <h5>{title}</h5>
+        <h2>
+          {formatWithCommas(total)}
+          <span>&nbsp;subs</span>
+        </h2>
       </header>
       <main
         className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
