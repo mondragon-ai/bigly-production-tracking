@@ -8,6 +8,7 @@ import {parseAnalytics} from "@/lib/payloads/analytics";
 import {useAnalytics} from "@/lib/hooks/useAnalytics";
 import {TimeFrameTypes} from "@/lib/types/analytics";
 import {useState} from "react";
+import {BiglySalesGoals} from "@/lib/types/reports";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("today");
@@ -34,6 +35,10 @@ export default function Analytics() {
         fetchAnalytics={handleFetchingAnalytics}
         timeframe={tf}
         reports={false}
+        goals={null}
+        saveGoals={function (goals: BiglySalesGoals): Promise<void> {
+          throw new Error("Function not implemented.");
+        }}
       />
       <div>
         <section
