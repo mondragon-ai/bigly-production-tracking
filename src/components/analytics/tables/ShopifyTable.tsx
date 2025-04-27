@@ -110,9 +110,10 @@ const calculateRows = (
     const aov = orders === 0 ? 0 : total_sales / orders;
     const compAov = compOrders === 0 ? 0 : compTotal / compOrders;
 
-    const orderDiff = orders === 0 ? 0 : ((compOrders - orders) / orders) * 100;
+    const orderDiff =
+      compOrders === 0 ? 0 : ((orders - compOrders) / compOrders) * 100;
     const totalDiff =
-      total_sales === 0 ? 0 : ((compTotal - total_sales) / total_sales) * 100;
+      compTotal === 0 ? 0 : ((total_sales - compTotal) / compTotal) * 100;
     const aovDiff = compAov === 0 ? 0 : ((aov - compAov) / compAov) * 100;
 
     rows.push({

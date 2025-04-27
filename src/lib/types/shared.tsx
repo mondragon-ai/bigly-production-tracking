@@ -24,6 +24,7 @@ export type IconTypes =
   | "add-user"
   | "angle-up"
   | "angle-down"
+  | "chart-up"
   | "hour_glass";
 
 export type LoadingTypes =

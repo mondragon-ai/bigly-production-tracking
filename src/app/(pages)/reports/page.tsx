@@ -49,6 +49,8 @@ export default function Analytics() {
   return (
     <div className={styles.page}>
       <AnalyticsHeader
+        saveGoals={saveGoals}
+        goals={goals}
         reports={true}
         header={header}
         title={"Daily Reports"}
