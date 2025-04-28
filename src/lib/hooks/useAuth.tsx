@@ -33,7 +33,7 @@ const useLogin = () => {
         setGlobalState("user", user);
 
         toast.success("Logged In");
-        router.push("/analytics");
+        router.push("/reports");
         return;
       } else {
         handleHttpError(status, message, setError);

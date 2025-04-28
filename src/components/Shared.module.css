@@ -322,6 +322,12 @@
   }
   .pageHeaderWrapper {
     margin-bottom: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pageHeaderWrapper .right {
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
@@ -555,8 +561,8 @@
 
 .goalsModal .goalCard {
   z-index: 100000;
-  width: 90%;
-  max-width: 90%;
+  width: 100%;
+  max-width: 450px;
   background-color: var(--tertary-background);
   border: 2px solid var(--foreground);
   border-radius: 6px;
@@ -598,9 +604,8 @@
     display: none;
   }
   .aTxt {
-    margin-left: 10px;
-
-    display: none;
+    margin-top: 10px;
+    /* display: none; */
   }
 
   .timeFramWrapper {
@@ -609,6 +614,11 @@
 
   .mobileComplete {
     display: flex;
+  }
+
+  .goalsModal .goalCard {
+    width: 90%;
+    max-width: 90%;
   }
 }
 

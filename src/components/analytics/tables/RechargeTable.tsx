@@ -151,7 +151,10 @@ export const RechargeTable = memo(
     }, [rows, selectedStore]);
 
     return (
-      <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
+      <div
+        className={styles.chartWrapperBox}
+        style={{width: `${width}%`, overflow: "hidden"}}
+      >
         <header>
           <h5>{title}</h5>
           <h2>
@@ -159,7 +162,12 @@ export const RechargeTable = memo(
             <span>&nbsp;subs</span>
           </h2>
           <div
-            style={{marginTop: "10px", display: "flex", flexDirection: "row"}}
+            style={{
+              marginTop: "10px",
+              display: "flex",
+              flexDirection: "row",
+              overflow: "scroll",
+            }}
           >
             {STORES.map((s) => (
               <Badge
@@ -178,7 +186,7 @@ export const RechargeTable = memo(
           className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
           style={{overflow: "auto", position: "relative"}}
         >
-          <table style={{minWidth: w < 720 ? "170%" : "100%"}}>
+          <table style={{minWidth: w < 720 ? "210%" : "100%"}}>
             <thead style={{position: "sticky", top: 0}}>
               <tr>
                 {HEADERS.map((header, i) => (

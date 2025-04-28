@@ -155,7 +155,7 @@ export const KlaviyoTable = memo(
           className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
           style={{overflow: "auto", position: "relative"}}
         >
-          <table style={{minWidth: w < 720 ? "170%" : "100%"}}>
+          <table style={{minWidth: w < 720 ? "270%" : "100%"}}>
             <thead style={{position: "sticky", top: 0}}>
               <tr>
                 {HEADERS.map((header, i) => (

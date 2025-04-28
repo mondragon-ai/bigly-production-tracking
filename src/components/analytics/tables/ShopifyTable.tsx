@@ -150,7 +150,7 @@ export const ShopifyTable = memo(
     const [selectedColumn, setSelectedColumn] = useState<{
       name: string;
       fromHighest: boolean;
-    }>({name: "totalCount", fromHighest: true});
+    }>({name: "total_sales", fromHighest: true});
     const [rows, totals] = useMemo(() => calculateRows(data), [data]);
     const w = useWidth();
 
@@ -174,7 +174,7 @@ export const ShopifyTable = memo(
           className={`${styles.tableContainer} ${tableStyles.fileTableWrapper}`}
           style={{overflow: "auto", position: "relative"}}
         >
-          <table style={{minWidth: w < 720 ? "170%" : "100%"}}>
+          <table style={{minWidth: w < 720 ? "270%" : "100%"}}>
             <thead style={{position: "sticky", top: 0}}>
               <tr>
                 {HEADERS.map((header, i) => (

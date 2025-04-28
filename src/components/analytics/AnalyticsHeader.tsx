@@ -14,6 +14,7 @@ import {formatDateToYYYYMMDD} from "@/lib/utils/converter.tsx/time";
 import {BiglySalesGoals} from "@/lib/types/reports";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
+import {useWidth} from "@/lib/hooks/useWidth";
 
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
@@ -114,7 +115,7 @@ export const AnalyticsHeader = ({
     <>
       <header
         className={styles.pageHeaderWrapper}
-        style={{alignItems: "flex-end"}}
+        // style={{alignItems: "flex-end"}}
       >
         <div className={styles.left}>
           <div>
@@ -263,6 +264,7 @@ const AnalyticsCharts = ({
   viewType: "jobs" | "units";
   setViewType: (type: "jobs" | "units") => void;
 }) => {
+  const width = useWidth();
   return (
     <>
       <div className={styles.aTxt} onClick={() => setViewType("units")}>
@@ -271,6 +273,19 @@ const AnalyticsCharts = ({
         </h1>
         <span>{reports ? "Monthly Goal" : "Total Units"}</span>
       </div>
+
+      {reports && (
+        <div
+          className={styles.aTxt}
+          onClick={() => setViewType("units")}
+          style={{display: width < 720 ? "flex" : "none"}}
+        >
+          <h1 className={geistSans.className}>
+            {formatNumber(header.completed_units)}
+          </h1>
+          <span>Monthly Totals</span>
+        </div>
+      )}
       <div className={styles.chartContainer}>
         <HalfCircleStats
           completed={header.completed_units / header.total_units}
@@ -293,6 +308,18 @@ const AnalyticsCharts = ({
         </h1>
         <span>{reports ? "Yearly Goal" : "Total Jobs"}</span>
       </div>
+
+      {reports && (
+        <div
+          className={styles.aTxt}
+          style={{display: width < 720 ? "flex" : "none"}}
+        >
+          <h1 className={geistSans.className}>
+            {formatNumber(header.completed_jobs)}
+          </h1>
+          <span>Yearly Totals</span>
+        </div>
+      )}
 
       <div className={styles.chartContainer}>
         <HalfCircleStats
