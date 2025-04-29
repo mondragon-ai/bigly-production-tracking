@@ -17,7 +17,13 @@ import {
   StackedBarChart,
 } from "@/components/analytics/charts";
 import {parseReportData} from "@/lib/payloads/reports";
-import {BarChart, CleanedAnalytics} from "@/lib/types/reports";
+import {
+  BarChart,
+  CleanedAnalytics,
+  SubscriptionReport,
+} from "@/lib/types/reports";
+import {LoadingTypes} from "@/lib/types/shared";
+import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
 // import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
 
 type ViewTypes = "table" | "time" | "chart";
@@ -34,6 +40,16 @@ export default function Analytics() {
     discounts,
     gross_sales,
     orders,
+    total_sales,
+    returns,
+    stripe,
+    emails,
+    conversion_value,
+    open_rate,
+    click_rate,
+    recipients,
+    average_order_value,
+    recharge,
   } = parseReportData(analytics, goals);
 
   const handleFetchingAnalytics = (t: TimeFrameTypes) => {
@@ -79,7 +95,7 @@ export default function Analytics() {
           style={{marginTop: "1rem", justifyContent: "space-between"}}
         >
           {loading == "loading" || loading == "posting" ? (
-            <SkeletonAnalytic width={32} />
+            <SkeletonAnalytic width={49} />
           ) : (
             <AnalyticsCard
               title={"Daily Goals"}
@@ -104,7 +120,7 @@ export default function Analytics() {
           )}
 
           {loading == "loading" || loading == "posting" ? (
-            <SkeletonAnalytic width={32} />
+            <SkeletonAnalytic width={49} />
           ) : (
             <AnalyticsCard
               title={"Monthly Goals"}
@@ -130,11 +146,21 @@ export default function Analytics() {
         </section>
         <TableView analytics={analytics} type={viewType} />
         <ChartView
-          loading={"loading"}
+          loading={loading}
           type={viewType}
           gross_sales={gross_sales}
           orders={orders}
           discounts={discounts}
+          returns={returns}
+          total_sales={total_sales}
+          stripe={stripe}
+          emails={emails}
+          conversion_value={conversion_value}
+          open_rate={open_rate}
+          click_rate={click_rate}
+          recipients={recipients}
+          average_order_value={average_order_value}
+          recharge={recharge}
         />
       </div>
     </div>
@@ -177,11 +203,21 @@ const TableView = ({analytics, type}: TableViewProps) => {
 };
 
 type ChartViewProps = {
-  loading: "loading" | "posting";
+  loading: LoadingTypes;
   type: ViewTypes;
   gross_sales: BarChart;
   orders: BarChart;
   discounts: BarChart;
+  returns: BarChart;
+  total_sales: BarChart;
+  stripe: SubscriptionReport;
+  emails: SubscriptionReport;
+  conversion_value: BarChart;
+  open_rate: BarChart;
+  click_rate: BarChart;
+  recipients: BarChart;
+  average_order_value: BarChart;
+  recharge: SubscriptionReport;
 };
 
 const ChartView = ({
@@ -190,6 +226,16 @@ const ChartView = ({
   gross_sales,
   orders,
   discounts,
+  returns,
+  total_sales,
+  stripe,
+  emails,
+  conversion_value,
+  open_rate,
+  click_rate,
+  recipients,
+  average_order_value,
+  recharge,
 }: ChartViewProps) => {
   if (type !== "chart") return null;
   return (
@@ -272,7 +318,7 @@ const ChartView = ({
           </AnalyticsCard>
         )}
       </section>
-      {/* 
+
       <section
         className={styles.rowSection}
         style={{marginTop: "1rem", justifyContent: "space-between"}}
@@ -333,35 +379,6 @@ const ChartView = ({
           <SkeletonAnalytic width={32} />
         ) : (
           <AnalyticsCard
-            title={"Shipping Charges"}
-            width={32}
-            main_value={`${shipping_charges.sum}`}
-            fixed={2}
-            is_money={true}
-            prefix="$"
-          >
-            {shipping_charges.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={shipping_charges.bar_chart}
-                suffix={""}
-                fixed={2}
-                is_money={true}
-                prefix="$"
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-      </section>
-
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
             title={"Stripe Subscriptions"}
             width={32}
             main_value={`${stripe.churn}`}
@@ -377,17 +394,18 @@ const ChartView = ({
             ) : null}
           </AnalyticsCard>
         )}
+      </section>
 
-        {loading == "loading" || loading == "posting" || total_sales.sum ? (
-          <SkeletonAnalytic width={32} />
-        ) : null}
-
+      <section
+        className={styles.rowSection}
+        style={{marginTop: "1rem", justifyContent: "space-between"}}
+      >
         {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
+          <SkeletonAnalytic width={100} />
         ) : (
           <AnalyticsCard
             title={"Recharge Subscriptions"}
-            width={32}
+            width={100}
             main_value={`${recharge.churn}`}
             metric="% churn"
           >
@@ -401,8 +419,8 @@ const ChartView = ({
             ) : null}
           </AnalyticsCard>
         )}
-      </section> */}
-      {/* 
+      </section>
+
       <section
         className={styles.rowSection}
         style={{marginTop: "1rem", justifyContent: "space-between"}}
@@ -527,23 +545,27 @@ const ChartView = ({
           <SkeletonAnalytic width={32} />
         ) : (
           <AnalyticsCard
-            title={"Email Conversion Rate"}
+            title={"Average Order Value"}
             width={32}
-            main_value={`${conversion_rate.sum}`}
-            metric="%"
-            fixed={3}
+            main_value={`${average_order_value.sum}`}
+            metric=""
+            fixed={2}
+            is_money={true}
+            prefix="$"
           >
-            {conversion_rate.sum ? (
+            {average_order_value.sum ? (
               <BarChartStats
                 color={"#A1A5F4"}
-                data={conversion_rate.bar_chart}
-                suffix={"%"}
-                fixed={3}
+                data={average_order_value.bar_chart}
+                suffix={""}
+                fixed={2}
+                is_money={true}
+                prefix="$"
               />
             ) : null}
           </AnalyticsCard>
         )}
-      </section> */}
+      </section>
     </>
   );
 };

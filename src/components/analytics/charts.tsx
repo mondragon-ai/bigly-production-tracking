@@ -64,6 +64,7 @@ const CustomStackedTooltip = ({active, payload, label, suffix, fixed}: any) => {
       unsubscribed: 0,
     };
 
+    console.log({label, payload});
     return (
       <div className={styles.toolWrapper}>
         {payload.map((p: any) => {
@@ -72,15 +73,19 @@ const CustomStackedTooltip = ({active, payload, label, suffix, fixed}: any) => {
           return (
             <p className="label">
               {`${capitalizeWords(p.name)}: `}
-              <span style={{fontWeight: 550}}>{`${p.value}${suffix}`}</span>
+              <span style={{fontWeight: 550}}>{`${p.value}`}</span>
             </p>
           );
         })}
         <p className="label">
           {"Churn: "}
-          <span style={{fontWeight: 550}}>{`${(
-            Number(data.unsubscribed / (data.subscription || 1)) * 100
+          <span style={{fontWeight: 550}}>{`${(data.subscription == 0
+            ? 100
+            : Number(data.unsubscribed / (data.subscription || 1)) * 100
           ).toFixed(2)}%`}</span>
+        </p>
+        <p>
+          <span style={{fontWeight: 550}}>{label}</span>
         </p>
       </div>
     );

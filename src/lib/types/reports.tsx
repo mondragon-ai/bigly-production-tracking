@@ -15,7 +15,7 @@ export type PasedReportData = {
   open_rate: BarChart;
   click_rate: BarChart;
   recipients: BarChart;
-  conversion_rate: BarChart;
+  average_order_value: BarChart;
   monthly_sales_goals: SalesGoals;
   daily_sales_goals: SalesGoals;
 };
@@ -109,7 +109,7 @@ export type ShopifyStoreNames = "shophodgetwins" | "optimalhuman" | "bigly-pod";
 export type BiglyDailyReportDocument = {
   klaviyo: KlaviyoStoreAnalytics;
   shopify: ShopifyAnalytics;
-  recharge: Record<Stores, RechargeAnalytics>;
+  recharge: Record<string, RechargeAnalytics>;
   stripe: StripeAnalytics;
 };
 

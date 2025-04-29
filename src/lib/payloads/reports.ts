@@ -1,11 +1,17 @@
-import {HeaderAnalytics} from "../types/analytics";
+import {HeaderAnalytics, NameValueProps} from "../types/analytics";
 import {
+  BarChart,
   BiglyDailyReportDocument,
   BiglySalesGoals,
   CleanedAnalytics,
   ParsedBaseType,
   PasedReportData,
+  Platforms,
+  SalesGoals,
+  ShopifyAnalytics,
+  StackChartProps,
   Stores,
+  SubscriptionReport,
 } from "../types/reports";
 import {getDaysInCurrentMonth} from "../utils/converter.tsx/time";
 
@@ -25,7 +31,22 @@ export const parseReportData = (
     daily_sales_goals: buildDailySalesGoals(yesterday, goals),
     monthly_sales_goals: buildMonthlySalesGoals(goals),
     header: buildHeaderSalesGoals(goals!),
-    gross_sales: buildGrossSales(yesterday),
+    gross_sales: buildShopifyData(yesterday, "gross_sales"),
+    orders: buildShopifyData(yesterday, "orders"),
+    discounts: buildShopifyData(yesterday, "discounts"),
+    returns: buildShopifyData(yesterday, "returns"),
+    total_sales: buildShopifyData(yesterday, "total_sales"),
+
+    stripe: buildStripeData(yesterday),
+
+    emails: processEmailSubscriptions(yesterday),
+    conversion_value: processKlaviyo(yesterday, "conversion_value", false),
+    open_rate: processKlaviyo(yesterday, "open_rate", true, true),
+    click_rate: processKlaviyo(yesterday, "click_rate", true, true),
+    recipients: processKlaviyo(yesterday, "recipients", false),
+    average_order_value: processKlaviyo(yesterday, "average_order_value", true),
+
+    recharge: buildRechargeData(yesterday),
   };
 };
 
@@ -34,7 +55,7 @@ const buildDailySalesGoals = (
   data: CleanedAnalytics["comparison"],
   goals: BiglySalesGoals | null,
 ) => {
-  if (!goals || !data) return emptyStackedChart();
+  if (!goals || !data) return emptyCompareChart();
 
   const daysInMonth = getDaysInCurrentMonth();
   const result = Object.entries(data).reduce<{
@@ -60,7 +81,7 @@ const buildDailySalesGoals = (
 };
 
 const buildMonthlySalesGoals = (goals: BiglySalesGoals | null) => {
-  if (!goals) return emptyStackedChart();
+  if (!goals) return emptyCompareChart();
 
   const storeTotals: Record<string, number> = {};
   let churn = 0;
@@ -112,27 +133,192 @@ const buildHeaderSalesGoals = (
 };
 
 // ============================ Shopify Charts ============================
-const buildGrossSales = (yesterday: Yesterday) => {
-  const grossSales = emptyBarChart();
-  if (!yesterday) return grossSales;
+const buildShopifyData = (
+  data: Record<Stores, BiglyDailyReportDocument>,
+  metric:
+    | "gross_sales"
+    | "orders"
+    | "discounts"
+    | "returns"
+    | "total_sales"
+    | "shipping_charges",
+) => {
+  const base = emptyBarChart();
+  for (const [store, storeData] of Object.entries(data)) {
+    for (const [key, value] of Object.entries(storeData.shopify)) {
+      if (key === metric) {
+        base.bar_chart.push({
+          name: store,
+          value: Math.abs(value),
+        });
+        if (!base.sum) base.sum = 0;
+        base.sum += Math.abs(value);
+      }
+    }
+  }
 
-  return grossSales;
+  return base;
+};
+
+// ============================ Recharge Charts ============================
+const buildRechargeData = (data: Record<Stores, BiglyDailyReportDocument>) => {
+  const base = emptyStackedChart();
+
+  let count = 0;
+  let unsubscribed = 0;
+  let subscription = 0;
+  for (const [store, storeData] of Object.entries(data)) {
+    for (const [product, productData] of Object.entries(
+      storeData.recharge || {},
+    )) {
+      if (!product || !productData) continue;
+
+      base.stacked_chart.push({
+        name: product,
+        unsubscribed: productData.cancelled,
+        subscription: productData.created,
+      });
+
+      unsubscribed += productData.cancelled;
+      subscription += productData.created;
+      count++;
+    }
+  }
+
+  let churn =
+    subscription == 0
+      ? "100"
+      : Number(
+          (Number(unsubscribed / (subscription || 1)) * 100) / (count || 1),
+        ).toFixed(2);
+
+  base.churn = churn;
+  return base;
+};
+
+// ============================ Stripe Charts ============================
+const buildStripeData = (data: Record<Stores, BiglyDailyReportDocument>) => {
+  const base = emptyStackedChart();
+
+  let count = 0;
+  let unsubscribed = 0;
+  let subscription = 0;
+  for (const [store, storeData] of Object.entries(data)) {
+    const value = storeData.stripe;
+    if (!value) continue;
+
+    base.stacked_chart.push({
+      name: store,
+      unsubscribed: Number(value?.cancelled) || 0,
+      subscription: Number(value?.created) || 0,
+    });
+
+    unsubscribed += value.cancelled;
+    subscription += value.created;
+    count++;
+  }
+
+  let churn =
+    subscription == 0
+      ? "100"
+      : Number(
+          (Number(unsubscribed / (subscription || 1)) * 100) / (count || 1),
+        ).toFixed(2);
+
+  base.churn = churn;
+  return base;
+};
+
+// ============================ Emails Charts ============================
+const processEmailSubscriptions = (
+  data: Record<Stores, BiglyDailyReportDocument>,
+) => {
+  const base = emptyStackedChart();
+
+  let count = 0;
+  let unsubscribed = 0;
+  let subscription = 0;
+  for (const [store, storeData] of Object.entries(data)) {
+    const value = storeData.klaviyo;
+    if (!value) continue;
+
+    base.stacked_chart.push({
+      name: store,
+      unsubscribed: Number(value?.unsubscribed) || 0,
+      subscription: Number(value?.subscribed) || 0,
+    });
+
+    unsubscribed += value.unsubscribed;
+    subscription += value.subscribed;
+    count++;
+  }
+
+  let churn =
+    subscription == 0
+      ? "100"
+      : Number(
+          Number((unsubscribed / (subscription || 1)) * 100) / count,
+        ).toFixed(2);
+
+  base.churn = churn;
+  console.log({count, unsubscribed, subscription, churn});
+  return base;
+};
+
+const processKlaviyo = (
+  data: Record<Stores, BiglyDailyReportDocument>,
+  type:
+    | "recipients"
+    | "conversion_value"
+    | "click_rate"
+    | "open_rate"
+    | "average_order_value",
+  get_mean: boolean,
+  isPercentage: boolean = false,
+) => {
+  let sum = 0;
+  let count = 0;
+  const base = emptyBarChart();
+
+  for (const [store, storeData] of Object.entries(data)) {
+    const value = storeData.klaviyo;
+    if (!value) continue;
+
+    const metric = isPercentage
+      ? Number(value[type] || 0) * 100
+      : Number(value[type] || 0);
+    base.bar_chart.push({
+      name: store,
+      value: metric,
+    });
+
+    count++;
+    sum += metric;
+  }
+
+  base.sum = sum / (get_mean ? count : 1);
+  return base;
 };
 
 // ============================ BASE PAYLOD ============================
-const emptyStackedChart = () => ({
+const emptyCompareChart = (): SalesGoals => ({
   churn: "0",
   stacked_chart: [],
 });
 
-const emptyBarChart = () => ({
+const emptyStackedChart = (): SubscriptionReport => ({
+  churn: "0",
+  stacked_chart: [],
+});
+
+const emptyBarChart = (): BarChart => ({
   sum: 0,
-  bar_chart: [],
+  bar_chart: [] as NameValueProps[],
 });
 
 export const getBaseReportData = (): PasedReportData => ({
-  daily_sales_goals: emptyStackedChart(),
-  monthly_sales_goals: emptyStackedChart(),
+  daily_sales_goals: emptyCompareChart(),
+  monthly_sales_goals: emptyCompareChart(),
   header: {
     total_units: 0,
     completed_units: 0,
@@ -152,7 +338,7 @@ export const getBaseReportData = (): PasedReportData => ({
   open_rate: emptyBarChart(),
   click_rate: emptyBarChart(),
   recipients: emptyBarChart(),
-  conversion_rate: emptyBarChart(),
+  average_order_value: emptyBarChart(),
 });
 
 // Base Parsing Object
