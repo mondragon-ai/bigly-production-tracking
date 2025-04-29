@@ -531,7 +531,7 @@
   width: 100%;
   height: auto;
   min-height: 275px;
-  padding: 1rem;
+  padding: 5px;
 }
 
 .chartWrapperBox .goalsContainer {
@@ -683,6 +683,61 @@
 
 .goalsModal .goalCard > .goalsContainer .inputWrapper {
   width: 48% !important;
+}
+
+.filterBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: start;
+  width: 100%;
+  border: 1px solid rgb(189, 189, 189);
+  border-radius: 5px;
+}
+
+.filterBox > header {
+  background-color: rgba(247, 247, 247, 1);
+  border-bottom: 1px solid rgb(189, 189, 189);
+  width: 100%;
+  padding: 15px 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.filterBox > span,
+.filterBox > header > span {
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 13px;
+  color: var(--secondary-text);
+}
+
+.filterBox > header > span {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.filterBox > span {
+  background-color: rgb(255, 255, 255);
+  padding: 10px 5px;
+  width: 100%;
+  border-bottom: 1px solid rgb(189, 189, 189);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterBox > span:hover {
+  background-color: rgb(246, 246, 246);
+  color: black;
+  cursor: pointer;
+}
+
+.filterBox > span:last-of-type {
+  border-bottom: none !important;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 /* Mobile (small to large) */

@@ -64,7 +64,6 @@ const CustomStackedTooltip = ({active, payload, label, suffix, fixed}: any) => {
       unsubscribed: 0,
     };
 
-    console.log({label, payload});
     return (
       <div className={styles.toolWrapper}>
         {payload.map((p: any) => {

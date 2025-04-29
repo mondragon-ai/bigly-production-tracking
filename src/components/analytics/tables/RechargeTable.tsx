@@ -6,7 +6,6 @@ import {CleanedAnalytics, Stores} from "@/lib/types/reports";
 import {useWidth} from "@/lib/hooks/useWidth";
 import {Badge} from "@/components/shared/Badge";
 import {SortingColumn} from "./SortingColumn";
-import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 
 type AnalyticsTableProps = {
   title: string;
