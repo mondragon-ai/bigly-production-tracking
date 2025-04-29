@@ -261,7 +261,6 @@ const processEmailSubscriptions = (
         ).toFixed(2);
 
   base.churn = churn;
-  console.log({count, unsubscribed, subscription, churn});
   return base;
 };
 

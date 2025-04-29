@@ -14,13 +14,13 @@ export const AnalyticsCard = ({
 }: {
   title: string;
   width: number;
-  main_value?: string;
+  main_value?: string | undefined;
   metric?: string;
   children: React.ReactNode;
   fixed?: number;
   is_money?: boolean;
   negative?: boolean;
-  prefix?: "$" | "";
+  prefix?: "$" | "" | undefined;
 }) => {
   const header = fixed ? Number(main_value).toFixed(fixed) : main_value;
 

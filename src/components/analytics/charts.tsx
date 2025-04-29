@@ -227,7 +227,7 @@ export const BarChartStats = ({
   prefix = "",
 }: {
   data: any[];
-  suffix: "%" | "h" | "";
+  suffix: "%" | "h" | "" | undefined;
   is_money?: boolean;
   fixed?: number;
   color?: string;
@@ -286,7 +286,7 @@ export const StackedBarChart = ({
   color = "#a1a5f4",
 }: {
   data: any[];
-  suffix: "%" | "h" | "";
+  suffix: "%" | "h" | "" | undefined;
   fixed?: number;
   color?: string;
 }) => {
@@ -341,7 +341,7 @@ export const ComparedBarChart = ({
   prefix,
 }: {
   data: any[];
-  suffix: "%" | "h" | "";
+  suffix: "%" | "h" | "" | undefined;
   fixed?: number;
   color?: string;
   is_money?: boolean;

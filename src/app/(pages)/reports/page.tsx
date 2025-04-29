@@ -5,26 +5,19 @@ import {AnalyticsHeader} from "@/components/analytics/AnalyticsHeader";
 import styles from "../../../components/Shared.module.css";
 import {TimeFrameTypes} from "@/lib/types/analytics";
 import {useReports} from "@/lib/hooks/useReports";
-import {SetStateAction, useState} from "react";
+import {useState} from "react";
 import {ShopifyTable} from "@/components/analytics/tables/ShopifyTable";
 import {KlaviyoTable} from "@/components/analytics/tables/KlaviyoTable";
 import {StripeTable} from "@/components/analytics/tables/StripeTable";
 import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
 import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
-import {
-  BarChartStats,
-  ComparedBarChart,
-  StackedBarChart,
-} from "@/components/analytics/charts";
+import {ComparedBarChart} from "@/components/analytics/charts";
 import {parseReportData} from "@/lib/payloads/reports";
-import {
-  BarChart,
-  CleanedAnalytics,
-  SubscriptionReport,
-} from "@/lib/types/reports";
-import {LoadingTypes} from "@/lib/types/shared";
-import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
-// import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
+import {CleanedAnalytics} from "@/lib/types/reports";
+import {ChartView} from "./components/views/ChartView";
+import {TableView} from "./components/views/TableView";
+import {AnalyticsCardGroup, CardConfig} from "./components/AnalyticCardGroups";
+import {TimeSeries} from "./components/views/TimeSeries";
 
 type ViewTypes = "table" | "time" | "chart";
 
@@ -75,6 +68,29 @@ export default function Analytics() {
     return acc + date[1].total;
   }, 0);
 
+  const goalsChart = [
+    {
+      title: "Daily Goals",
+      width: 49,
+      value: daily_sales_goals.churn,
+      fixed: 2,
+      isMoney: true,
+      prefix: "$",
+      chartType: "compared",
+      chartData: daily_sales_goals.stacked_chart,
+    },
+    {
+      title: "Monthly Goals",
+      width: 49,
+      value: monthly_sales_goals.churn,
+      fixed: 2,
+      isMoney: true,
+      prefix: "$",
+      chartType: "compared",
+      chartData: monthly_sales_goals.stacked_chart,
+    },
+  ] as CardConfig[];
+
   return (
     <div className={styles.page}>
       <AnalyticsHeader
@@ -90,60 +106,10 @@ export default function Analytics() {
         setType={setViewType}
       />
       <div>
-        <section
-          className={styles.rowSection}
-          style={{marginTop: "1rem", justifyContent: "space-between"}}
-        >
-          {loading == "loading" || loading == "posting" ? (
-            <SkeletonAnalytic width={49} />
-          ) : (
-            <AnalyticsCard
-              title={"Daily Goals"}
-              width={49}
-              fixed={2}
-              is_money={true}
-              main_value={`${daily_sales_goals.churn}`}
-              metric=""
-              prefix="$"
-            >
-              {daily_sales_goals.stacked_chart ? (
-                <ComparedBarChart
-                  color={"#A1A5F4"}
-                  data={daily_sales_goals.stacked_chart}
-                  suffix={""}
-                  is_money={true}
-                  fixed={2}
-                  prefix="$"
-                />
-              ) : null}
-            </AnalyticsCard>
-          )}
+        {(viewType === "table" || viewType === "chart") && (
+          <AnalyticsCardGroup loading={loading} cards={goalsChart} />
+        )}
 
-          {loading == "loading" || loading == "posting" ? (
-            <SkeletonAnalytic width={49} />
-          ) : (
-            <AnalyticsCard
-              title={"Monthly Goals"}
-              width={49}
-              fixed={2}
-              is_money={true}
-              main_value={`${monthly_sales_goals.churn}`}
-              metric=""
-              prefix="$"
-            >
-              {monthly_sales_goals.stacked_chart ? (
-                <ComparedBarChart
-                  color={"#A1A5F4"}
-                  data={monthly_sales_goals.stacked_chart}
-                  suffix={""}
-                  is_money={true}
-                  fixed={2}
-                  prefix="$"
-                />
-              ) : null}
-            </AnalyticsCard>
-          )}
-        </section>
         <TableView analytics={analytics} type={viewType} />
         <ChartView
           loading={loading}
@@ -162,410 +128,8 @@ export default function Analytics() {
           average_order_value={average_order_value}
           recharge={recharge}
         />
+        <TimeSeries analytics={analytics} type={viewType} />
       </div>
     </div>
   );
 }
-
-type TableViewProps = {
-  analytics: CleanedAnalytics | null;
-  type: ViewTypes;
-};
-
-const TableView = ({analytics, type}: TableViewProps) => {
-  if (type !== "table") return null;
-
-  return (
-    <>
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        <RechargeTable title={"Recharge"} width={54} data={analytics} />
-        <StripeTable title={"Stripe"} width={45} data={analytics} />
-      </section>
-
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        <ShopifyTable title={"Shopify"} width={100} data={analytics} />
-      </section>
-
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        <KlaviyoTable title={"Klaviyo"} width={100} data={analytics} />
-      </section>
-    </>
-  );
-};
-
-type ChartViewProps = {
-  loading: LoadingTypes;
-  type: ViewTypes;
-  gross_sales: BarChart;
-  orders: BarChart;
-  discounts: BarChart;
-  returns: BarChart;
-  total_sales: BarChart;
-  stripe: SubscriptionReport;
-  emails: SubscriptionReport;
-  conversion_value: BarChart;
-  open_rate: BarChart;
-  click_rate: BarChart;
-  recipients: BarChart;
-  average_order_value: BarChart;
-  recharge: SubscriptionReport;
-};
-
-const ChartView = ({
-  loading,
-  type,
-  gross_sales,
-  orders,
-  discounts,
-  returns,
-  total_sales,
-  stripe,
-  emails,
-  conversion_value,
-  open_rate,
-  click_rate,
-  recipients,
-  average_order_value,
-  recharge,
-}: ChartViewProps) => {
-  if (type !== "chart") return null;
-  return (
-    <>
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Gross Sales"}
-            width={32}
-            fixed={2}
-            is_money={true}
-            main_value={`${gross_sales.sum}`}
-            metric=""
-            prefix="$"
-          >
-            {gross_sales.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={gross_sales.bar_chart}
-                suffix={""}
-                is_money={true}
-                fixed={2}
-                prefix="$"
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Orders"}
-            width={32}
-            main_value={`${orders.sum}`}
-            metric=""
-            fixed={0}
-            is_money={true}
-          >
-            {orders.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={orders.bar_chart}
-                suffix={""}
-                fixed={0}
-                is_money={false}
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Discounts"}
-            width={32}
-            main_value={`${discounts.sum}`}
-            fixed={2}
-            negative={true}
-            is_money={true}
-            prefix="$"
-          >
-            {discounts.sum ? (
-              <BarChartStats
-                color={"#e85f5c"}
-                data={discounts.bar_chart}
-                suffix={""}
-                fixed={2}
-                is_money={true}
-                negative={true}
-                prefix="$"
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-      </section>
-
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Returns"}
-            width={32}
-            main_value={`${returns.sum}`}
-            metric=""
-            fixed={2}
-            negative={true}
-            is_money={true}
-            prefix="$"
-          >
-            {returns.sum ? (
-              <BarChartStats
-                color={"#e85f5c"}
-                data={returns.bar_chart}
-                suffix={""}
-                fixed={2}
-                negative={true}
-                is_money={true}
-                prefix="$"
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Total Sales"}
-            width={32}
-            main_value={`${total_sales.sum}`}
-            metric=""
-            fixed={2}
-            is_money={true}
-            prefix="$"
-          >
-            {total_sales.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={total_sales.bar_chart}
-                suffix={""}
-                fixed={2}
-                is_money={true}
-                prefix="$"
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Stripe Subscriptions"}
-            width={32}
-            main_value={`${stripe.churn}`}
-            metric="% churn"
-          >
-            {stripe.stacked_chart ? (
-              <StackedBarChart
-                color={"#e85f5c"}
-                data={stripe.stacked_chart}
-                suffix={"%"}
-                fixed={1}
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-      </section>
-
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={100} />
-        ) : (
-          <AnalyticsCard
-            title={"Recharge Subscriptions"}
-            width={100}
-            main_value={`${recharge.churn}`}
-            metric="% churn"
-          >
-            {recharge.stacked_chart ? (
-              <StackedBarChart
-                color={"#e85f5c"}
-                data={recharge.stacked_chart}
-                suffix={"%"}
-                fixed={1}
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-      </section>
-
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Email Subscriptions"}
-            width={32}
-            main_value={`${emails.churn}`}
-            metric="% churn"
-          >
-            {emails.churn ? (
-              <StackedBarChart
-                color={"#e85f5c"}
-                data={emails.stacked_chart}
-                suffix={""}
-                fixed={1}
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Email Campaign Value"}
-            width={32}
-            main_value={`${conversion_value.sum}`}
-            metric=""
-            fixed={2}
-            prefix="$"
-            is_money={true}
-          >
-            {returns.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={conversion_value.bar_chart}
-                suffix={""}
-                fixed={2}
-                is_money={true}
-                prefix="$"
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Email Open Rate"}
-            width={32}
-            main_value={`${open_rate.sum}`}
-            metric={"%"}
-            fixed={2}
-          >
-            {returns.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={open_rate.bar_chart}
-                suffix={"%"}
-                fixed={2}
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-      </section>
-
-      <section
-        className={styles.rowSection}
-        style={{marginTop: "1rem", justifyContent: "space-between"}}
-      >
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Email Click Rate"}
-            width={32}
-            main_value={`${click_rate.sum}`}
-            metric="%"
-            fixed={3}
-          >
-            {click_rate.bar_chart ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={click_rate.bar_chart}
-                suffix={"%"}
-                fixed={3}
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Email Campaign Recipiants"}
-            width={32}
-            main_value={`${formatNumber(recipients.sum!)}`}
-            metric=""
-            fixed={0}
-            prefix=""
-            is_money={false}
-          >
-            {recipients.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={recipients.bar_chart}
-                suffix={""}
-                fixed={0}
-                is_money={true}
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-
-        {loading == "loading" || loading == "posting" ? (
-          <SkeletonAnalytic width={32} />
-        ) : (
-          <AnalyticsCard
-            title={"Average Order Value"}
-            width={32}
-            main_value={`${average_order_value.sum}`}
-            metric=""
-            fixed={2}
-            is_money={true}
-            prefix="$"
-          >
-            {average_order_value.sum ? (
-              <BarChartStats
-                color={"#A1A5F4"}
-                data={average_order_value.bar_chart}
-                suffix={""}
-                fixed={2}
-                is_money={true}
-                prefix="$"
-              />
-            ) : null}
-          </AnalyticsCard>
-        )}
-      </section>
-    </>
-  );
-};
