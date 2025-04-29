@@ -8,11 +8,11 @@ export const FilterCard = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className={styles.chartWrapperBox} style={{width: `${width}%`}}>
+    <div className={`${styles.chartWrapperBox}`} style={{width: `${width}%`}}>
       <header>
         <h5>Filter Time Series</h5>
       </header>
-      <main className={styles.chartContainer}>{children}</main>
+      <main className={`${styles.filterCardBox}`}>{children}</main>
     </div>
   );
 };
