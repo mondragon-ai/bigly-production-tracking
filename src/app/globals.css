@@ -89,8 +89,54 @@ a {
   }
 }
 
-.react-calendar__month-view__days__day--weekend {
-  color: #e53c53 !important;
+.react-calendar__viewContainer
+  > div
+  > div
+  > div
+  > div.react-calendar__month-view__weekdays
+  > div
+  > abbr,
+.react-calendar__viewContainer
+  > div
+  > div
+  > div
+  > div
+  > button.react-calendar__month-view__days__day--neighboringMonth
+  > abbr {
+  color: rgb(215, 215, 215) !important;
+}
+.react-calendar__viewContainer
+  > div
+  > div
+  > div
+  > div.react-calendar__month-view__days
+  > button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day {
+  background-color: white !important;
+}
+
+.react-calendar__viewContainer
+  > div
+  > div
+  > div
+  > div.react-calendar__month-view__days
+  > button.react-calendar__tile.react-calendar__tile--active {
+  background-color: rgb(48, 48, 48) !important;
+}
+
+.react-calendar__viewContainer
+  > div
+  > div
+  > div
+  > div.react-calendar__month-view__days
+  > button.react-calendar__tile.react-calendar__tile--active
+  abbr {
+  color: white !important;
+}
+/* (48, 48, 48) */
+.Shared_pageHeaderWrapper__PmqWb .Shared_left__a_cOa span,
+.Shared_pageHeaderWrapper__PmqWb .Shared_left__a_cOa span abbr {
+  /* color: rgba(48, 48, 48, 0.26) !important; */
+  text-decoration: none !important;
 }
 
 .react-calendar__tile.react-calendar__decade-view__years__year,
@@ -104,13 +150,58 @@ a {
 .react-calendar__century-view__decades__decade--neighboringCentury {
   color: rgb(180 180 180) !important;
 }
+.react-calendar__tile.react-calendar__month-view__days__day,
+.react-calendar__tile.react-calendar__month-view__days__day abbr {
+  color: rgb(53 53 53) !important;
+}
 
 .react-calendar__tile--hasActive,
 .react-calendar__tile--hasActive,
 .react-calendar__tile--active {
-  background: rgb(161, 165, 244) !important;
+  background: rgb(48, 48, 48) !important;
+  color: rgb(180 180 180) !important;
 }
 
 .react-calendar__navigation__arrow {
   color: black;
+}
+
+.react-calendar__navigation
+  > button.react-calendar__navigation__arrow.react-calendar__navigation__next2-button {
+  border-top-right-radius: 10px;
+}
+
+.react-calendar__navigation
+  > button.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button {
+  border-top-left-radius: 10px;
+}
+
+.react-calendar__viewContainer
+  > div
+  > div
+  > div
+  > div.react-calendar__month-view__days
+  > button.react-calendar__month-view__days__day:nth-of-type(29) {
+  border-bottom-left-radius: 10px;
+}
+
+.react-calendar__viewContainer
+  > div
+  > div
+  > div
+  > div.react-calendar__month-view__days
+  > button.react-calendar__month-view__days__day:last-of-type {
+  border-bottom-right-radius: 10px;
+}
+
+.react-calendar__tile--active.first-active {
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  background-color: rgb(48, 48, 48) !important;
+}
+
+.react-calendar__tile--active.last-active {
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  background-color: rgb(48, 48, 48) !important;
 }

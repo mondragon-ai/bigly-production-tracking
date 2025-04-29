@@ -55,10 +55,10 @@ export const NavMenu = () => {
               <Link
                 className={`${is_admin ? null : styles.isStaff}`}
                 onClick={() => setGlobalState("sidebar", !globalState.sidebar)}
-                href={is_admin ? "/analytics" : "#"}
+                href={is_admin ? "/reports" : "#"}
                 style={{
                   backgroundColor:
-                    slug === "analytics"
+                    slug === "reports"
                       ? "var(--tertary-background)"
                       : "transparent",
                 }}
@@ -82,14 +82,14 @@ export const NavMenu = () => {
                   </svg>
                   <h5
                     style={{
-                      fontWeight: slug === "analytics" ? 550 : 100,
+                      fontWeight: slug === "reports" ? 550 : 100,
                       color:
-                        slug === "analytics"
+                        slug === "reports"
                           ? "var(--primary-text)"
                           : "var(--secondary-text)",
                     }}
                   >
-                    Analytics
+                    Bigly Reports
                   </h5>
                 </div>
               </Link>

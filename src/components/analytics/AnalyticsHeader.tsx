@@ -1,20 +1,32 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {HeaderAnalytics, TimeFrameTypes} from "@/lib/types/analytics";
 import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 import {SkeletonText} from "../skeleton/SkeletonText";
 import {Button} from "@/components/shared/Button";
-import {LoadingTypes} from "@/lib/types/shared";
+import {IconTypes, LoadingTypes} from "@/lib/types/shared";
 import {Badge} from "../shared/Badge";
 import {HalfCircleStats} from "./charts";
 import styles from "../Shared.module.css";
 import localFont from "next/font/local";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import {formatNumber, formatToMoney} from "@/lib/utils/converter.tsx/numbers";
-import {formatDateToYYYYMMDD} from "@/lib/utils/converter.tsx/time";
+import {
+  formatDateToYYYYMMDD,
+  formatTimestamp,
+} from "@/lib/utils/converter.tsx/time";
 import {BiglySalesGoals} from "@/lib/types/reports";
 import "@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css";
 import "react-calendar/dist/Calendar.css";
 import {useWidth} from "@/lib/hooks/useWidth";
+import {Icon} from "../shared/Icon";
+import {IconType} from "recharts/types/component/DefaultLegendContent";
 
 const geistSans = localFont({
   src: "../../app/fonts/BebasNeue-Regular.ttf",
@@ -36,7 +48,7 @@ type AnalyticsHeaderProps = {
   goals: BiglySalesGoals | null;
   fetchAnalytics: (t: TimeFrameTypes | string) => void;
   saveGoals: (goals: BiglySalesGoals) => Promise<void>;
-};
+} & ViewTableProps;
 
 export const AnalyticsHeader = ({
   title = "Analytics",
@@ -47,6 +59,8 @@ export const AnalyticsHeader = ({
   goals,
   fetchAnalytics,
   saveGoals,
+  type,
+  setType,
 }: AnalyticsHeaderProps) => {
   const today = useMemo(() => new Date(), []);
   const [range, setRange] = useState<Value>([today, today]);
@@ -57,8 +71,14 @@ export const AnalyticsHeader = ({
 
   const compareDay = useMemo(() => {
     const d = new Date(today);
-    d.setDate(d.getDate() - 2);
-    return d.toISOString().split("T")[0];
+    return d.setDate(d.getDate() - 2);
+    // return d.toISOString().split("T")[0];
+  }, [today]);
+
+  const capDay = useMemo(() => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - 1);
+    return d.toISOString();
   }, [today]);
 
   const [goalState, setGoalState] = useState<Record<string, GoalEntry>>({});
@@ -111,92 +131,118 @@ export const AnalyticsHeader = ({
     }
   };
 
+  const styleSelected = () => {
+    setTimeout(() => {
+      const actives = document.querySelectorAll(
+        ".react-calendar__tile--active",
+      );
+      console.log(actives);
+      if (actives.length > 0) {
+        actives[0].classList.add("first-active");
+        actives[actives.length - 1].classList.add("last-active");
+      }
+    }, 500);
+  };
+
+  const styleCal = (value: Value) => {
+    setRange(value);
+    styleSelected();
+  };
   return (
     <>
-      <header
-        className={styles.pageHeaderWrapper}
-        // style={{alignItems: "flex-end"}}
-      >
-        <div className={styles.left}>
-          <div>
-            <h1 className={geistSans.className}>{title}</h1>
-            <Badge
-              icon="chart-up"
-              text="Goals"
-              tone="success"
-              style={{cursor: "pointer"}}
-              onClick={() => toggleGoalsModal(true)}
-            />
-          </div>
-
-          <div className={styles.dateSection}>
-            <Button
-              loading={false}
-              thin
-              text={custom ? "Search" : capitalizeWords(timeframe)}
-              tone="success"
-              align="center"
-              icon="calendar"
-              onClick={custom ? handleDateSearch : () => toggleModal(!modal)}
-            />
-
-            {custom && (
-              <div className={styles.dateRange}>
-                <DateRangePicker
-                  onChange={setRange}
-                  value={range}
-                  className={styles.datePicker}
-                  maxDate={new Date()}
-                  minDate={new Date("2025-04-02")}
-                />
-              </div>
-            )}
-
-            <div className={styles.dateInfo}>
-              <span>
-                <strong>Date Range:</strong> {capitalizeWords(timeframe)}
-              </span>
-              <span>
-                <strong>Compare Date:</strong> {compareDay}
-              </span>
-            </div>
-          </div>
-
-          {modal && (
-            <div className={styles.timeFramWrapper}>
-              {[
-                "yesterday",
-                "seven_days",
-                "mtd",
-                "thirty_days",
-                "ninety_days",
-                "twelve_months",
-                "custom",
-              ].map((type) => (
-                <div
-                  key={type}
-                  onClick={() => handleSelectPreset(type as TimeFrameTypes)}
-                >
-                  <span>{capitalizeWords(type.replace("_", " "))}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {header &&
-          (loading === "loading" || header.total_units === 0 ? (
-            <SkeletonHeader />
-          ) : (
-            <div className={styles.right}>
-              <AnalyticsCharts
-                reports={reports}
-                header={header}
-                viewType={viewType}
-                setViewType={setViewType}
+      <header className={styles.analyticsPageHdr}>
+        <div className={styles.pageHeaderWrapper}>
+          <div className={styles.left}>
+            <div>
+              <h1 className={geistSans.className}>{title}</h1>
+              <Badge
+                icon="chart-up"
+                text="Goals"
+                tone="success"
+                style={{cursor: "pointer"}}
+                onClick={() => toggleGoalsModal(true)}
               />
             </div>
-          ))}
+
+            <div className={styles.dateSection}>
+              <div className={styles.dateSelecorWrapper}>
+                <Button
+                  loading={false}
+                  thin
+                  text={custom ? "Search" : capitalizeWords(timeframe)}
+                  tone="success"
+                  align="center"
+                  icon="calendar"
+                  onClick={
+                    custom ? handleDateSearch : () => toggleModal(!modal)
+                  }
+                />
+
+                {custom && (
+                  <div className={styles.dateRange}>
+                    <DateRangePicker
+                      onCalendarOpen={styleSelected}
+                      onChange={styleCal}
+                      rangeDivider=" to "
+                      value={range}
+                      className={styles.datePicker}
+                      maxDate={new Date(capDay)}
+                      minDate={new Date("2025-04-02")}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.dateInfo}>
+                <span>
+                  <strong></strong> {capitalizeWords(timeframe)}
+                </span>
+                &nbsp; <Icon icon={"arrow-right"} tone={"info"} />
+                <span>
+                  <strong>Compare Date:</strong>{" "}
+                  {formatTimestamp(compareDay / 1000)}
+                </span>
+              </div>
+            </div>
+
+            {modal && (
+              <div className={styles.timeFramWrapper}>
+                {[
+                  "yesterday",
+                  "seven_days",
+                  "mtd",
+                  "thirty_days",
+                  "ninety_days",
+                  "twelve_months",
+                  "custom",
+                ].map((type) => (
+                  <div
+                    key={type}
+                    onClick={() => handleSelectPreset(type as TimeFrameTypes)}
+                  >
+                    <span>{capitalizeWords(type.replace("_", " "))}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {header &&
+            (loading === "loading" || header.total_units === 0 ? (
+              <SkeletonHeader />
+            ) : (
+              <div className={styles.right}>
+                <AnalyticsCharts
+                  reports={reports}
+                  header={header}
+                  viewType={viewType}
+                  setViewType={setViewType}
+                />
+              </div>
+            ))}
+        </div>
+
+        <ViewTabs type={type} setType={setType} />
       </header>
 
       {goalsModal && (
@@ -250,6 +296,41 @@ export const AnalyticsHeader = ({
         </div>
       )}
     </>
+  );
+};
+
+type ViewTableProps = {
+  type: "chart" | "table" | "time";
+  setType: Dispatch<SetStateAction<"chart" | "table" | "time">>;
+};
+
+const tableTypes = [
+  {type: "chart", name: "Chart", icon: "mixed-chart"},
+  {type: "table", name: "Table", icon: "table-row"},
+  {type: "time", name: "Time Series", icon: "chart-line-up"},
+];
+
+const ViewTabs = ({type, setType}: ViewTableProps) => {
+  return (
+    <div className={styles.viewTablesWrapper}>
+      {tableTypes.map((t) => {
+        const isSelected = type == t.type;
+        return (
+          <div
+            style={{borderBottomColor: isSelected ? "rgb(156, 156, 156)" : ""}}
+            onClick={() => setType(t.type as ViewTableProps["type"])}
+          >
+            <Icon
+              icon={t.icon as IconTypes}
+              tone={isSelected ? "magic" : "info"}
+            />
+            <span style={{color: isSelected ? "rgba(0, 0, 0, 0.91)" : ""}}>
+              {t.name}
+            </span>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 

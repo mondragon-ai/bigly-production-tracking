@@ -1,11 +1,15 @@
 import {HeaderAnalytics} from "../types/analytics";
 import {
+  BiglyDailyReportDocument,
   BiglySalesGoals,
   CleanedAnalytics,
   ParsedBaseType,
   PasedReportData,
+  Stores,
 } from "../types/reports";
 import {getDaysInCurrentMonth} from "../utils/converter.tsx/time";
+
+type Yesterday = Record<Stores, BiglyDailyReportDocument>;
 
 // ============================ Parse Analytics/Goal Data ============================
 export const parseReportData = (
@@ -21,6 +25,7 @@ export const parseReportData = (
     daily_sales_goals: buildDailySalesGoals(yesterday, goals),
     monthly_sales_goals: buildMonthlySalesGoals(goals),
     header: buildHeaderSalesGoals(goals!),
+    gross_sales: buildGrossSales(yesterday),
   };
 };
 
@@ -75,6 +80,7 @@ const buildMonthlySalesGoals = (goals: BiglySalesGoals | null) => {
 
   return {churn: churn.toFixed(2), stacked_chart};
 };
+
 const buildHeaderSalesGoals = (
   goals: BiglySalesGoals | null,
 ): HeaderAnalytics => {
@@ -103,6 +109,14 @@ const buildHeaderSalesGoals = (
     total_jobs: goals.annual ?? 0,
     completed_jobs: (goals.ytd ?? 0) + monthly_totals,
   };
+};
+
+// ============================ Shopify Charts ============================
+const buildGrossSales = (yesterday: Yesterday) => {
+  const grossSales = emptyBarChart();
+  if (!yesterday) return grossSales;
+
+  return grossSales;
 };
 
 // ============================ BASE PAYLOD ============================

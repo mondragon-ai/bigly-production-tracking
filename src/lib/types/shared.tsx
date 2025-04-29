@@ -21,9 +21,13 @@ export type IconTypes =
   | "badge-check"
   | "shopping-bag"
   | "qr-code"
+  | "mixed-chart"
   | "add-user"
+  | "chart-line-up"
   | "angle-up"
   | "angle-down"
+  | "arrow-right"
+  | "table-row"
   | "chart-up"
   | "hour_glass";
 

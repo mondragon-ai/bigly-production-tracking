@@ -520,6 +520,83 @@ export const Icon = ({
         </svg>
       );
     }
+    case "arrow-right": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width={size}
+          height={size}
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1"
+            d="M19 12H5m14 0-4 4m4-4-4-4"
+          />
+        </svg>
+      );
+    }
+    case "table-row": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width={size}
+          height={size}
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            stroke-width="1"
+            d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+          />
+        </svg>
+      );
+    }
+    case "chart-line-up": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width={size}
+          height={size}
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"
+          />
+        </svg>
+      );
+    }
+    case "mixed-chart": {
+      return (
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width={size}
+          height={size}
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke={color}
+            stroke-width="1"
+            stroke-linecap="round"
+            d="M3 15v4m6-6v6m6-4v4m6-6v6M3 11l6-5 6 5 5.5-5.5"
+          />
+        </svg>
+      );
+    }
     default:
       return <></>;
   }

@@ -7,7 +7,7 @@ import styles from "../../../components/Shared.module.css";
 import {parseAnalytics} from "@/lib/payloads/analytics";
 import {useAnalytics} from "@/lib/hooks/useAnalytics";
 import {TimeFrameTypes} from "@/lib/types/analytics";
-import {useState} from "react";
+import {SetStateAction, useState} from "react";
 import {BiglySalesGoals} from "@/lib/types/reports";
 
 export default function Analytics() {
@@ -37,6 +37,12 @@ export default function Analytics() {
         reports={false}
         goals={null}
         saveGoals={function (goals: BiglySalesGoals): Promise<void> {
+          throw new Error("Function not implemented.");
+        }}
+        type={"chart"}
+        setType={function (
+          value: SetStateAction<"chart" | "table" | "time">,
+        ): void {
           throw new Error("Function not implemented.");
         }}
       />
