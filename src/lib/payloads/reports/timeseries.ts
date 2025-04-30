@@ -74,6 +74,7 @@ type MetricKey = (typeof METRICS)[number];
 // ========================= SHOPIFY ROW DATA =========================
 export const extractShopifyMetrics = (
   rows: Record<string, any>[],
+  metrics: string[],
 ): OutputMetric[] => {
   const grouped = new Map<string, Record<string, any>>();
 
@@ -87,31 +88,50 @@ export const extractShopifyMetrics = (
       grouped.set(key, {
         store: row.store,
         date: formatTimestamp(seconds),
-        orders: 0,
-        aov: 0,
-        total_sales: 0,
-        returns: 0,
-        discounts: 0,
       });
     }
 
     const entry = grouped.get(key)!;
 
+    console.log(metrics);
     switch (row.metric_name) {
       case "orders":
-        entry.orders += row.value;
+        if (metrics.includes("Orders")) {
+          entry.orders = 0;
+          entry.orders += row.value;
+          break;
+        }
         break;
       case "aov":
-        entry.aov += row.value;
+        if (metrics.includes("Average Order Value")) {
+          entry.aov = 0;
+          entry.aov += row.value;
+          break;
+        }
         break;
       case "total_sales":
-        entry.total_sales += row.value;
+        if (metrics.includes("Total Sales")) {
+          entry.total_sales = 0;
+          entry.total_sales += row.value;
+
+          break;
+        }
         break;
       case "returns":
-        entry.returns += row.value;
+        if (metrics.includes("Returns")) {
+          entry.returns = 0;
+          entry.returns += row.value;
+
+          break;
+        }
         break;
       case "discounts":
-        entry.discounts += row.value;
+        if (metrics.includes("Discounts")) {
+          entry.discounts = 0;
+          entry.discounts += row.value;
+
+          break;
+        }
         break;
     }
   }

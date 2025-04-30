@@ -23,21 +23,22 @@ export const allVisOptions = [
   "Click Rate",
 ];
 
-const subVisOptions = [
+export const subVisOptions = [
   "Total Count",
   "Subscribed",
   "Unsubscribed",
   "Net Gain",
   "Churn Rate",
 ];
-const mktVisOptions = [
+
+export const mktVisOptions = [
   "Total Count",
   "Conversion Value",
   "Average Order Value",
   "Open Rate",
   "Click Rate",
 ];
-const shopVisOptions = [
+export const shopVisOptions = [
   "Total Sales",
   "Orders",
   "Average Order Value",

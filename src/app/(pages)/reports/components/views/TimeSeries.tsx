@@ -108,7 +108,7 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
         <FilterSection
           title="Visualize"
           selectedOptions={visualizationMetrics}
-          options={availableMetrics}
+          options={metrics}
           onSelect={setVisualizationMetrics}
         />
       </FilterCard>
