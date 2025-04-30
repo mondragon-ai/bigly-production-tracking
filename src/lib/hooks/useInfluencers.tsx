@@ -27,8 +27,6 @@ const useInfluencers = (): ItemReturn => {
         null,
       );
 
-      console.log({data, status});
-
       if (status < 300 && data) {
         toast.success("Fetched Data");
         setInfluencers(data.influencers);

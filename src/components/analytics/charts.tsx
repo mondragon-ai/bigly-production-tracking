@@ -175,9 +175,19 @@ const CustomXAxisTick = (props: any) => {
 export const LineChartStats = ({
   data,
   suffix,
+  fixed = 1,
+  is_money,
+  color = "#a1a5f4",
+  negative,
+  prefix = "",
 }: {
-  data: ChartDateProps[];
-  suffix?: "%" | "h" | "";
+  data: any[];
+  suffix: "%" | "h" | "" | undefined;
+  is_money?: boolean;
+  fixed?: number;
+  color?: string;
+  negative?: boolean;
+  prefix?: "$" | "";
 }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -201,9 +211,34 @@ export const LineChartStats = ({
           axisLine={false}
           padding={{top: 0, bottom: 40}}
           tickSize={0}
-          tick={<CustomYAxisTick suffix={suffix} fixed={2} />}
+          tick={
+            <CustomYAxisTick
+              suffix={suffix}
+              fixed={fixed}
+              is_money={is_money}
+              negative={negative}
+              prefix={prefix}
+            />
+          }
         />
-        <Tooltip content={<CustomTooltip suffix={suffix} />} />
+        <Tooltip
+          content={
+            <CustomTooltip
+              suffix={suffix}
+              fixed={fixed}
+              is_money={is_money}
+              negative={negative}
+              prefix={prefix}
+            />
+          }
+        />
+        <Area
+          type="monotone"
+          dataKey="value1"
+          stroke="#5700d1"
+          fillOpacity={1}
+          fill="url(#colorUv)"
+        />
         <Area
           type="monotone"
           dataKey="value"

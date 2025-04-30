@@ -37,10 +37,7 @@ export const formatTimestamp = (seconds: number): string => {
     weekday: "short",
     day: "numeric",
     month: "short",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
+    year: "2-digit",
   };
 
   return date.toLocaleString("en-US", options);

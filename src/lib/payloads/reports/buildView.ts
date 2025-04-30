@@ -1,4 +1,4 @@
-import {HeaderAnalytics, NameValueProps} from "../types/analytics";
+import {HeaderAnalytics, NameValueProps} from "../../types/analytics";
 import {
   BarChart,
   BiglyDailyReportDocument,
@@ -6,14 +6,11 @@ import {
   CleanedAnalytics,
   ParsedBaseType,
   PasedReportData,
-  Platforms,
   SalesGoals,
-  ShopifyAnalytics,
-  StackChartProps,
   Stores,
   SubscriptionReport,
-} from "../types/reports";
-import {getDaysInCurrentMonth} from "../utils/converter.tsx/time";
+} from "../../types/reports";
+import {getDaysInCurrentMonth} from "../../utils/converter.tsx/time";
 
 type Yesterday = Record<Stores, BiglyDailyReportDocument>;
 

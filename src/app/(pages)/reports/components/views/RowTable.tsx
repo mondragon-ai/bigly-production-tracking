@@ -1,9 +1,11 @@
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
 import {useWidth} from "@/lib/hooks/useWidth";
 import tableStyles from "../../../../../components/files/Files.module.css";
 import styles from "../../../../../components/Shared.module.css";
 import {SortingColumn} from "@/components/analytics/tables/SortingColumn";
+import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
+import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
 
 type Header = {name: string; key: string};
 type Row = Record<string, any>;
@@ -14,6 +16,7 @@ interface RowTableProps {
 }
 
 export const RowTable = ({headers, rows}: RowTableProps) => {
+  const width = useWidth();
   const [selectedColumn, setSelectedColumn] = useState<{
     name: string;
     fromHighest: boolean;
@@ -22,7 +25,37 @@ export const RowTable = ({headers, rows}: RowTableProps) => {
     fromHighest: true,
   });
 
-  const width = useWidth();
+  const isNumericMetric = (key: string) =>
+    ["orders", "aov", "total_sales", "returns", "discounts"].includes(key);
+
+  const filteredRows = useMemo(() => {
+    const sorted = [...rows].sort((a, b) => {
+      const parseValue = (val: any, key: string) => {
+        if (key === "date") return new Date(val).getTime() / 1000;
+        if (isNumericMetric(key)) {
+          return Number(String(val).replace(/[$,]/g, "")) || 0;
+        }
+        return val;
+      };
+
+      const valA = parseValue(a[selectedColumn.name], selectedColumn.name);
+      const valB = parseValue(b[selectedColumn.name], selectedColumn.name);
+
+      if (typeof valA === "number" && typeof valB === "number") {
+        return selectedColumn.fromHighest ? valB - valA : valA - valB;
+      }
+
+      if (typeof valA === "string" && typeof valB === "string") {
+        return selectedColumn.fromHighest
+          ? valB.localeCompare(valA)
+          : valA.localeCompare(valB);
+      }
+
+      return 0;
+    });
+
+    return sorted;
+  }, [rows, selectedColumn]);
 
   return (
     <div
@@ -61,7 +94,7 @@ export const RowTable = ({headers, rows}: RowTableProps) => {
             </tr>
           </thead>
           <tbody>
-            {rows.length === 0 ? (
+            {filteredRows.length === 0 ? (
               <tr>
                 <td
                   colSpan={headers.length}
@@ -71,15 +104,17 @@ export const RowTable = ({headers, rows}: RowTableProps) => {
                 </td>
               </tr>
             ) : (
-              rows.map((row, idx) => (
+              filteredRows.map((row, idx) => (
                 <tr key={idx}>
                   {headers.map(({key}, i) => (
                     <td
                       key={i}
                       className={styles.tableCell}
-                      style={{padding: "7px 1rem"}}
+                      style={{padding: i == 0 ? "7px 1rem" : "7px 0"}}
                     >
-                      {renderCell(row[key])}
+                      {i == 0
+                        ? String(row[key]).toLocaleUpperCase()
+                        : renderCell(row[key])}
                     </td>
                   ))}
                 </tr>
@@ -94,7 +129,13 @@ export const RowTable = ({headers, rows}: RowTableProps) => {
 
 const renderCell = (value: any) => {
   if (typeof value === "number") return formatWithCommas(value);
-  if (typeof value === "string" || typeof value === "boolean") return value;
+  if (typeof value === "string") return capitalizeWords(value);
   if (value instanceof Date) return value.toLocaleDateString();
+  if (typeof value === "object" && value?.value) {
+    const newDate = new Date(value.value);
+    const seconds = newDate.getTime() / 1000;
+
+    return formatTimestamp(seconds);
+  }
   return "-";
 };

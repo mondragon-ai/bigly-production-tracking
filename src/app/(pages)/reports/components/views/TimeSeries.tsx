@@ -1,27 +1,25 @@
+import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
 import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
+import {useFilterAnalytics} from "../../hooks/useFilterAnalytics";
+import styles from "../../../../../components/Shared.module.css";
 import {FilterCard} from "@/components/analytics/FilterCard";
 import {LineChartStats} from "@/components/analytics/charts";
-import tableStyles from "../../../../../components/files/Files.module.css";
+import {allHeader, getMetricsByPlatform} from "./mapping";
+import {ChartDateProps} from "@/lib/types/analytics";
 import {useWidth} from "@/lib/hooks/useWidth";
-import styles from "../../../../../components/Shared.module.css";
-import {formatWithCommas} from "@/lib/utils/converter.tsx/numbers";
-import {SortingColumn} from "@/components/analytics/tables/SortingColumn";
-import {CleanedAnalytics} from "@/lib/types/reports";
-import {useState} from "react";
-import {PlatformType, useFilterAnalytics} from "../../hooks/useFilterAnalytics";
 import {Icon} from "@/components/shared/Icon";
-import {getHeadersByPlatform, getMetricsByPlatform} from "./mapping";
+import {useCallback, useMemo} from "react";
 import {RowTable} from "./RowTable";
-import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
 
 type ViewTypes = "table" | "time" | "chart";
 
 type TimeSeriesProps = {
-  analytics: any;
+  analytics: Record<string, any>[];
   type: ViewTypes;
 };
 
 export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
+  const width = useWidth();
   const {
     row,
     data,
@@ -31,19 +29,32 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
     setMetrics,
     setPlatform,
     setVisualizationMetrics,
-  } = useFilterAnalytics(analytics);
-  const width = useWidth();
+  } = useFilterAnalytics(analytics, type);
+
+  const handlePlatformChange = useCallback(
+    (newPlatform: typeof platform) => {
+      setPlatform(newPlatform);
+      setMetrics([]);
+      setVisualizationMetrics([]);
+    },
+    [setPlatform, setMetrics, setVisualizationMetrics],
+  );
+
+  const headers = useMemo(() => {
+    if (platform === "All") {
+      return allHeader;
+    }
+
+    const firstRow = row[0] || {};
+    return Object.keys(firstRow).map((key) => ({
+      key,
+      name: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+    }));
+  }, [platform, row]);
+
+  const availableMetrics = getMetricsByPlatform(platform);
 
   if (type !== "time") return null;
-
-  const handlePlatform = (newPlatform: PlatformType) => {
-    setPlatform(newPlatform);
-    setMetrics([]);
-    setVisualizationMetrics([]);
-  };
-
-  const headers = getHeadersByPlatform(platform);
-  const visOptions = getMetricsByPlatform(platform);
 
   return (
     <section
@@ -54,18 +65,22 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
         className={styles.rowSection}
         style={{flexDirection: "column", width: width < 720 ? "100%" : "80%"}}
       >
-        {data ? (
+        {data.length > 0 ? (
           <AnalyticsCard
             title="Order"
             width={100}
             fixed={2}
             prefix=""
             main_value="1234"
-            is_money={false}
+            is_money={true}
             negative={false}
             metric=""
           >
-            <LineChartStats data={[]} />
+            <LineChartStats
+              data={data as ChartDateProps[]}
+              suffix=""
+              is_money={true}
+            />
           </AnalyticsCard>
         ) : (
           <SkeletonAnalytic width={100} />
@@ -77,25 +92,23 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
       <FilterCard width={19}>
         <FilterSection
           title="Platforms"
-          platform={platform}
+          selected={platform}
           options={["All", "Shopify", "Recharge", "Stripe", "Klaviyo"]}
-          onSelect={handlePlatform}
+          onSelect={handlePlatformChange}
         />
 
         <FilterSection
           title="Metrics"
-          metrics={metrics}
-          platform={platform}
-          options={visOptions}
+          selectedOptions={metrics}
+          options={availableMetrics}
           onSelect={setMetrics}
           multiple
         />
 
         <FilterSection
           title="Visualize"
-          metrics={visualizationMetrics}
-          platform={platform}
-          options={visOptions}
+          selectedOptions={visualizationMetrics}
+          options={availableMetrics}
           onSelect={setVisualizationMetrics}
         />
       </FilterCard>
@@ -103,30 +116,27 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
   );
 };
 
-type FilterSectionProps = {
-  title: string;
-  options: string[];
-  platform: PlatformType;
-  onSelect: (value: any) => void;
-  multiple?: boolean;
-  metrics?: string[] | null;
-};
-
 const FilterSection = ({
   title,
   options,
   onSelect,
+  selected,
+  selectedOptions,
   multiple = false,
-  platform,
-  metrics,
-}: FilterSectionProps) => {
-  const handleSelect = (option: string) => {
-    if (multiple) {
-      onSelect((prev: string[]) =>
-        prev.includes(option)
-          ? prev.filter((o) => o !== option)
-          : [...prev, option],
-      );
+}: {
+  title: string;
+  options: string[];
+  onSelect: (value: any) => void;
+  selected?: string;
+  selectedOptions?: string[];
+  multiple?: boolean;
+}) => {
+  const handleClick = (option: string) => {
+    if (multiple && selectedOptions) {
+      const updated = selectedOptions.includes(option)
+        ? selectedOptions.filter((o) => o !== option)
+        : [...selectedOptions, option];
+      onSelect(updated);
     } else {
       onSelect(option);
     }
@@ -140,14 +150,17 @@ const FilterSection = ({
       {options.map((option) => (
         <span
           key={option}
-          onClick={() => handleSelect(option)}
+          onClick={() => handleClick(option)}
           style={{cursor: "pointer"}}
         >
           {option}
           <Icon
-            icon={"badge-check"}
+            icon="badge-check"
             tone={
-              platform == option || metrics?.includes(option) ? "magic" : "info"
+              (selected && selected === option) ||
+              selectedOptions?.includes(option)
+                ? "magic"
+                : "info"
             }
           />
         </span>

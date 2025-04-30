@@ -1,30 +1,23 @@
 "use client";
 
-import {RechargeTable} from "@/components/analytics/tables/RechargeTable";
+import {AnalyticsCardGroup, CardConfig} from "./components/AnalyticCardGroups";
 import {AnalyticsHeader} from "@/components/analytics/AnalyticsHeader";
+import {parseReportData} from "@/lib/payloads/reports/buildView";
 import styles from "../../../components/Shared.module.css";
+import {TimeSeries} from "./components/views/TimeSeries";
+import {ChartView} from "./components/views/ChartView";
+import {TableView} from "./components/views/TableView";
 import {TimeFrameTypes} from "@/lib/types/analytics";
 import {useReports} from "@/lib/hooks/useReports";
 import {useState} from "react";
-import {ShopifyTable} from "@/components/analytics/tables/ShopifyTable";
-import {KlaviyoTable} from "@/components/analytics/tables/KlaviyoTable";
-import {StripeTable} from "@/components/analytics/tables/StripeTable";
-import {SkeletonAnalytic} from "@/components/skeleton/SkeletonAnalytics";
-import {AnalyticsCard} from "@/components/analytics/AnalyticsCard";
-import {ComparedBarChart} from "@/components/analytics/charts";
-import {parseReportData} from "@/lib/payloads/reports";
-import {CleanedAnalytics} from "@/lib/types/reports";
-import {ChartView} from "./components/views/ChartView";
-import {TableView} from "./components/views/TableView";
-import {AnalyticsCardGroup, CardConfig} from "./components/AnalyticCardGroups";
-import {TimeSeries} from "./components/views/TimeSeries";
 
 type ViewTypes = "table" | "time" | "chart";
 
 export default function Analytics() {
   const [tf, setTimeFrame] = useState<TimeFrameTypes>("yesterday");
   const [viewType, setViewType] = useState<ViewTypes>("table");
-  const {loading, analytics, goals, fetchTimeframe, saveGoals} = useReports();
+  const {loading, analytics, goals, rawRow, fetchTimeframe, saveGoals} =
+    useReports(viewType);
 
   const {
     daily_sales_goals,
@@ -55,7 +48,7 @@ export default function Analytics() {
       "twelve_months",
       "custom",
     ];
-    console.log({t, b: tp.includes(t)});
+
     if (tp.includes(t)) {
       setTimeFrame(t);
     } else {
@@ -128,7 +121,7 @@ export default function Analytics() {
           average_order_value={average_order_value}
           recharge={recharge}
         />
-        <TimeSeries analytics={analytics} type={viewType} />
+        <TimeSeries analytics={rawRow} type={viewType} />
       </div>
     </div>
   );

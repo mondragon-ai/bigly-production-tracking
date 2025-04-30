@@ -78,7 +78,6 @@ export const useAnalytics = (): AnalyticsReturn => {
       }
 
       if (status < 300 && data) {
-        console.log({data});
         toast.success(message);
         setAnalytics(data.analytics);
         return;
