@@ -43,13 +43,18 @@ export type ChartMetric =
 const parseCurrency = (value: string = "0"): number =>
   Number(String(value).replace(/[$,]/g, "")) || 0;
 
+type ChartResults = {
+  chart: Record<string, string | number>[];
+  total: number;
+  stores: string[];
+};
 export const buildChartData = (
   data: OutputMetric[],
   selectedMetric: string[],
-): {chart: {date: string; value: number}[]; total: number} => {
+  filteredStores: string[],
+): ChartResults => {
   const metricMap: Record<string, ChartMetric> = {
     Orders: "orders",
-    Average: "average_order_value",
     Returns: "returns",
     Discounts: "discounts",
     "Total Count": "total_count",
@@ -68,17 +73,33 @@ export const buildChartData = (
     Object.keys(metricMap).find((key) => selectedMetric.includes(key)) ??
     "total_sales";
 
+  const byDate = new Map<string, Record<string, string | number>>();
+  const stores = new Set<string>();
   let total = 0;
-  const chart = data.map((row) => {
-    const val = parseCurrency(row[metricMap[metricKey] || "total_sales"]);
-    total += val;
-    return {
-      date: row.date,
-      value: val,
-    };
-  });
 
-  return {chart, total};
+  for (const row of data) {
+    const date = row.date;
+    const store = row.store;
+    if (!filteredStores.includes(store)) continue;
+
+    const rawValue = parseCurrency(row[metricMap[metricKey] || "total_sales"]);
+
+    total += rawValue;
+    stores.add(store);
+
+    if (!byDate.has(date)) {
+      byDate.set(date, {date});
+    }
+
+    const existing = byDate.get(date)!;
+    existing[store] = rawValue;
+  }
+
+  return {
+    chart: Array.from(byDate.values()),
+    total,
+    stores: Array.from(stores),
+  };
 };
 
 // ========================= SHOPIFY ROW DATA =========================
@@ -104,7 +125,8 @@ export const extractShopifyMetrics = (
         break;
       case "aov":
         if (metrics.includes("Average Order Value"))
-          entry.aov = (entry.aov ?? 0) + row.value;
+          entry.average_order_value =
+            (entry.average_order_value ?? 0) + row.value;
         break;
       case "total_sales":
         if (metrics.includes("Total Sales"))

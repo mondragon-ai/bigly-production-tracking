@@ -4,7 +4,7 @@ import {useFilterAnalytics} from "../../hooks/useFilterAnalytics";
 import styles from "../../../../../components/Shared.module.css";
 import {FilterCard} from "@/components/analytics/FilterCard";
 import {LineChartStats} from "@/components/analytics/charts";
-import {allHeader, getMetricsByPlatform} from "./mapping";
+import {allHeader, getMetricsByPlatform, StoresHeader} from "./mapping";
 import {ChartDateProps} from "@/lib/types/analytics";
 import {useWidth} from "@/lib/hooks/useWidth";
 import {Icon} from "@/components/shared/Icon";
@@ -23,12 +23,15 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
   const {
     row,
     data,
+    stores,
     total,
     platform,
     metrics,
+    filteredStores,
     visualizationMetrics,
     setMetrics,
     setPlatform,
+    setFilteredStores,
     setVisualizationMetrics,
     handleApplyChanges,
   } = useFilterAnalytics(analytics, type);
@@ -38,6 +41,7 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
       setPlatform(newPlatform);
       setMetrics([]);
       setVisualizationMetrics([]);
+      setFilteredStores(StoresHeader);
     },
     [setPlatform, setMetrics, setVisualizationMetrics],
   );
@@ -79,7 +83,8 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
             metric=""
           >
             <LineChartStats
-              data={data as ChartDateProps[]}
+              data={data}
+              stores={stores}
               suffix=""
               is_money={true}
             />
@@ -97,6 +102,14 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
           selected={platform}
           options={["All", "Shopify", "Recharge", "Stripe", "Klaviyo"]}
           onSelect={handlePlatformChange}
+        />
+
+        <FilterSection
+          title="Stores"
+          selectedOptions={filteredStores}
+          options={StoresHeader}
+          onSelect={setFilteredStores}
+          multiple
         />
 
         <FilterSection

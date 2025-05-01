@@ -48,6 +48,18 @@ export const shopVisOptions = [
   "Discounts",
 ];
 
+export const StoresHeader = [
+  "sc",
+  "ht",
+  "oh",
+  "ajn",
+  "pod",
+  "dmo",
+  "htl",
+  "aj",
+  "raj",
+];
+
 const metricsMapping: Record<string, string[]> = {
   All: allVisOptions,
   Shopify: shopVisOptions,

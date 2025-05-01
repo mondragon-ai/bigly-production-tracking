@@ -41,16 +41,24 @@ const CustomTooltip = ({
   prefix,
 }: any) => {
   if (active && payload && payload.length) {
-    const value = Number(payload[0].value);
-    const v = value.toFixed(fixed);
-    const header = is_money
-      ? `${negative ? "-" : ""}${prefix}${formatWithCommas(Number(v))}`
-      : v;
     return (
       <div className={styles.toolWrapper}>
+        {Array.from(payload as any[]).map((row) => {
+          const value = Number(row.value);
+          const v = value.toFixed(fixed);
+          const header = is_money
+            ? `${negative ? "-" : ""}${prefix}${formatWithCommas(Number(v))}`
+            : v;
+          return (
+            <p className="label">
+              {`${String(row?.name || "").toLocaleUpperCase()}: `}
+              <span style={{fontWeight: 550}}>{`${header}${suffix}`}</span>
+            </p>
+          );
+        })}
+        <br />
         <p className="label">
-          {`${label}: `}
-          <span style={{fontWeight: 550}}>{`${header}${suffix}`}</span>
+          <span style={{fontWeight: 400}}>{label}</span>
         </p>
       </div>
     );
@@ -172,23 +180,27 @@ const CustomXAxisTick = (props: any) => {
   );
 };
 
+type LineChartStatsProps = {
+  data: any[];
+  stores: string[];
+  suffix?: "%" | "h" | "";
+  is_money?: boolean;
+  fixed?: number;
+  color?: string;
+  negative?: boolean;
+  prefix?: "$" | "";
+};
+
 export const LineChartStats = ({
   data,
+  stores,
   suffix,
   fixed = 1,
   is_money,
   color = "#a1a5f4",
   negative,
   prefix = "",
-}: {
-  data: any[];
-  suffix: "%" | "h" | "" | undefined;
-  is_money?: boolean;
-  fixed?: number;
-  color?: string;
-  negative?: boolean;
-  prefix?: "$" | "";
-}) => {
+}: LineChartStatsProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart data={data} margin={{top: 5, right: 5, left: -20, bottom: 5}}>
@@ -232,20 +244,18 @@ export const LineChartStats = ({
             />
           }
         />
-        <Area
-          type="monotone"
-          dataKey="value1"
-          stroke="#5700d1"
-          fillOpacity={1}
-          fill="url(#colorUv)"
-        />
-        <Area
-          type="monotone"
-          dataKey="value"
-          stroke="#5700d1"
-          fillOpacity={1}
-          fill="url(#colorUv)"
-        />
+        {stores.map((store) => (
+          <Area
+            key={store}
+            type="monotone"
+            dataKey={store}
+            stroke="#5700d1"
+            fillOpacity={0.7}
+            fill="url(#colorUv)"
+            dot={false}
+            isAnimationActive={false}
+          />
+        ))}
       </AreaChart>
     </ResponsiveContainer>
   );

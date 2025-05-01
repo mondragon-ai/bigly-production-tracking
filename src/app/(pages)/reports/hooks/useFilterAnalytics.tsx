@@ -31,9 +31,11 @@ export const useFilterAnalytics = (
   const [visualizationMetrics, setVisualizationMetrics] = useState<Metric[]>(
     [],
   );
-  const [data, setData] = useState<{date: string; value: number}[]>([]);
+  const [data, setData] = useState<Record<string, string | number>[]>([]);
   const [row, setRow] = useState<any[]>([]);
   const [total, setTotal] = useState<number>(0);
+  const [stores, setStores] = useState<string[]>([]);
+  const [filteredStores, setFilteredStores] = useState<string[]>([]);
 
   useEffect(() => {
     if (type !== "time") return;
@@ -47,65 +49,82 @@ export const useFilterAnalytics = (
       platform,
       visualizationMetrics,
       metrics,
+      filteredStores,
     );
     setRow(cleaned.rows);
     setData(cleaned.chartData);
     setTotal(cleaned.total);
-  }, [analytics, platform, visualizationMetrics, metrics]);
+    setStores(cleaned.stores);
+  }, [analytics, platform, visualizationMetrics, metrics, filteredStores]);
 
   return {
     row,
     data,
+    stores,
     total,
     platform,
     metrics,
+    filteredStores,
     visualizationMetrics,
     setMetrics,
     setPlatform,
+    setFilteredStores,
     setVisualizationMetrics,
     handleApplyChanges,
   };
 };
 
+type CleanedAnalyticsReturn = {
+  rows: any[];
+  chartData: Record<string, string | number>[];
+  total: number;
+  stores: string[];
+};
 const cleanAnalyticsByPlatform = (
   analytics: Record<string, any>[],
   platform: PlatformType,
   visualizationMetrics: Metric[],
   metrics: string[],
-): {
-  rows: any[];
-  chartData: {date: string; value: number}[];
-  total: number;
-} => {
+  filteredStores: string[],
+): CleanedAnalyticsReturn => {
   switch (platform) {
-    case "All": {
-      return {
-        rows: analytics,
-        chartData: [],
-        total: 0,
-      };
-    }
     case "Shopify": {
       const rows = extractShopifyMetrics(analytics, metrics);
-      const {total, chart} = buildChartData(rows, visualizationMetrics);
-      return {rows, chartData: chart, total};
+      const {total, chart, stores} = buildChartData(
+        rows,
+        visualizationMetrics,
+        filteredStores,
+      );
+      return {rows, chartData: chart, total, stores};
     }
     case "Recharge": {
       const rows = extractSubMetrics(analytics, metrics, "recharge");
-      const {total, chart} = buildChartData(rows, visualizationMetrics);
-      return {rows, chartData: chart, total};
+      const {total, chart, stores} = buildChartData(
+        rows,
+        visualizationMetrics,
+        filteredStores,
+      );
+      return {rows, chartData: chart, total, stores};
     }
     case "Stripe": {
       const rows = extractSubMetrics(analytics, metrics, "stripe");
-      const {total, chart} = buildChartData(rows, visualizationMetrics);
-      return {rows, chartData: chart, total};
+      const {total, chart, stores} = buildChartData(
+        rows,
+        visualizationMetrics,
+        filteredStores,
+      );
+      return {rows, chartData: chart, total, stores};
     }
     case "Klaviyo": {
       const rows = extractKlaviyoMetrics(analytics, metrics);
-      const {total, chart} = buildChartData(rows, visualizationMetrics);
-      return {rows, chartData: chart, total};
+      const {total, chart, stores} = buildChartData(
+        rows,
+        visualizationMetrics,
+        filteredStores,
+      );
+      return {rows, chartData: chart, total, stores};
     }
     default:
-      return {rows: analytics, chartData: [], total: 0};
+      return {rows: analytics, chartData: [], total: 0, stores: []};
   }
 };
