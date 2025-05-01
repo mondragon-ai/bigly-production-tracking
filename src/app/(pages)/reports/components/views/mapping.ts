@@ -37,6 +37,8 @@ export const mktVisOptions = [
   "Average Order Value",
   "Open Rate",
   "Click Rate",
+  "Churn Rate",
+  "Recipients",
 ];
 export const shopVisOptions = [
   "Total Sales",

@@ -27,7 +27,6 @@ export const parseAnalytics = (
 };
 
 const parseAvgTime = (analytics: ProductionAnalyticsType[]) => {
-  console.log(analytics);
   const total = analytics.reduce(
     (p, c) =>
       p +

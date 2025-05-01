@@ -1,16 +1,17 @@
-import {useState, use, useEffect, useRef} from "react";
-import {Stores} from "@/lib/types/reports";
-import {Platform} from "algoliasearch";
+import {useState, use, useEffect, useRef, useCallback} from "react";
 import {
-  formatToMoney,
-  formatWithCommas,
-} from "@/lib/utils/converter.tsx/numbers";
-import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
-import {
-  buildShopifyChart,
+  buildChartData,
+  extractKlaviyoMetrics,
   extractShopifyMetrics,
+  extractSubMetrics,
 } from "@/lib/payloads/reports/timeseries";
-import {allVisOptions, shopVisOptions} from "../components/views/mapping";
+import {
+  allVisOptions,
+  getMetricsByPlatform,
+  mktVisOptions,
+  shopVisOptions,
+  subVisOptions,
+} from "../components/views/mapping";
 
 type ViewTypes = "table" | "time" | "chart";
 export type PlatformType =
@@ -34,33 +35,23 @@ export const useFilterAnalytics = (
   const [row, setRow] = useState<any[]>([]);
   const [total, setTotal] = useState<number>(0);
 
-  const vizRef = useRef(null);
-  const metricsRef = useRef(null);
   useEffect(() => {
-    if (
-      vizRef.current !== visualizationMetrics ||
-      metricsRef.current !== metrics
-    ) {
-      vizRef.current == visualizationMetrics;
-      metricsRef.current == metrics;
-      const cleaned = cleanAnalyticsByPlatform(
-        analytics,
-        platform,
-        visualizationMetrics,
-        metrics,
-      );
-      setRow(cleaned.rows);
-      setData(cleaned.chartData);
-      setTotal(cleaned.total);
-      if (platform === "Shopify") {
-        if (metricsRef.current === metrics) setMetrics(shopVisOptions);
-      }
-    }
-    if (platform === "All") {
-      setMetrics(allVisOptions);
-      setVisualizationMetrics([]);
-    }
-  }, [analytics, platform, type, visualizationMetrics, metrics]);
+    if (type !== "time") return;
+    setMetrics(getMetricsByPlatform(platform));
+    setVisualizationMetrics([]);
+  }, [analytics, platform, type]);
+
+  const handleApplyChanges = useCallback(() => {
+    const cleaned = cleanAnalyticsByPlatform(
+      analytics,
+      platform,
+      visualizationMetrics,
+      metrics,
+    );
+    setRow(cleaned.rows);
+    setData(cleaned.chartData);
+    setTotal(cleaned.total);
+  }, [analytics, platform, visualizationMetrics, metrics]);
 
   return {
     row,
@@ -72,6 +63,7 @@ export const useFilterAnalytics = (
     setMetrics,
     setPlatform,
     setVisualizationMetrics,
+    handleApplyChanges,
   };
 };
 
@@ -86,25 +78,34 @@ const cleanAnalyticsByPlatform = (
   total: number;
 } => {
   switch (platform) {
-    case "Shopify":
-      const rows = extractShopifyMetrics(analytics, metrics);
-      const {total, chart} = buildShopifyChart(rows, visualizationMetrics);
-      return {
-        rows,
-        chartData: chart,
-        total: total,
-      };
-    case "All":
+    case "All": {
       return {
         rows: analytics,
         chartData: [],
         total: 0,
       };
+    }
+    case "Shopify": {
+      const rows = extractShopifyMetrics(analytics, metrics);
+      const {total, chart} = buildChartData(rows, visualizationMetrics);
+      return {rows, chartData: chart, total};
+    }
+    case "Recharge": {
+      const rows = extractSubMetrics(analytics, metrics, "recharge");
+      const {total, chart} = buildChartData(rows, visualizationMetrics);
+      return {rows, chartData: chart, total};
+    }
+    case "Stripe": {
+      const rows = extractSubMetrics(analytics, metrics, "stripe");
+      const {total, chart} = buildChartData(rows, visualizationMetrics);
+      return {rows, chartData: chart, total};
+    }
+    case "Klaviyo": {
+      const rows = extractKlaviyoMetrics(analytics, metrics);
+      const {total, chart} = buildChartData(rows, visualizationMetrics);
+      return {rows, chartData: chart, total};
+    }
     default:
-      return {
-        rows: [],
-        chartData: [],
-        total: 0,
-      };
+      return {rows: analytics, chartData: [], total: 0};
   }
 };

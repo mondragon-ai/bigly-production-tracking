@@ -4,11 +4,10 @@ import {
   formatWithCommas,
 } from "@/lib/utils/converter.tsx/numbers";
 import {formatTimestamp} from "@/lib/utils/converter.tsx/time";
-import {Platform} from "algoliasearch";
 
 export type DailyMetric = {
   store: Stores;
-  platform: Platform;
+  platform: string;
   metric_name: string;
   value: number;
   product_name: string | null;
@@ -16,143 +15,250 @@ export type DailyMetric = {
   created_at: {value: string};
 };
 
-type OutputMetric = {
+// ========================= GENERAL CHART =========================
+export type OutputMetric = {
   store: string;
-  orders: string;
-  aov: string;
-  total_sales: string;
-  returns: string;
-  discounts: string;
   date: string;
-  totalCount: string;
+  [key: string]: any;
 };
-type ChartMetric =
+
+export type ChartMetric =
   | "orders"
   | "aov"
   | "total_sales"
   | "returns"
   | "discounts"
-  | "totalCount";
+  | "totalCount"
+  | "total_count"
+  | "created"
+  | "cancelled"
+  | "net"
+  | "churn"
+  | "conversion_value"
+  | "average_order_value"
+  | "recipients"
+  | "open_rate"
+  | "click_rate";
 
 const parseCurrency = (value: string = "0"): number =>
-  Number(String(value || "0").replace(/[$,]/g, "")) || 0;
+  Number(String(value).replace(/[$,]/g, "")) || 0;
 
-// ========================= GENERAL CHART =========================
-export const buildShopifyChart = (
+export const buildChartData = (
   data: OutputMetric[],
   selectedMetric: string[],
 ): {chart: {date: string; value: number}[]; total: number} => {
   const metricMap: Record<string, ChartMetric> = {
-    Count: "totalCount",
     Orders: "orders",
-    Average: "aov",
+    Average: "average_order_value",
     Returns: "returns",
     Discounts: "discounts",
+    "Total Count": "total_count",
+    "Conversion Value": "conversion_value",
+    "Average Order Value": "average_order_value",
+    "Churn Rate": "churn",
+    "Open Rate": "open_rate",
+    "Click Rate": "click_rate",
+    "Net Gain": "net",
+    Recipients: "recipients",
+    Subscribed: "created",
+    Unsubscribed: "cancelled",
   };
 
   const metricKey =
-    Object.keys(metricMap).find((key) => {
-      return selectedMetric.includes(key);
-    }) ?? "total_sales";
+    Object.keys(metricMap).find((key) => selectedMetric.includes(key)) ??
+    "total_sales";
 
   let total = 0;
   const chart = data.map((row) => {
-    total += parseCurrency(row[metricMap[metricKey] || "total_sales"]);
+    const val = parseCurrency(row[metricMap[metricKey] || "total_sales"]);
+    total += val;
     return {
       date: row.date,
-      value: parseCurrency(row[metricMap[metricKey] || "total_sales"]),
+      value: val,
     };
   });
 
   return {chart, total};
 };
 
-const METRICS = [
-  "orders",
-  "aov",
-  "total_sales",
-  "returns",
-  "discounts",
-] as const;
-type MetricKey = (typeof METRICS)[number];
-
 // ========================= SHOPIFY ROW DATA =========================
 export const extractShopifyMetrics = (
   rows: Record<string, any>[],
   metrics: string[],
 ): OutputMetric[] => {
-  const grouped = new Map<string, Record<string, any>>();
+  const grouped = new Map<string, any>();
 
   for (const row of rows) {
     if (row.platform?.toLowerCase() !== "shopify") continue;
 
     const key = `${row.store}-${row.date.value}`;
-    const seconds = new Date(row.date.value).getTime() / 1000;
+    const timestamp = formatTimestamp(
+      new Date(row.date.value).getTime() / 1000,
+    );
 
-    if (!grouped.has(key)) {
-      grouped.set(key, {
-        store: row.store,
-        date: formatTimestamp(seconds),
-      });
-    }
-
-    const entry = grouped.get(key)!;
-
-    console.log(metrics);
+    const entry = grouped.get(key) ?? {store: row.store, date: timestamp};
     switch (row.metric_name) {
       case "orders":
-        if (metrics.includes("Orders")) {
-          entry.orders = 0;
-          entry.orders += row.value;
-          break;
-        }
+        if (metrics.includes("Orders"))
+          entry.orders = (entry.orders ?? 0) + row.value;
         break;
       case "aov":
-        if (metrics.includes("Average Order Value")) {
-          entry.aov = 0;
-          entry.aov += row.value;
-          break;
-        }
+        if (metrics.includes("Average Order Value"))
+          entry.aov = (entry.aov ?? 0) + row.value;
         break;
       case "total_sales":
-        if (metrics.includes("Total Sales")) {
-          entry.total_sales = 0;
-          entry.total_sales += row.value;
-
-          break;
-        }
+        if (metrics.includes("Total Sales"))
+          entry.total_sales = (entry.total_sales ?? 0) + row.value;
         break;
       case "returns":
-        if (metrics.includes("Returns")) {
-          entry.returns = 0;
-          entry.returns += row.value;
-
-          break;
-        }
+        if (metrics.includes("Returns"))
+          entry.returns = (entry.returns ?? 0) + row.value;
         break;
       case "discounts":
-        if (metrics.includes("Discounts")) {
-          entry.discounts = 0;
-          entry.discounts += row.value;
-
-          break;
-        }
+        if (metrics.includes("Discounts"))
+          entry.discounts = (entry.discounts ?? 0) + row.value;
         break;
     }
+
+    grouped.set(key, entry);
   }
 
   return Array.from(grouped.values()).map((entry) => {
     const orders = entry.orders || 0;
     const total_sales = entry.total_sales || 0;
-
-    console.log(entry);
     return {
       ...entry,
       ...(orders && {orders: formatWithCommas(orders)}),
-      ...(orders && {aov: formatToMoney(total_sales / orders)}),
+      ...(orders &&
+        total_sales &&
+        orders && {
+          average_order_value: formatToMoney(total_sales / orders),
+        }),
       ...(total_sales && {total_sales: formatToMoney(total_sales)}),
-      ...(entry.returns && {returns: formatWithCommas(entry.returns)}),
+      ...(entry.returns && {returns: formatToMoney(entry.returns)}),
       ...(entry.discounts && {discounts: formatToMoney(entry.discounts)}),
     };
   });
+};
+
+// ========================= SUB ROW DATA =========================
+export const extractSubMetrics = (
+  rows: Record<string, any>[],
+  metrics: string[],
+  platform: "recharge" | "stripe",
+): OutputMetric[] => {
+  const grouped = new Map<string, Record<string, any>>();
+
+  for (const row of rows) {
+    if (row.platform?.toLowerCase() !== platform) continue;
+
+    const key = `${row.store}-${row.date.value}`;
+    const timestamp = formatTimestamp(
+      new Date(row.date.value).getTime() / 1000,
+    );
+
+    const entry = grouped.get(key) ?? {store: row.store, date: timestamp};
+    switch (row.metric_name) {
+      case "total_count":
+        if (metrics.includes("Total Count"))
+          entry.total_count = (entry.total_count ?? 0) + row.value;
+        break;
+      case "created":
+        if (metrics.includes("Subscribed"))
+          entry.created = (entry.created ?? 0) + row.value;
+        break;
+      case "cancelled":
+        if (metrics.includes("Unsubscribed"))
+          entry.cancelled = (entry.cancelled ?? 0) + row.value;
+        break;
+    }
+
+    grouped.set(key, entry);
+  }
+
+  return Array.from(grouped.values()).map((entry) => {
+    const created = entry.created || 0;
+    const cancelled = entry.cancelled || 0;
+    const churn =
+      created === 0 ? (cancelled > 0 ? 100 : 0) : (cancelled / created) * 100;
+    const net = created - cancelled;
+
+    return {
+      ...entry,
+      ...(entry.total_count && {
+        total_count: formatWithCommas(entry.total_count),
+      }),
+      ...(created && {created: formatWithCommas(created)}),
+      ...(cancelled && {cancelled: formatWithCommas(cancelled)}),
+      net: formatWithCommas(net),
+      churn: formatWithCommas(churn),
+    };
+  });
+};
+
+// ========================= KLAVIYO ROW DATA =========================
+export const extractKlaviyoMetrics = (
+  rows: Record<string, any>[],
+  metrics: string[],
+): OutputMetric[] => {
+  const grouped = new Map<string, any>();
+
+  for (const row of rows) {
+    if (row.platform?.toLowerCase() !== "klaviyo") continue;
+
+    const key = `${row.store}-${row.date.value}`;
+    const timestamp = formatTimestamp(
+      new Date(row.date.value).getTime() / 1000,
+    );
+
+    const entry = grouped.get(key) ?? {store: row.store, date: timestamp};
+    const name = row.metric_name;
+
+    if (name === "total_count" && metrics.includes("Total Count"))
+      entry.total_count = (entry.total_count ?? 0) + row.value;
+    if (name === "subscribed" && metrics.includes("Subscribed"))
+      entry.created = (entry.created ?? 0) + row.value;
+    if (name === "unsubscribed" && metrics.includes("Unsubscribed"))
+      entry.cancelled = (entry.cancelled ?? 0) + row.value;
+    if (
+      name === "average_order_value" &&
+      metrics.includes("Average Order Value")
+    )
+      entry.average_order_value = (entry.average_order_value ?? 0) + row.value;
+    if (name === "conversion_value" && metrics.includes("Conversion Value"))
+      entry.conversion_value = (entry.conversion_value ?? 0) + row.value;
+    if (name === "open_rate" && metrics.includes("Open Rate"))
+      entry.open_rate = (entry.open_rate ?? 0) + row.value;
+    if (name === "click_rate" && metrics.includes("Click Rate"))
+      entry.click_rate = (entry.click_rate ?? 0) + row.value;
+    if (name === "churn" && metrics.includes("Churn Rate"))
+      entry.churn = (entry.churn ?? 0) + row.value;
+    if (name === "recipients" && metrics.includes("Recipients"))
+      entry.recipients = (entry.recipients ?? 0) + row.value;
+
+    grouped.set(key, entry);
+  }
+
+  return Array.from(grouped.values()).map((entry) => ({
+    ...entry,
+    ...(entry.total_count && {
+      total_count: formatWithCommas(entry.total_count),
+    }),
+    ...(entry.created && {created: formatWithCommas(entry.created)}),
+    ...(entry.cancelled && {cancelled: formatWithCommas(entry.cancelled)}),
+    ...(entry.churn && {churn: formatWithCommas(entry.churn)}),
+    ...(entry.recipients && {recipients: formatWithCommas(entry.recipients)}),
+    ...(entry.open_rate && {
+      open_rate: formatWithCommas(entry.open_rate * 100),
+    }),
+    ...(entry.click_rate && {
+      click_rate: formatWithCommas(entry.click_rate * 100),
+    }),
+    ...(entry.conversion_value && {
+      conversion_value: formatToMoney(entry.conversion_value),
+    }),
+    ...(entry.average_order_value && {
+      average_order_value: formatToMoney(entry.average_order_value),
+    }),
+  }));
 };

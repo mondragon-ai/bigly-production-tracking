@@ -934,3 +934,9 @@
 .sortingColumn > svg:hover path {
   stroke: var(--magic-bkg);
 }
+
+.applyBtn {
+  background-color: rgb(45, 45, 45) !important;
+  color: white !important;
+  cursor: pointer;
+}

@@ -30,6 +30,7 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
     setMetrics,
     setPlatform,
     setVisualizationMetrics,
+    handleApplyChanges,
   } = useFilterAnalytics(analytics, type);
 
   const handlePlatformChange = useCallback(
@@ -90,7 +91,7 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
         <RowTable headers={headers} rows={row} />
       </div>
 
-      <FilterCard width={19}>
+      <FilterCard width={19} apply={handleApplyChanges}>
         <FilterSection
           title="Platforms"
           selected={platform}
