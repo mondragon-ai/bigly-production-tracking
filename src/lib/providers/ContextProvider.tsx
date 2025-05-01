@@ -21,7 +21,7 @@ export const ContextProvider = ({children}: {children: React.ReactNode}) => {
       const asidebaruth = (getItem("sidebar") as boolean) || state.user;
 
       if (!auth.jwt) {
-        // router.push("/");
+        router.push("/");
       } else {
         setState((p) => ({...p, user: auth}));
       }

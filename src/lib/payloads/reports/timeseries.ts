@@ -41,7 +41,7 @@ const parseCurrency = (value: string = "0"): number =>
 export const buildShopifyChart = (
   data: OutputMetric[],
   selectedMetric: string[],
-): {date: string; value: number}[] => {
+): {chart: {date: string; value: number}[]; total: number} => {
   const metricMap: Record<string, ChartMetric> = {
     Count: "totalCount",
     Orders: "orders",
@@ -55,11 +55,16 @@ export const buildShopifyChart = (
       return selectedMetric.includes(key);
     }) ?? "total_sales";
 
-  console.log(metricKey);
-  return data.map((row) => ({
-    date: row.date,
-    value: parseCurrency(row[metricMap[metricKey] || "total_sales"]),
-  }));
+  let total = 0;
+  const chart = data.map((row) => {
+    total += parseCurrency(row[metricMap[metricKey] || "total_sales"]);
+    return {
+      date: row.date,
+      value: parseCurrency(row[metricMap[metricKey] || "total_sales"]),
+    };
+  });
+
+  return {chart, total};
 };
 
 const METRICS = [

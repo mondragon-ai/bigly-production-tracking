@@ -23,6 +23,7 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
   const {
     row,
     data,
+    total,
     platform,
     metrics,
     visualizationMetrics,
@@ -67,11 +68,11 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
       >
         {data.length > 0 ? (
           <AnalyticsCard
-            title="Order"
+            title={visualizationMetrics.toLocaleString()}
             width={100}
             fixed={2}
-            prefix=""
-            main_value="1234"
+            prefix="$"
+            main_value={String(total)}
             is_money={true}
             negative={false}
             metric=""

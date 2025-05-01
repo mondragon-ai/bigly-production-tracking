@@ -32,6 +32,7 @@ export const useFilterAnalytics = (
   );
   const [data, setData] = useState<{date: string; value: number}[]>([]);
   const [row, setRow] = useState<any[]>([]);
+  const [total, setTotal] = useState<number>(0);
 
   const vizRef = useRef(null);
   const metricsRef = useRef(null);
@@ -50,6 +51,7 @@ export const useFilterAnalytics = (
       );
       setRow(cleaned.rows);
       setData(cleaned.chartData);
+      setTotal(cleaned.total);
       if (platform === "Shopify") {
         if (metricsRef.current === metrics) setMetrics(shopVisOptions);
       }
@@ -63,6 +65,7 @@ export const useFilterAnalytics = (
   return {
     row,
     data,
+    total,
     platform,
     metrics,
     visualizationMetrics,
@@ -80,23 +83,28 @@ const cleanAnalyticsByPlatform = (
 ): {
   rows: any[];
   chartData: {date: string; value: number}[];
+  total: number;
 } => {
   switch (platform) {
     case "Shopify":
       const rows = extractShopifyMetrics(analytics, metrics);
+      const {total, chart} = buildShopifyChart(rows, visualizationMetrics);
       return {
         rows,
-        chartData: buildShopifyChart(rows, visualizationMetrics),
+        chartData: chart,
+        total: total,
       };
     case "All":
       return {
         rows: analytics,
         chartData: [],
+        total: 0,
       };
     default:
       return {
         rows: [],
         chartData: [],
+        total: 0,
       };
   }
 };
