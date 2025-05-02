@@ -40,7 +40,7 @@ export type ChartMetric =
   | "open_rate"
   | "click_rate";
 
-const isMoney = [
+const moneyMetrics = [
   "returns",
   "discounts",
   "conversion_value",
@@ -48,8 +48,14 @@ const isMoney = [
   "total_sales",
 ];
 
-const isPercentage = ["churn", "open_rate", "click_rate"];
-const needsMean = ["average_order_value", "open_rate", "click_rate", "churn"];
+const isPercentageMetrics = ["churn", "open_rate", "click_rate"];
+const averageMetrics = [
+  "average_order_value",
+  "open_rate",
+  "click_rate",
+  "churn",
+];
+const lastValueOnlyMetrics = ["total_count", "recipients"];
 
 const parseCurrency = (value: string = "0"): number =>
   Number(String(value).replace(/[$,]/g, "")) || 0;
@@ -91,20 +97,16 @@ export const buildChartData = (
   const stores = new Set<string>();
   let total = 0;
   let count = 0;
-  let money = false;
-  let percentage = false;
-  let isAvg = false;
+
+  const isMoney = moneyMetrics.includes(metricMap[metricKey]);
+  const isPercentage = isPercentageMetrics.includes(metricMap[metricKey]);
+  const isAverage = averageMetrics.includes(metricMap[metricKey]);
+  const isLastOnly = lastValueOnlyMetrics.includes(metricMap[metricKey]);
 
   for (const row of data) {
     const date = row.date;
     const store = row.store;
     if (!filteredStores.includes(store)) continue;
-    count;
-    money = isMoney.includes(metricMap[metricKey] || "total_sales");
-    percentage = isPercentage.includes(metricMap[metricKey] || "total_sales");
-    isAvg = isAvg
-      ? true
-      : needsMean.includes(metricMap[metricKey] || "total_sales");
 
     const rawValue = parseCurrency(row[metricMap[metricKey] || "total_sales"]);
 
@@ -120,12 +122,31 @@ export const buildChartData = (
     count++;
   }
 
+  const chart = Array.from(byDate.values());
+
+  if (isLastOnly && chart.length > 0) {
+    let lastTotal = 0;
+    const lastRow = chart[chart.length - 1];
+    for (const store of filteredStores) {
+      if (lastRow[store] !== undefined) {
+        lastTotal += Number(lastRow[store]);
+      }
+    }
+    return {
+      chart: chart,
+      total: lastTotal,
+      stores: Array.from(stores),
+      isMoney,
+      isPercentage,
+    };
+  }
+
   return {
     chart: Array.from(byDate.values()),
-    total: isAvg ? total / count : total,
+    total: isAverage ? total / count : total,
     stores: Array.from(stores),
-    isMoney: money,
-    isPercentage: percentage,
+    isMoney,
+    isPercentage,
   };
 };
 
