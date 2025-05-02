@@ -98,10 +98,16 @@ export const buildChartData = (
   let total = 0;
   let count = 0;
 
-  const isMoney = moneyMetrics.includes(metricMap[metricKey]);
-  const isPercentage = isPercentageMetrics.includes(metricMap[metricKey]);
-  const isAverage = averageMetrics.includes(metricMap[metricKey]);
-  const isLastOnly = lastValueOnlyMetrics.includes(metricMap[metricKey]);
+  const isMoney = moneyMetrics.includes(metricMap[metricKey] || "total_sales");
+  const isPercentage = isPercentageMetrics.includes(
+    metricMap[metricKey] || "total_sales",
+  );
+  const isAverage = averageMetrics.includes(
+    metricMap[metricKey] || "total_sales",
+  );
+  const isLastOnly = lastValueOnlyMetrics.includes(
+    metricMap[metricKey] || "total_sales",
+  );
 
   for (const row of data) {
     const date = row.date;
