@@ -60,7 +60,11 @@ export default function Analytics() {
               main_value={`${average_job.avg}`}
               metric="h"
             >
-              <LineChartStats suffix={"h"} data={average_job.line_chart} />
+              <LineChartStats
+                suffix={"h"}
+                data={average_job.line_chart}
+                stores={[]}
+              />
             </AnalyticsCard>
           )}
 

@@ -219,7 +219,7 @@ type LineChartStatsProps = {
 
 export const LineChartStats = ({
   data,
-  stores,
+  stores = ["value"],
   suffix,
   fixed = 1,
   is_money,
