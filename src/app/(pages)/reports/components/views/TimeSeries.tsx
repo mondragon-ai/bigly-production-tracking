@@ -10,6 +10,7 @@ import {useWidth} from "@/lib/hooks/useWidth";
 import {Icon} from "@/components/shared/Icon";
 import {useCallback, useMemo} from "react";
 import {RowTable} from "./RowTable";
+import {formatNumber} from "@/lib/utils/converter.tsx/numbers";
 
 type ViewTypes = "table" | "time" | "chart";
 
@@ -29,6 +30,7 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
     metrics,
     filteredStores,
     visualizationMetrics,
+    chartConfig,
     setMetrics,
     setPlatform,
     setFilteredStores,
@@ -60,6 +62,12 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
 
   const availableMetrics = getMetricsByPlatform(platform);
 
+  const header = useMemo(() => {
+    return chartConfig.isMoney
+      ? `$${formatNumber(Number(total))}`
+      : formatNumber(Number(total));
+  }, [platform, row]);
+
   if (type !== "time") return null;
 
   return (
@@ -75,18 +83,19 @@ export const TimeSeries = ({analytics, type}: TimeSeriesProps) => {
           <AnalyticsCard
             title={visualizationMetrics.toLocaleString()}
             width={100}
-            fixed={2}
-            prefix="$"
-            main_value={String(total)}
-            is_money={true}
+            fixed={0}
+            prefix=""
+            suffix={chartConfig.isPercentage ? "%" : ""}
+            main_value={header}
+            is_money={false}
             negative={false}
             metric=""
           >
             <LineChartStats
               data={data}
               stores={stores}
-              suffix=""
-              is_money={true}
+              suffix={chartConfig.isPercentage ? "%" : ""}
+              is_money={chartConfig.isMoney}
             />
           </AnalyticsCard>
         ) : (

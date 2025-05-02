@@ -40,6 +40,17 @@ export type ChartMetric =
   | "open_rate"
   | "click_rate";
 
+const isMoney = [
+  "returns",
+  "discounts",
+  "conversion_value",
+  "average_order_value",
+  "total_sales",
+];
+
+const isPercentage = ["churn", "open_rate", "click_rate"];
+const needsMean = ["average_order_value", "open_rate", "click_rate", "churn"];
+
 const parseCurrency = (value: string = "0"): number =>
   Number(String(value).replace(/[$,]/g, "")) || 0;
 
@@ -47,7 +58,10 @@ type ChartResults = {
   chart: Record<string, string | number>[];
   total: number;
   stores: string[];
+  isMoney: boolean;
+  isPercentage: boolean;
 };
+
 export const buildChartData = (
   data: OutputMetric[],
   selectedMetric: string[],
@@ -76,11 +90,21 @@ export const buildChartData = (
   const byDate = new Map<string, Record<string, string | number>>();
   const stores = new Set<string>();
   let total = 0;
+  let count = 0;
+  let money = false;
+  let percentage = false;
+  let isAvg = false;
 
   for (const row of data) {
     const date = row.date;
     const store = row.store;
     if (!filteredStores.includes(store)) continue;
+    count;
+    money = isMoney.includes(metricMap[metricKey] || "total_sales");
+    percentage = isPercentage.includes(metricMap[metricKey] || "total_sales");
+    isAvg = isAvg
+      ? true
+      : needsMean.includes(metricMap[metricKey] || "total_sales");
 
     const rawValue = parseCurrency(row[metricMap[metricKey] || "total_sales"]);
 
@@ -93,12 +117,15 @@ export const buildChartData = (
 
     const existing = byDate.get(date)!;
     existing[store] = rawValue;
+    count++;
   }
 
   return {
     chart: Array.from(byDate.values()),
-    total,
+    total: isAvg ? total / count : total,
     stores: Array.from(stores),
+    isMoney: money,
+    isPercentage: percentage,
   };
 };
 

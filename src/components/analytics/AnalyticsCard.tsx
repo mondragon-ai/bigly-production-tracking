@@ -11,6 +11,7 @@ export const AnalyticsCard = ({
   negative = false,
   is_money = false,
   prefix = "",
+  suffix = "",
 }: {
   title: string;
   width: number;
@@ -21,6 +22,7 @@ export const AnalyticsCard = ({
   is_money?: boolean;
   negative?: boolean;
   prefix?: "$" | "" | undefined;
+  suffix?: "%" | "h" | "" | undefined;
 }) => {
   const header = fixed ? Number(main_value).toFixed(fixed) : main_value;
 
@@ -33,7 +35,7 @@ export const AnalyticsCard = ({
             ? `${negative ? "-" : ""}${prefix}${formatWithCommas(
                 Number(header),
               )}`
-            : header}
+            : `${header}${suffix}`}
           <span>{metric}</span>
         </h2>
       </header>

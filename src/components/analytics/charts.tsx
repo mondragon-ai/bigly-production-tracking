@@ -21,6 +21,7 @@ import {
 import {capitalizeWords} from "@/lib/utils/converter.tsx/text";
 import {
   formatNumber,
+  formatToMoney,
   formatWithCommas,
 } from "@/lib/utils/converter.tsx/numbers";
 
@@ -44,11 +45,14 @@ const CustomTooltip = ({
     return (
       <div className={styles.toolWrapper}>
         {Array.from(payload as any[]).map((row) => {
-          const value = Number(row.value);
-          const v = value.toFixed(fixed);
           const header = is_money
-            ? `${negative ? "-" : ""}${prefix}${formatWithCommas(Number(v))}`
-            : v;
+            ? `$${formatNumber(Number(row.value))}`
+            : formatNumber(Number(row.value));
+          // const value = Number(row.value);
+          // const v = value.toFixed(fixed);
+          // const header = is_money
+          //   ? `${negative ? "-" : ""}${prefix}${formatWithCommas(Number(v))}`
+          //   : v;
           return (
             <p className="label">
               {`${String(row?.name || "").toLocaleUpperCase()}: `}
@@ -161,6 +165,28 @@ const CustomYAxisTick = (props: any) => {
   );
 };
 
+const LineChartYAxisTick = (props: any) => {
+  const {x, y, payload, suffix, is_money} = props;
+
+  const value = is_money
+    ? `$${formatNumber(Number(payload.value))}`
+    : formatNumber(Number(payload.value));
+
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={0}
+      textAnchor="end"
+      fill="rgb(112, 112, 123)"
+      transform="rotate(0)"
+      fontSize={"11px"}
+    >
+      {`${value}${suffix ? suffix : ""}`}{" "}
+    </text>
+  );
+};
+
 const CustomXAxisTick = (props: any) => {
   const {x, y, payload} = props;
 
@@ -203,7 +229,7 @@ export const LineChartStats = ({
 }: LineChartStatsProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data} margin={{top: 5, right: 5, left: -20, bottom: 5}}>
+      <AreaChart data={data} margin={{top: 5, right: 5, left: -5, bottom: 5}}>
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#c6beff" stopOpacity={0.5} />
@@ -223,15 +249,7 @@ export const LineChartStats = ({
           axisLine={false}
           padding={{top: 0, bottom: 40}}
           tickSize={0}
-          tick={
-            <CustomYAxisTick
-              suffix={suffix}
-              fixed={fixed}
-              is_money={is_money}
-              negative={negative}
-              prefix={prefix}
-            />
-          }
+          tick={<LineChartYAxisTick suffix={suffix} is_money={is_money} />}
         />
         <Tooltip
           content={
