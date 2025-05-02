@@ -15,6 +15,7 @@ export type PasedReportData = {
   open_rate: BarChart;
   click_rate: BarChart;
   recipients: BarChart;
+  products: BarChart;
   average_order_value: BarChart;
   monthly_sales_goals: SalesGoals;
   daily_sales_goals: SalesGoals;

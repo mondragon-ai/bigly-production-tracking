@@ -1,3 +1,4 @@
+import {productMapping} from "@/components/analytics/tables/RechargeTable";
 import {HeaderAnalytics, NameValueProps} from "../../types/analytics";
 import {
   BarChart,
@@ -44,6 +45,7 @@ export const parseReportData = (
     average_order_value: processKlaviyo(yesterday, "average_order_value", true),
 
     recharge: buildRechargeData(yesterday),
+    products: buildProductData(yesterday),
   };
 };
 
@@ -157,29 +159,101 @@ const buildShopifyData = (
   return base;
 };
 
+const buildProductData = (data: Record<Stores, BiglyDailyReportDocument>) => {
+  const base = emptyBarChart();
+
+  const perProductTotals: Record<
+    string,
+    {
+      product: string;
+      value: number;
+    }
+  > = {};
+
+  for (const [store, storeData] of Object.entries(data)) {
+    for (const [variant, variantData] of Object.entries(
+      storeData.shopify || {},
+    )) {
+      if (!variant || !(variantData as any).top_seller) continue;
+      console.log({variantData, variant});
+      if (!perProductTotals[variant]) {
+        perProductTotals[variant] = {
+          product: variant,
+          value: Number((variantData as any).top_seller),
+        };
+
+        const totals = perProductTotals[variant];
+        totals.value += Number((variantData as any).top_seller);
+      }
+    }
+  }
+
+  let total = 0;
+  for (const [product_name, product_data] of Object.entries(perProductTotals)) {
+    base.bar_chart.push({
+      name: product_name,
+      value: product_data.value,
+    });
+
+    total += product_data.value;
+  }
+
+  base.sum = total;
+  return base;
+};
+
 // ============================ Recharge Charts ============================
 const buildRechargeData = (data: Record<Stores, BiglyDailyReportDocument>) => {
   const base = emptyStackedChart();
 
+  const perProductTotals: Record<
+    string,
+    {
+      product: string;
+      created: number;
+      cancelled: number;
+    }
+  > = {};
+
+  for (const [store, storeData] of Object.entries(data)) {
+    for (const [variant, variantData] of Object.entries(
+      storeData.recharge || {},
+    )) {
+      if (!variant || !variantData) continue;
+
+      const created = variantData.created ?? 0;
+      const cancelled = variantData.cancelled ?? 0;
+
+      let product = variant.split(" ")[0];
+      product = product == "Superfood" ? "Optimal" : product;
+      if (!perProductTotals[product]) {
+        perProductTotals[product] = {
+          product: variant,
+          created: 0,
+          cancelled: 0,
+        };
+      }
+
+      const totals = perProductTotals[product];
+      totals.created += created;
+      totals.cancelled += cancelled;
+    }
+  }
+
   let count = 0;
   let unsubscribed = 0;
   let subscription = 0;
-  for (const [store, storeData] of Object.entries(data)) {
-    for (const [product, productData] of Object.entries(
-      storeData.recharge || {},
-    )) {
-      if (!product || !productData) continue;
 
-      base.stacked_chart.push({
-        name: product,
-        unsubscribed: productData.cancelled,
-        subscription: productData.created,
-      });
+  for (const [product_name, product_data] of Object.entries(perProductTotals)) {
+    base.stacked_chart.push({
+      name: productMapping[product_name],
+      unsubscribed: product_data.cancelled,
+      subscription: product_data.created,
+    });
 
-      unsubscribed += productData.cancelled;
-      subscription += productData.created;
-      count++;
-    }
+    unsubscribed += product_data.cancelled;
+    subscription += product_data.created;
+    count++;
   }
 
   let churn =
@@ -335,6 +409,7 @@ export const getBaseReportData = (): PasedReportData => ({
   click_rate: emptyBarChart(),
   recipients: emptyBarChart(),
   average_order_value: emptyBarChart(),
+  products: emptyBarChart(),
 });
 
 // Base Parsing Object

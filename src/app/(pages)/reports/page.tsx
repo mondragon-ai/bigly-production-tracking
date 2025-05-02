@@ -36,6 +36,7 @@ export default function Analytics() {
     recipients,
     average_order_value,
     recharge,
+    products,
   } = parseReportData(analytics, goals);
 
   const handleFetchingAnalytics = (t: TimeFrameTypes) => {
@@ -101,7 +102,7 @@ export default function Analytics() {
         setType={setViewType}
       />
       <div>
-        {(viewType === "table" || viewType === "chart") && (
+        {viewType === "chart" && (
           <AnalyticsCardGroup loading={loading} cards={goalsChart} />
         )}
 
@@ -122,6 +123,7 @@ export default function Analytics() {
           recipients={recipients}
           average_order_value={average_order_value}
           recharge={recharge}
+          products={products}
         />
         <TimeSeries analytics={rawRow} type={viewType} />
       </div>

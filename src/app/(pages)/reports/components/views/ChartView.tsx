@@ -12,6 +12,7 @@ type ChartViewProps = {
   orders: BarChart;
   discounts: BarChart;
   returns: BarChart;
+  products: BarChart;
   total_sales: BarChart;
   stripe: SubscriptionReport;
   emails: SubscriptionReport;
@@ -39,6 +40,7 @@ export const ChartView = ({
   recipients,
   average_order_value,
   recharge,
+  products,
 }: ChartViewProps) => {
   if (type !== "chart") return null;
 
@@ -196,6 +198,23 @@ export const ChartView = ({
   return (
     <>
       <AnalyticsCardGroup loading={loading} cards={topRow} />
+      <AnalyticsCardGroup
+        loading={loading}
+        cards={[
+          {
+            title: "Products",
+            width: 100,
+            value: String(products.sum),
+            fixed: 1,
+            suffix: "",
+            prefix: "",
+            chartType: "bar",
+            chartData: products.bar_chart,
+            color: "#e85f5c",
+            metric: "",
+          },
+        ]}
+      />
       <AnalyticsCardGroup loading={loading} cards={secondRow} />
       <AnalyticsCardGroup
         loading={loading}

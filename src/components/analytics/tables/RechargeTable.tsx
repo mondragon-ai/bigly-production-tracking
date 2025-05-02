@@ -41,6 +41,20 @@ const HEADERS = [
   {name: "Churn Rate", key: "churnRate"},
 ] as const;
 
+export const productMapping: Record<string, string> = {
+  "MK-ULTRA": "MK-ULTRA",
+  Shilajit: "Shilajit",
+  Seamoss: "Seamoss",
+  Ultimate: "Ultimate Burn",
+  Atomic: "Atomic Defense",
+  Superfood: "Optimal Human",
+  CaloriBurn: "CaloriBurn",
+  VIP: "VIP Club",
+  Methylene: "Methylene Blue",
+  Optimal: "Optimal Human",
+  Coffee: "Coffee",
+};
+
 const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
   if (!data) return [];
 
@@ -54,7 +68,7 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
     const platformData = storeData.recharge;
     if (!platformData) continue;
 
-    for (const [product, metrics] of Object.entries(platformData)) {
+    for (const [variant, metrics] of Object.entries(platformData)) {
       const created = metrics.created ?? 0;
       const cancelled = metrics.cancelled ?? 0;
       const totalCount = metrics.total_count ?? 0;
@@ -67,7 +81,7 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
           : ((cancelled / created) * 100).toFixed(2);
 
       rows.push({
-        product,
+        product: variant,
         storeName,
         totalCount,
         created,
@@ -76,6 +90,8 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
         churnRate,
       });
 
+      let product = variant.split(" ")[0];
+      product = product == "Superfood" ? "Optimal" : product;
       if (!perProductTotals[product]) {
         perProductTotals[product] = {
           product,
@@ -97,20 +113,22 @@ const calculateRows = (data: CleanedAnalytics | null): RowData[] => {
   }
 
   const totalRows = Object.entries(perProductTotals).map(
-    ([product, metrics]) => ({
-      product,
-      storeName: "total",
-      totalCount: metrics.totalCount,
-      created: metrics.created,
-      cancelled: metrics.cancelled,
-      net: metrics.net,
-      churnRate:
-        metrics.created === 0
-          ? metrics.cancelled > 0
-            ? "100"
-            : "0"
-          : ((metrics.cancelled / metrics.created) * 100).toFixed(2),
-    }),
+    ([product, metrics]) => {
+      return {
+        product: productMapping[product],
+        storeName: "total",
+        totalCount: metrics.totalCount,
+        created: metrics.created,
+        cancelled: metrics.cancelled,
+        net: metrics.net,
+        churnRate:
+          metrics.created === 0
+            ? metrics.cancelled > 0
+              ? "100"
+              : "0"
+            : ((metrics.cancelled / metrics.created) * 100).toFixed(2),
+      };
+    },
   );
 
   return [...rows, ...totalRows].sort((a, b) => b.totalCount - a.totalCount);
@@ -122,6 +140,7 @@ export const RechargeTable = memo(
       name: string;
       fromHighest: boolean;
     }>({name: "totalCount", fromHighest: true});
+
     const [selectedStore, setSelectedStore] = useState<Stores>("oh");
     const w = useWidth();
 
